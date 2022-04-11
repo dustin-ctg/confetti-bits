@@ -10,6 +10,16 @@ if ( ! function_exists( 'Confetti_Bits_admin_enqueue_script' ) ) {
 	add_action( 'admin_enqueue_scripts', 'Confetti_Bits_admin_enqueue_script' );
 }
 
+add_action(
+   'bp_init',
+   function () {
+      // Register custom notification in preferences screen.
+      if ( class_exists( 'Confetti_Bits_Notifications_Component' ) ) {
+         Confetti_Bits_Notifications_Component::instance();
+      }
+   }
+);
+
 if ( ! function_exists( 'Confetti_Bits_get_settings_sections' ) ) {
 	function Confetti_Bits_get_settings_sections() {
 
@@ -23,11 +33,6 @@ if ( ! function_exists( 'Confetti_Bits_get_settings_sections' ) ) {
 		return (array) apply_filters( 'Confetti_Bits_get_settings_sections', $settings );
 	}
 }
-
-
-
-
-
 
 
 
@@ -130,19 +135,6 @@ if ( ! function_exists( 'Confetti_Bits_enable_my_addon' ) ) {
 	}
 }
 
-function confetti_bits_notifications_get_registered_components ( $component_names = array() ) {
-		
-		if ( ! is_array( $component_names ) ) {
-			$component_names = array();
-		}
-		array_push( $component_names, 'confetti-bits-notifications' );
-		return $component_names;
-	}
-	add_filter( 'bp_notifications_get_registered_components', 'confetti_bits_notifications_get_registered_components' );
-
-
-
-	
 
 /**************************************** MY PLUGIN INTEGRATION ************************************/
 

@@ -5,7 +5,7 @@
  * Description: This is the TeamCTG platform add-on for the Confetti Bits program.
  * Author:      Dustin Delgross
  * Author URI:  https://dustindelgross.com/
- * Version:     1.3.6
+ * Version:     2.0.0
  * Text Domain: confetti-bits
  * Domain Path: /languages/
  * License:     GPLv3 or later (license.txt)
@@ -75,7 +75,6 @@ if ( ! class_exists( 'Confetti_Bits_Platform_Addon' ) ) {
 			$this->define_constants();
 			$this->includes();
 			$this->load_plugin_textdomain();
-			$this->load_components();
 		}
 
 		/**
@@ -84,8 +83,8 @@ if ( ! class_exists( 'Confetti_Bits_Platform_Addon' ) ) {
 		private function define_constants() {
 			$this->define( 'CONFETTI_BITS_ADDON_PLUGIN_FILE', __FILE__ );
 			$this->define( 'CONFETTI_BITS_ADDON_PLUGIN_IS_INSTALLED', 1);
-			$this->define( 'CONFETTI_BITS_ADDON_PLUGIN_VERSION', '1.3.6');
-			$this->define( 'CONFETTI_BITS_ADDON_PLUGIN_DB_VERSION', '1.3.6');
+			$this->define( 'CONFETTI_BITS_ADDON_PLUGIN_VERSION', '2.0.0');
+			$this->define( 'CONFETTI_BITS_ADDON_PLUGIN_DB_VERSION', '2.0.0');
 			$this->define( 'CONFETTI_BITS_ADDON_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 			$this->define( 'CONFETTI_BITS_ADDON_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 			$this->define( 'CONFETTI_BITS_ADDON_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -105,15 +104,36 @@ if ( ! class_exists( 'Confetti_Bits_Platform_Addon' ) ) {
 		/**
 		 * Include required core files used in admin and on the frontend.
 		 */
-		public function includes(  ) {
+		public function includes() {
+			spl_autoload_register( array( $this, 'load_components' ) );
 			require CONFETTI_BITS_ADDON_PLUGIN_PATH . 'functions.php';
 		}
 
-		public function load_components() {
-			require CONFETTI_BITS_ADDON_PLUGIN_PATH . 'bp-confetti-bits-notifications/classes/class-confetti-bits-notifications-component.php';
-		}
-		
+		public function load_components( $class ) {
+			
+			$class_parts = explode( '_', strtolower( $class ) );
+			
+			if ( 'confetti' !== $class_parts[0] ) {
+				return;
+			}
+			
+			$components = array ('notifications');
 
+			if ( in_array( $class_parts[2], $components, true ) ) {
+				$component = $class_parts[2];
+			}
+			
+			$class = strtolower( str_replace( '_', '-', $class ) );
+			
+			$path = dirname( __FILE__ ) . "/bp-confetti-bits-{$component}/classes/class-{$class}.php";
+			
+			if ( ! file_exists( $path ) ) {
+				return;
+			}
+			
+			require $path;			
+			
+		}
 
 		/**
 		 * Get the plugin url.
@@ -175,9 +195,6 @@ if ( ! class_exists( 'Confetti_Bits_Platform_Addon' ) ) {
 		return false;
 	}
 
-	
-	
-	
 	function Confetti_Bits_Platform_init() {
 		if ( ! defined( 'BP_PLATFORM_VERSION' ) ) {
 			add_action( 'admin_notices', 'Confetti_Bits_Platform_install_bb_platform_notice' );
