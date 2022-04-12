@@ -63,11 +63,8 @@ class Confetti_Bits_Notifications_Component extends BP_Core_Notification_Abstrac
 		 */
 		$this->register_notification_group(
 			'confetti_bits',
-<<<<<<< HEAD
-			esc_html__( 'Confetti Bits Notifications Frontend', 'buddyboss' ), // For the frontend.
-=======
+
 			esc_html__( 'Confetti Bits Notifications', 'buddyboss' ), // For the frontend.
->>>>>>> d35ff97 (Whoopsies)
 			esc_html__( 'Confetti Bits Notifications Admin', 'buddyboss' ) // For the backend.
 		);
 
