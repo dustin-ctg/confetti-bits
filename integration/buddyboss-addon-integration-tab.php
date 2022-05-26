@@ -8,11 +8,6 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-/**
- * Setup Compatibility integration admin tab class.
- *
- * @since BuddyBoss 1.1.5
- */
 class Confetti_Bits_BuddyBoss_Admin_Integration_Tab extends BP_Admin_Integration_tab {
 	public function initialize() {
 		$this->tab_order       = 60;
@@ -22,9 +17,6 @@ class Confetti_Bits_BuddyBoss_Admin_Integration_Tab extends BP_Admin_Integration
 		return true;
 	}
 
-	/**
-	 * Register setting fields
-	 */
 	public function register_fields() {
 
 		$sections = Confetti_Bits_get_settings_sections();
