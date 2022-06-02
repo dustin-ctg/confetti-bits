@@ -64,16 +64,18 @@ function cb_member_template_part() {
 
 			case ( cb_is_user_confetti_bits() && cb_is_user_admin() && ! cb_is_user_site_admin()  ) :
 				$templates = array (
+					'notices',
 					'member-search',
 					'send-bits-form',
-					'import',
-//					'requests',
+//					'import',
+					'requests',
 					'dashboard',
 				);
 				break;
 
 				case ( cb_is_user_confetti_bits() && cb_is_user_site_admin()  ) :
 				$templates = array (
+					'notices',
 					'member-search',
 					'send-bits-form',
 					'import',
@@ -85,9 +87,10 @@ function cb_member_template_part() {
 			case ( cb_is_user_confetti_bits() ) :
 			default : 
 				$templates = array(
-					'member-search',
-					'send-bits-form',
-//					'requests',
+					'notices',
+//					'member-search',
+//					'send-bits-form',
+					'requests',
 					'dashboard',
 				);
 				break;

@@ -75,24 +75,15 @@ class Confetti_Bits_Transactions_Transaction {
 			if ( empty( $this->id ) ) {
 				$this->id = $wpdb->insert_id;
 			}
-			
-			bp_notifications_add_notification(
-				array(
-					'user_id'           => $this->recipient_id,
-					'item_id'           => $this->sender_id,
-					'secondary_item_id' => $this->recipient_id,
-					'component_name'    => 'confetti_bits',
-					'component_action'  => $this->component_action,
-					'date_notified'     => bp_core_current_time(),
-					'is_new'            => 1,
-				)
-			);
-			
-			cb_update_total_bits( $this->recipient_id );
+
+			do_action( 'cb_transactions_after_send', $data );
+
+
 			$retval = $this->id;
 		}
 		return $retval;
 	}
+
 	public function populate( $id ) {
 		$transaction = self::get(
 			array(
@@ -366,13 +357,31 @@ class Confetti_Bits_Transactions_Transaction {
 			'component_name'	=> 'confetti_bits',
 		), $select_sql, $from_sql );
 
-		
 		$group_sql = "GROUP BY identifier";
+
 		$pagination_sql = "LIMIT 0, 1";
-		
+
 		$sql = "{$select_sql} {$from_sql} {$where_sql} {$group_sql} {$pagination_sql}";
 
 		return $wpdb->get_results( $sql, 'ARRAY_A' );
+	}
+
+	public static function wipe_it_down() {
+
+		if ( $user_id === 0 ) {
+			return;
+		}
+
+		global $wpdb;
+		$cb = Confetti_Bits();
+
+		return $wpdb->delete( 
+			$cb->transactions->table_name, 
+			array(
+				'component_name'	=> 'confetti_bits',
+			)
+		);
+
 	}
 
 	public static function get_totals_groupedby_identifier() {
@@ -394,7 +403,55 @@ class Confetti_Bits_Transactions_Transaction {
 
 	}
 
-	public static function get_transactions_for_today( $user_id ) {
+	public static function get_totals_groupedby_recipient_name() {
+
+		global $wpdb;
+
+		$cb = Confetti_Bits();
+		$select_sql = "SELECT identifier, recipient_name, SUM(amount) as amount";
+		$from_sql = "FROM {$cb->transactions->table_name} n ";
+		$where_sql = self::get_where_sql( array(
+			'component_name'	=> 'confetti_bits',
+		), $select_sql, $from_sql );
+		$group_sql = "GROUP BY identifier";
+		$order_sql = "ORDER BY recipient_name ASC";
+		$sql = "{$select_sql} {$from_sql} {$where_sql} {$group_sql} {$order_sql}";
+
+		return $wpdb->get_results( $sql, 'ARRAY_A' );
+
+	}
+
+	public static function get_activity_bits_transactions_for_today( $user_id ) {
+
+		global $wpdb;
+
+		$bp = buddypress();
+		$cb = Confetti_Bits();
+
+		$select_sql = "SELECT user_id, date_sent, component_name, component_action, COUNT(user_id) as total_count";
+
+		$from_sql = "FROM {$cb->transactions->table_name} n ";
+
+		$where_sql = self::get_where_sql( array(
+			'user_id'			=> $user_id,
+			'date_query'		=> array (
+				'column'		=> 'date_sent',
+				'compare'		=> 'IN',
+				'relation'		=> 'AND',
+				'day'			=> bp_core_current_time(false, 'd'),
+			),
+			'component_name'	=> 'confetti_bits',
+			'component_action'	=> 'cb_activity_bits',
+		), $select_sql, $from_sql );
+
+		$order_sql = "ORDER BY date_sent desc";
+
+		$sql = "{$select_sql} {$from_sql} {$where_sql} {$order_sql}";
+
+		return $wpdb->get_results( $sql, 'ARRAY_A' );
+	}
+
+	public static function get_send_bits_transactions_for_today( $user_id ) {
 
 		global $wpdb;
 
@@ -424,6 +481,30 @@ class Confetti_Bits_Transactions_Transaction {
 
 		return $wpdb->get_results( $sql );
 	}
+
+	public static function get_send_bits_transactions_for_recipient( $user_id ) {
+
+		global $wpdb;
+
+		$cb = Confetti_Bits();
+
+		$select_sql = "SELECT id, item_id, secondary_item_id, user_id, sender_id, sender_name, recipient_id, recipient_name, identifier, date_sent, log_entry, component_name, component_action,  amount";
+
+		$from_sql = "FROM {$cb->transactions->table_name} n ";
+
+		$where_sql = self::get_where_sql( array(
+			'recipient_id'		=> $user_id,
+			'component_name'	=> 'confetti_bits',
+			'component_action'	=> 'cb_send_bits',
+		), $select_sql, $from_sql );
+
+		$order_sql = "ORDER BY date_sent desc";
+
+		$sql = "{$select_sql} {$from_sql} {$where_sql} {$order_sql}";
+
+		return $wpdb->get_results( $sql, 'ARRAY_A' );
+	}
+
 	public function get_paged_transactions_for_user( $user_id, $args = array() ) {
 		global $wpdb;
 		$bp = buddypress();
@@ -454,6 +535,7 @@ class Confetti_Bits_Transactions_Transaction {
 		$sql = "{$select_sql} {$from_sql} {$where_sql} {$order_sql} {$pagination_sql}";
 		return $wpdb->get_results( $sql, 'ARRAY_A' );
 	}
+
 	protected static function get_where_sql( $args = array(), $select_sql = '', $from_sql = '', $join_sql = '', $meta_query_sql = '' ) {
 		global $wpdb;
 		$where_conditions = array();
@@ -478,6 +560,17 @@ class Confetti_Bits_Transactions_Transaction {
 			$secondary_item_id_in                  = implode( ',', wp_parse_id_list( $args['secondary_item_id'] ) );
 			$where_conditions['secondary_item_id'] = "secondary_item_id IN ({$secondary_item_id_in})";
 		}
+
+		if ( ! empty( $args['recipient_id'] ) ) {
+			$recipient_id_in                  = implode( ',', wp_parse_id_list( $args['recipient_id'] ) );
+			$where_conditions['recipient_id'] = "recipient_id IN ({$recipient_id_in})";
+		}
+
+		if ( ! empty( $args['identifier'] ) ) {
+			$identifier_in                  = implode( ',', wp_parse_id_list( $args['identifier'] ) );
+			$where_conditions['identifier'] = "identifier IN ({$identifier_in})";
+		}
+
 		if ( ! empty( $args['component_name'] ) ) {
 			if ( ! is_array( $args['component_name'] ) ) {
 				$component_names = explode( ',', $args['component_name'] );
@@ -517,15 +610,12 @@ class Confetti_Bits_Transactions_Transaction {
 			$ca_not_in                           = implode( ',', $ca_clean );
 			$where_conditions['excluded_action'] = "component_action NOT IN ({$ca_not_in})";
 		}
-		if ( ! empty( $args['is_new'] ) && 'both' !== $args['is_new'] ) {
-			$where_conditions['is_new'] = 'is_new = 1';
-		} elseif ( isset( $args['is_new'] ) && ( 0 === $args['is_new'] || false === $args['is_new'] ) ) {
-			$where_conditions['is_new'] = 'is_new = 0';
-		}
+
 		if ( ! empty( $args['search_terms'] ) ) {
 			$search_terms_like                = '%' . bp_esc_like( $args['search_terms'] ) . '%';
 			$where_conditions['search_terms'] = $wpdb->prepare( '( component_name LIKE %s OR component_action LIKE %s )', $search_terms_like, $search_terms_like );
 		}
+
 		if ( ! empty( $args['date_query'] ) ) {
 			$where_conditions['date_query'] = self::get_date_query_sql( $args['date_query'] );
 		}

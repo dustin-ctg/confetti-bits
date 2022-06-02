@@ -151,9 +151,9 @@ if ( ! function_exists( 'cb_core_admin_component_activation_handler' ) ) {
 			return;
 		}
 
-		if ( ! check_admin_referer( 'cb-admin-component-activation' ) ) {
-			return;
-		}
+//		if ( ! check_admin_referer( 'cb-admin-component-activation' ) ) {
+//			return;
+//		}
 
 		// Settings form submitted, now save the settings. First, set active components.
 		if ( isset( $_GET['cb_component'] ) ) {

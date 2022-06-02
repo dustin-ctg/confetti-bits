@@ -9,6 +9,51 @@
 
 defined('ABSPATH') || exit;
 
+function cb_activity_bits( $content, $user_id, $activity_id ) {
+
+	$user_id = bp_loggedin_user_id();
+	$user_name = bp_get_loggedin_user_fullname();
+
+	$transaction = new Confetti_Bits_Transactions_Transaction();
+	$activity_transactions = $transaction->get_activity_bits_transactions_for_today( $user_id );
+
+	if ( ! empty ( $activity_transactions ) ) {
+
+		foreach ( $activity_transactions as $activity_transaction ) {
+
+			$total_count = $activity_transaction['total_count'];
+
+		}
+
+		if ( ! cb_is_user_site_admin() && $total_count >= 1 ) {
+			return;
+		}
+
+	}
+
+	$activity_post = cb_send_bits(
+		array(
+			'item_id'			=> 1,
+			'secondary_item_id'	=> $user_id,
+			'user_id'			=> $user_id,
+			'sender_id'			=> $user_id,
+			'sender_name'		=> $user_name,
+			'recipient_id' 		=> $user_id,
+			'recipient_name'	=> $user_name,
+			'identifier'		=> $user_id,
+			'date_sent'			=> bp_core_current_time( false ),
+			'log_entry'    		=> 'Posted a new update',
+			'component_name'    => 'confetti_bits',
+			'component_action'  => 'cb_activity_bits',
+			'amount'    		=> 1,
+			'error_type' 		=> 'wp_error',
+		)
+	);
+
+
+}
+add_action( 'bp_activity_posted_update', 'cb_activity_bits', 10, 3 );
+
 function cb_send_bits($args = '') {
 
 	$r = bp_parse_args($args, array(
@@ -29,60 +74,86 @@ function cb_send_bits($args = '') {
 		'error_type'		=> 'bool',
 	), 'transactions_new_transaction');
 
-	if (empty($r['sender_id']) || empty($r['log_entry'])) {
-		if ('wp_error' === $r['error_type']) {
-			if (empty($r['sender_id'])) {
+	if ( empty($r['sender_id'] ) || empty( $r['log_entry'] ) ) {
+
+		if ( 'wp_error' === $r['error_type'] ) {
+
+			if ( empty( $r['sender_id'] ) ) {
+
 				$error_code = 'transactions_empty_sender_id';
 				$feedback   = __('Your transaction was not sent. We couldn\'t find a sender.', 'confetti-bits');
+
 			} else {
+
 				$error_code = 'transactions_empty_log_entry';
 				$feedback   = __('Your transaction was not sent. Please add a log entry.', 'confetti-bits');
+
 			}
 
-			return new WP_Error($error_code, $feedback);
+			return new WP_Error( $error_code, $feedback );
+
 		} else {
+
 			return false;
+
 		}
 	}
 
-	if (empty($r['recipient_id']) || empty($r['recipient_name'])) {
-		if ('wp_error' === $r['error_type']) {
-			if (empty($r['recipient_name'])) {
+	if ( empty( $r['recipient_id'] ) || empty( $r['recipient_name'] ) ) {
+
+		if ( 'wp_error' === $r['error_type'] ) {
+
+			if ( empty( $r['recipient_name'] ) ) {
+
 				$error_code = 'transactions_empty_recipient_name';
 				$feedback   = __('Your bits were not sent. We couldn\'t find the recipient.', 'confetti-bits');
+
 			} else {
+
 				$error_code = 'transactions_empty_recipient_id';
 				$feedback   = __('Your bits were not sent. We couldn\'t find the recipient.', 'confetti-bits');
+
 			}
 
-			return new WP_Error($error_code, $feedback);
+			return new WP_Error( $error_code, $feedback );
+
 		} else {
+
 			return false;
+
 		}
 	}
 
-	if (empty($r['amount'])) {
-		if ('wp_error' === $r['error_type']) {
+	if ( empty( $r['amount'] ) ) {
+		if ( 'wp_error' === $r['error_type'] ) {
 
 			$error_code = 'transactions_empty_amount';
 			$feedback   = __('Your bits were not sent. Please enter a valid amount.', 'confetti-bits');
 
 			return new WP_Error($error_code, $feedback);
+
 		} else {
+
 			return false;
+
 		}
 	}
 
-	if (abs($r['amount']) > cb_get_total_bits($r['sender_id']) && ($r['amount'] < 0)) {
+	if ( abs( $r['amount'] ) > cb_get_total_bits( $r['sender_id'] ) && ( $r['amount'] < 0 ) ) {
+
 		if ('wp_error' === $r['error_type']) {
 
 			$error_code = 'transactions_not_enough_bits';
 			$feedback   = __('Sorry, it looks like you don\'t have enough bits for that.', 'confetti-bits');
 
 			return new WP_Error($error_code, $feedback);
+
 		} else {
+
 			return false;
+
 		}
+
 	}
 
 	$transaction = new Confetti_Bits_Transactions_Transaction();
@@ -102,12 +173,16 @@ function cb_send_bits($args = '') {
 
 	$send = $transaction->send_bits();
 
+	if ( false === is_int( $send ) ) {
 
-	if (false === is_int($send)) {
-		if ('wp_error' === $r['error_type']) {
-			if (is_wp_error($send)) {
+		if ( 'wp_error' === $r['error_type'] ) {
+
+			if ( is_wp_error( $send ) ) {
+
 				return $send;
+
 			} else {
+
 				return new WP_Error(
 					'transaction_generic_error',
 					__(
@@ -115,6 +190,7 @@ function cb_send_bits($args = '') {
 						'confetti-bits'
 					)
 				);
+
 			}
 		}
 
@@ -124,6 +200,7 @@ function cb_send_bits($args = '') {
 	do_action( 'cb_send_bits', $r );
 
 	return $transaction->id;
+
 }
 
 function cb_requests() {
@@ -150,15 +227,15 @@ function cb_requests() {
 
 	} else {
 
-		$member_transactions = trailingslashit(bp_loggedin_user_domain() . cb_get_transactions_slug());
+		$member_transactions = trailingslashit( bp_loggedin_user_domain() . cb_get_transactions_slug() );
 
-		$lauren = get_user_by( 'email', 'dustin.delgross@icloud.com');
+		$lauren = get_user_by( 'email', 'dustin@celebrationtitlegroup.com');
 		$lauren_id = $lauren->ID;
 
 		$subtract = cb_send_request(
 			array(
-				'item_id'			=> bp_current_user_id(),
-				'secondary_item_id'	=> $lauren_id,
+				'item_id'			=> $lauren_id,
+				'secondary_item_id'	=> $_POST['cb_request_amount'],
 				'user_id'			=> bp_current_user_id(),
 				'sender_id'			=> bp_current_user_id(),
 				'sender_name'		=> bp_get_loggedin_user_fullname(),
@@ -186,7 +263,7 @@ function cb_requests() {
 		} else {
 
 			$success  = false;
-			$feedback = $subtract->get_error_message();
+			$feedback = 'Something went wonky. Call Dustin!';
 
 		}
 	}
@@ -207,18 +284,6 @@ function cb_requests() {
 }
 add_action('bp_actions', 'cb_requests');
 
-/*
-function cb_times() {
-
-	echo current_time('P') . '<br>';
-	echo current_time('mysql') . '<br>';
-	echo bp_core_current_time() . '<br>';
-	echo bp_core_current_time( false, 'Y-m-d' ) . '<br>';
-	echo bp_core_current_time( true ) . '<br>';
-
-}
-add_action( 'bp_actions', 'cb_times');
-*/
 function cb_send_request($args = '') {
 
 	$r = bp_parse_args($args, array(
@@ -337,6 +402,41 @@ function cb_send_request($args = '') {
 	return $transaction->id;
 }
 
+function cb_bits_request_email_notification( $args = array() ) {
+
+	$r = bp_parse_args( $args, array(
+		'recipient_id'	=> 0,
+		'sender_id'		=> 0,
+		'request_item'	=> '',
+	), 'cb_transactions_new_request_email');
+
+	$request_recipient_name	= bp_core_get_user_displayname( $r['recipient_id'] );
+	$request_sender_name	= bp_core_get_user_displayname( $r['sender_id'] );
+	$request_item			= $r['request_item'];
+	$cb_page_link			= trailingslashit( bp_loggedin_user_domain() . cb_get_transactions_slug() );
+
+	if ( 'no' != bp_get_user_meta( $r['recipient_id'], 'cb_bits_request', true ) ) {
+
+		$unsubscribe_args = array(
+			'user_id'           => $r['recipient_id'],
+			'notification_type' => 'cb-bits-request-email',
+		);
+
+		$email_args = array(
+			'tokens' => array(
+				'request_sender.id'		=> $r['sender_id'],
+				'request_sender.name'	=> $request_sender_name,
+				'request_sender.item'	=> $r['request_item'],
+				'unsubscribe'			=> esc_url( bp_email_get_unsubscribe_link( $unsubscribe_args ) ),
+			),
+		);
+
+		bp_send_email( 'cb-bits-request-email', $r['recipient_id'], $email_args );
+	}
+
+	do_action( 'cb_transactions_sent_request_email_notification', $args );
+}
+
 function cb_import_bits($args = '') {
 
 	$r = bp_parse_args($args, array(
@@ -364,7 +464,7 @@ function cb_import_bits($args = '') {
 				$feedback   = __('Your transaction was not sent. We couldn\'t find a sender.', 'confetti-bits');
 			} else {
 				$error_code = 'transactions_empty_log_entry';
-				$feedback   = __('Your transaction was not sent??? Please add a log entry.', 'confetti-bits');
+				$feedback   = __('Your transaction was not sent. Please add log entries.', 'confetti-bits');
 			}
 
 			return new WP_Error($error_code, $feedback);
@@ -378,10 +478,10 @@ function cb_import_bits($args = '') {
 		if ('wp_error' === $r['error_type']) {
 			if (empty($r['recipient_name'])) {
 				$error_code = 'transactions_empty_recipient_name';
-				$feedback   = __('Your bits were not sent. We couldn\'t find the recipient.', 'confetti-bits');
+				$feedback   = __('Your bits were not sent. We couldn\'t find the recipients.', 'confetti-bits');
 			} else {
 				$error_code = 'transactions_empty_recipient_id';
-				$feedback   = __('Your bits were not sent. We couldn\'t find the recipient.', 'confetti-bits');
+				$feedback   = __('Your bits were not sent. We couldn\'t find the recipients.', 'confetti-bits');
 			}
 
 			return new WP_Error($error_code, $feedback);
@@ -402,7 +502,7 @@ function cb_import_bits($args = '') {
 		}
 	}
 
-	if ( abs( $r['amount'] ) > cb_get_total_bits( $r['sender_id'] ) && ( $r['amount'] < 0) ) {
+	if ( abs( $r['amount'] ) > cb_get_total_bits( $r['recipient_id'] ) && ( $r['amount'] < 0) ) {
 		if ( 'wp_error' === $r['error_type'] ) {
 
 			$error_code = 'transactions_not_enough_bits';
@@ -453,6 +553,15 @@ function cb_import_bits($args = '') {
 	do_action('cb_import_bits', $r);
 
 	return $transaction->id;
+}
+
+function cb_delete_all() {
+
+	$transaction = new Confetti_Bits_Transactions_Transaction();
+	$transaction->wipe_it_down();
+
+	return 'It is done.';
+
 }
 
 function cb_importer() {
@@ -565,6 +674,18 @@ function cb_importer() {
 
 			$recipient_id = 0;
 
+			if ( empty( $query_results ) || ! $new_user_query ) {
+
+				$skip_list[] = 'The name "' . trim( $fname . ' ' . $lname ) . '"' . 
+					' in row ' . $row_number . 
+					' didn\'t show up in the member search.';
+				$skipped++;
+				$row_number++;
+				$row_error = true;
+				continue;
+
+			}
+
 			if ( count( $query_results ) > 1 || count( $query_results ) === 2 ) {
 				$skip_list[] = '"' . $fname . ' ' . $lname . '"' . ' in row ' . $row_number . ' returned multiple members.';
 				$skipped++;
@@ -578,8 +699,6 @@ function cb_importer() {
 					$recipient_id = $query_result->ID;
 				}
 			}
-
-
 
 			if ( $recipient_id == false || $recipient_id == 0 ) {
 
@@ -605,8 +724,7 @@ function cb_importer() {
 
 			if ( ! is_numeric( $amount ) || empty( $amount ) ) {
 
-
-				if ( ! is_numeric( $amount ) && ! empty( $amount ) ) {
+				if ( ! is_numeric( $amount ) ) {
 					$skip_list[] = '"' . $amount . '" is not a number in row ' . $row_number . '.';
 				} else if ( empty( $amount ) ) {
 					$skip_list[] = 'Amount is empty in row ' . $row_number . '.';
@@ -669,7 +787,18 @@ function cb_importer() {
 		$file = '';
 
 		$success  = true;
-		$feedback = __('Maybe that worked? We successfully imported ' . $imported . ' rows I think.', 'confetti-bits');
+
+		if ( $imported === 1 ) {
+
+			$feedback = __('Not a problem in sight, we successfully imported ' . $imported . ' row!.', 'confetti-bits');	
+
+		} else {
+
+			$feedback = __('Not a problem in sight, we successfully imported ' . $imported . ' rows!.', 'confetti-bits');	
+
+		}
+
+
 	}
 
 	if ( ! empty( $skip_list ) && $ran = true ) {
@@ -713,25 +842,37 @@ function cb_send_bits_form() {
 	$feedback    = '';
 	$success     = false;
 
-	if ( empty($_POST['log_entry'] ) || empty( $_POST['amount'] ) ) {
+	if ( empty( $_POST['log_entry'] ) || empty( $_POST['amount'] ) ) {
+		
 		$success = false;
 
-		if (empty($_POST['log_entry'])) {
+		if ( empty( $_POST['log_entry'] ) ) {
+			
 			$feedback = __('Your transaction was not sent. Please add a log entry.', 'confetti-bits');
+			
 		} else {
+			
 			$feedback = __('Your transaction was not sent. Please enter an amount.', 'confetti-bits');
+			
 		}
-	} else if ((abs($_POST['amount']) > cb_get_total_bits($_POST['recipient_id'])) && ($_POST['amount'] < 0)) {
+		
+	} else if ( ( abs( $_POST['amount'] ) > cb_get_total_bits( $_POST['recipient_id'] ) ) && ( $_POST['amount'] < 0 ) ) {
 		$success     = false;
-		$feedback = __(bp_xprofile_get_member_display_name($_POST['recipient_id']) . ' doesn\'t have enough Confetti Bits for that.', 'confetti-bits');
-	} //else if ( $_POST['amount'] + cb_get_total_for_current_day() >= 20 ) {
+		$feedback = __( bp_xprofile_get_member_display_name( $_POST['recipient_id'] ) . ' doesn\'t have enough Confetti Bits for that.', 'confetti-bits' );
+		
+	} else if ( $_POST['amount'] + cb_get_total_for_current_day() > 20 && ! cb_is_user_site_admin() ) {
 
-//		$success     = false;
-//		$feedback = __('You\'ve already sent 20 Confetti Bits today. Your counter will reset tomorrow!', 'confetti-bits');
+		$success     = false;
+		$feedback = __('You\'ve already sent 20 Confetti Bits today. Your counter will reset tomorrow!', 'confetti-bits');
+		
+	} else if ( $_POST['amount'] > cb_get_total_bits( $_POST['sender_id'] ) && ! cb_is_user_admin() ) {
 
-/*	}*/ else {
+		$success     = false;
+		$feedback = __('Sorry, it looks like you don\'t have enough bits to send.', 'confetti-bits');
 
-		$member_transactions = trailingslashit(bp_loggedin_user_domain() . cb_get_transactions_slug());
+	} else {
+
+		$member_transactions = trailingslashit( bp_loggedin_user_domain() . cb_get_transactions_slug() );
 
 		if ( cb_is_user_admin() ) {
 
@@ -743,11 +884,11 @@ function cb_send_bits_form() {
 					'sender_id'			=> bp_current_user_id(),
 					'sender_name'		=> bp_get_loggedin_user_fullname(),
 					'recipient_id' 		=> $_POST['recipient_id'],
-					'recipient_name'	=> bp_xprofile_get_member_display_name($_POST['recipient_id']),
+					'recipient_name'	=> bp_xprofile_get_member_display_name( $_POST['recipient_id'] ),
 					'identifier'		=> $_POST['recipient_id'],
 					'date_sent'			=> bp_core_current_time( false ),
 					'log_entry'    		=> str_replace("\\", '', $_POST['log_entry']) . ' – from ' .
-					bp_xprofile_get_member_display_name($_POST['sender_id']),
+					bp_core_get_user_displayname($_POST['sender_id']),
 					'component_name'    => 'confetti_bits',
 					'component_action'  => 'cb_send_bits',
 					'amount'    		=> $_POST['amount'],
@@ -759,16 +900,19 @@ function cb_send_bits_form() {
 				$success     = true;
 				$feedback    = __(
 					'We successfully sent bits to ' .
-					bp_xprofile_get_member_display_name($_POST['recipient_id']) .
+					bp_core_get_user_displayname( $_POST['recipient_id'] ) .
 					'!',
 					'confetti-bits'
 				);
 
 				$view        = trailingslashit($member_transactions);
 				$redirect_to = trailingslashit($view);
+				
 			} else {
+				
 				$success  = false;
-				$feedback = $send->get_error_message();
+				$feedback = 'Something\'s broken, call Dustin.';
+				
 			}
 		} else {
 
@@ -780,11 +924,11 @@ function cb_send_bits_form() {
 					'sender_id'			=> bp_current_user_id(),
 					'sender_name'		=> bp_get_loggedin_user_fullname(),
 					'recipient_id' 		=> $_POST['recipient_id'],
-					'recipient_name'	=> bp_xprofile_get_member_display_name($_POST['recipient_id']),
+					'recipient_name'	=> bp_core_get_user_displayname($_POST['recipient_id']),
 					'identifier'		=> $_POST['recipient_id'],
 					'date_sent'			=> bp_core_current_time( false ),
 					'log_entry'			=> $_POST['log_entry'] . ' – from ' .
-					bp_xprofile_get_member_display_name($_POST['sender_id']),
+					bp_core_get_user_displayname($_POST['sender_id']),
 					'component_name'    => 'confetti_bits',
 					'component_action'  => 'cb_send_bits',
 					'amount'    		=> $_POST['amount'],
@@ -800,10 +944,10 @@ function cb_send_bits_form() {
 					'sender_id'			=> bp_current_user_id(),
 					'sender_name'		=> bp_get_loggedin_user_fullname(),
 					'recipient_id' 		=> $_POST['sender_id'],
-					'recipient_name'	=> bp_xprofile_get_member_display_name($_POST['sender_id']),
+					'recipient_name'	=> bp_core_get_user_displayname($_POST['sender_id']),
 					'identifier'		=> $_POST['sender_id'],
 					'date_sent'			=> bp_core_current_time( false ),
-					'log_entry'    		=> 'Sent bits to ' . bp_xprofile_get_member_display_name($_POST['recipient_id']),
+					'log_entry'    		=> 'Sent bits to ' . bp_core_get_user_displayname($_POST['recipient_id']),
 					'component_name'    => 'confetti_bits',
 					'component_action'  => 'cb_send_bits',
 					'amount'    		=> -$_POST['amount'],
@@ -815,7 +959,7 @@ function cb_send_bits_form() {
 				$success     = true;
 				$feedback    = __(
 					'We successfully sent bits to ' .
-					bp_xprofile_get_member_display_name($_POST['recipient_id']) .
+					bp_core_get_user_displayname($_POST['recipient_id']) .
 					'!',
 					'confetti-bits'
 				);
@@ -824,7 +968,7 @@ function cb_send_bits_form() {
 				$redirect_to = trailingslashit($view);
 			} else {
 				$success  = false;
-				$feedback = $send->get_error_message();
+				$feedback = 'Something\'s broken. Call Dustin.';
 			}
 		}
 	}
@@ -1055,7 +1199,7 @@ function cb_search_results() {
 function cb_get_total_for_current_day() {
 
 	$transaction = new Confetti_Bits_Transactions_Transaction();
-	$fetched_transactions = $transaction->get_transactions_for_today(get_current_user_id());
+	$fetched_transactions = $transaction->get_send_bits_transactions_for_today(get_current_user_id());
 	$total = 0;
 
 	foreach ( $fetched_transactions as $fetched_transaction ) {
@@ -1116,7 +1260,7 @@ function cb_total_for_current_day_notice() {
 
 function cb_update_total_bits( $user_id = 0, $meta_key = 'cb_total_bits', $previous_total = '' ) {
 
-	if ( $user_id === 0 ) {
+	if ( $user_id == 0 ) {
 		$user_id = get_current_user_id();
 	}
 
@@ -1140,8 +1284,43 @@ function cb_get_total_bits( $user_id, $meta_key = 'cb_total_bits', $unique = tru
 		return;
 	}
 
-	return get_user_meta($user_id, $meta_key, $unique);
+	$total = get_user_meta($user_id, $meta_key, $unique);
+
+	return $total;
+
 }
+
+function cb_get_total_bits_notice( $user_id, $meta_key = 'cb_total_bits', $unique = true ) {
+
+	if ( $user_id === 0 ) {
+		return;
+	}
+
+	$notice = '';
+	$total = get_user_meta($user_id, $meta_key, $unique);
+
+	if ( $total == 1 ) {
+
+		$notice = 'You currently have ' . $total . ' Confetti Bit.';
+
+	}
+
+	if ( $total < 1 || $total == 0 ) {
+
+		$notice = 'You don\'t currently have any Confetti Bits.';
+
+	}
+
+	if ( $total > 1 ) {
+
+		$notice = 'You currently have ' . $total . ' Confetti Bits.';
+
+	}
+
+	return $notice;
+
+}
+
 
 function cb_get_user_meta($user_id = 0, $meta_key, $unique = true) {
 
@@ -1222,18 +1401,19 @@ function cb_log() {
 	);
 	$page_total_cap 	= $transactions->total_pages;
 
-	cb_log_pagination($current_log_page, $page_total_cap, $cb_log_url);
+	cb_log_pagination( $current_log_page, $page_total_cap, $cb_log_url );
+
 	cb_log_header();
-	cb_log_entries($paged_transactions);
+	cb_log_entries( $paged_transactions );
 
 }
 
 function cb_log_pagination( $current_log_page, $page_total_cap, $cb_log_url ) {
 
-	$pagination_links = cb_log_get_page_urls($current_log_page, $page_total_cap, $cb_log_url, $page_range = 5);
+	$pagination_links = cb_log_get_page_urls( $current_log_page, $page_total_cap, $cb_log_url, $page_range = 5 );
 	$pagination_list_items = array();
 
-	foreach ($pagination_links as $pagination_link) {
+	foreach ( $pagination_links as $pagination_link ) {
 
 		if ( $pagination_link['enabled'] ) {
 
@@ -1241,15 +1421,22 @@ function cb_log_pagination( $current_log_page, $page_total_cap, $cb_log_url ) {
 				$pagination_link['url'] . '">' .
 				$pagination_link['text'] .
 				'</a></li>';
+
 		} else {
 
 			$pagination_list_items[] = '<li class="cb-log-link-disabled">' .
 				$pagination_link['text'] .
 				'</li>';
+
 		}
+
+
 	}
 
-	echo vsprintf('<ul class="cb-log-pagination">%s%s%s%s%s%s%s%s%s</ul>', $pagination_list_items);
+	$args = $pagination_list_items;
+	$string_tags_repeater = trim( str_repeat( "%s ", count( $args ) ) );
+	echo '<ul class="cb-log-pagination">' . vsprintf( $string_tags_repeater, $args ) . '</ul>';
+
 }
 
 function cb_log_get_page_urls( $current_log_page, $page_total_cap, $cb_log_url, $page_range = 5 ) {
@@ -1259,86 +1446,133 @@ function cb_log_get_page_urls( $current_log_page, $page_total_cap, $cb_log_url, 
 	$previous_page_number	= $current_log_page - 1;
 	$next_page_number 		= $current_log_page + 1;
 	$page_start 			= $current_log_page;
-	$page_range 			= ($page_range > $page_total_cap ? $page_total_cap : $page_range);
-	$page_range_cap 		= $page_start + $page_range - 1;
 
-	if ($current_log_page >= ($page_total_cap - $page_range + 1)) {
 
-		$page_start = $page_total_cap - $page_range + 1;
-		$page_range_cap = $page_total_cap;
-	}
 
-	if ($current_log_page <= 1) {
+	if ( $page_total_cap == 0 ) {
+
+		$page_range = 5;
+		$page_range_cap = $page_start + $page_range - 1;
 
 		$pagination_links[]	= array(
 			'url'		=> '',
 			'text'		=> '«',
 			'enabled'	=> false,
 		);
-	} else {
 
 		$pagination_links[]	= array(
-			'url'		=> esc_url(add_query_arg(array('cb_log_page' => 1,), $cb_log_url)),
-			'text'		=>  '«',
-			'enabled'	=> true,
-		);
-	}
-
-	if ($previous_page_number < 1) {
-
-		$pagination_links[]		= array(
 			'url'		=> '',
 			'text'		=> '‹',
 			'enabled'	=> false,
 		);
-	} else {
 
-		$pagination_links[]		= array(
-			'url'		=> esc_url(add_query_arg(array('cb_log_page' => $previous_page_number,), $cb_log_url)),
-			'text'		=> '‹',
-			'enabled'	=> true,
-		);
-	}
+		for ( $i = $page_start; $i <= $page_range_cap; $i++ ) {
 
-	for ($i = $page_start; $i <= $page_range_cap; $i++) {
-
-		$pagination_links[] = array(
-			'url'		=> esc_url(add_query_arg(array('cb_log_page' => $i,), $cb_log_url)),
-			'text'		=> $i,
-			'enabled'	=> true,
-		);
-	}
-
-	if ($next_page_number >= $page_total_cap) {
+			$pagination_links[] = array(
+				'url'		=> '',
+				'text'		=> $i,
+				'enabled'	=> false,
+			);
+		}
 
 		$pagination_links[] = array(
 			'url'		=> '',
 			'text'		=> '›',
 			'enabled'	=> false,
 		);
-	} else {
-
-		$pagination_links[] = array(
-			'url'		=> add_query_arg(array('cb_log_page' => $next_page_number,), $cb_log_url),
-			'text'		=> '›',
-			'enabled'	=> true,
-		);
-	}
-
-	if ($current_log_page >= $page_total_cap) {
 
 		$pagination_links[] = array(
 			'url'		=> '',
 			'text'		=> '»',
 			'enabled'	=> false,
 		);
+
 	} else {
 
-		$pagination_links[] = array(
-			'url'		=> add_query_arg(array('cb_log_page' => $page_total_cap,), $cb_log_url),
-			'text'		=> '»',
-			'enabled'	=> true,
-		);
+		$page_range 			= ( $page_range > $page_total_cap ? $page_total_cap : $page_range );
+		$page_range_cap 		= $page_start + $page_range - 1;
+
+		if ( $current_log_page >= ( $page_total_cap - $page_range + 1 ) ) {
+
+			$page_start = $page_total_cap - $page_range + 1;
+			$page_range_cap = $page_total_cap;
+
+		}
+
+		if ( $current_log_page <= 1 ) {
+
+			$pagination_links[]	= array(
+				'url'		=> '',
+				'text'		=> '«',
+				'enabled'	=> false,
+			);
+
+		} else {
+
+			$pagination_links[]	= array(
+				'url'		=> esc_url( add_query_arg( array( 'cb_log_page' => 1, ), $cb_log_url ) ),
+				'text'		=>  '«',
+				'enabled'	=> true,
+			);
+		}
+
+		if ( $previous_page_number < 1 ) {
+
+			$pagination_links[]	= array(
+				'url'		=> '',
+				'text'		=> '‹',
+				'enabled'	=> false,
+			);
+
+		} else {
+
+			$pagination_links[]		= array(
+				'url'		=> esc_url(add_query_arg(array('cb_log_page' => $previous_page_number,), $cb_log_url)),
+				'text'		=> '‹',
+				'enabled'	=> true,
+			);
+		}
+
+		for ( $i = $page_start; $i <= $page_range_cap; $i++ ) {
+
+			$pagination_links[] = array(
+				'url'		=> esc_url( add_query_arg( array( 'cb_log_page' => $i, ), $cb_log_url ) ),
+				'text'		=> $i,
+				'enabled'	=> true,
+			);
+		}
+
+		if ( $next_page_number >= $page_total_cap ) {
+
+			$pagination_links[] = array(
+				'url'		=> '',
+				'text'		=> '›',
+				'enabled'	=> false,
+			);
+		} else {
+
+			$pagination_links[] = array(
+				'url'		=> add_query_arg(array('cb_log_page' => $next_page_number,), $cb_log_url),
+				'text'		=> '›',
+				'enabled'	=> true,
+			);
+		}
+
+		if ( $current_log_page >= $page_total_cap ) {
+
+			$pagination_links[] = array(
+				'url'		=> '',
+				'text'		=> '»',
+				'enabled'	=> false,
+			);
+		} else {
+
+			$pagination_links[] = array(
+				'url'		=> add_query_arg(array('cb_log_page' => $page_total_cap,), $cb_log_url),
+				'text'		=> '»',
+				'enabled'	=> true,
+			);
+		}
 	}
 
 	return $pagination_links;
@@ -1388,3 +1622,102 @@ function cb_log_entries( $paged_transactions ) {
 		);
 	}
 }
+
+function cb_transactions_notifications( $data = array() ) {
+
+	if ( empty( $data ) ) {
+		return;	
+	}
+
+	$item_id			= $data['item_id'];
+	$sender_id			= $data['sender_id'];
+	$recipient_id		= $data['recipient_id'];
+	$component_action	= $data['component_action'];
+	$amount				= $data['amount'];
+	$log_entry			= $data['log_entry'];
+
+	switch ( $component_action ) {
+
+		case ( 'cb_bits_request' ) :
+
+			bp_notifications_add_notification(
+				array(
+					'user_id'           => $item_id,
+					'item_id'           => $sender_id,
+					'secondary_item_id' => $recipient_id,
+					'component_name'    => 'confetti_bits',
+					'component_action'  => $component_action,
+					'date_notified'     => bp_core_current_time(),
+					'is_new'            => 1,
+					'allow_duplicate'	=> true,
+				)
+			);
+
+			cb_bits_request_email_notification( 
+				array(
+					'recipient_id'	=> $item_id,
+					'sender_id'		=> $sender_id,
+					'request_item'	=> $log_entry,
+				) 
+			);
+
+			cb_bits_request_email_notification( 
+				array(
+					'recipient_id'	=> 5,
+					'sender_id'		=> $sender_id,
+					'request_item'	=> $log_entry,
+				) 
+			);
+			break;
+
+		case ( 'cb_send_bits' ) :
+
+			bp_notifications_add_notification(
+				array(
+					'user_id'           => $recipient_id,
+					'item_id'           => $sender_id,
+					'secondary_item_id' => $sender_id,
+					'component_name'    => 'confetti_bits',
+					'component_action'  => $component_action,
+					'date_notified'     => bp_core_current_time(),
+					'is_new'            => 1,
+					'allow_duplicate'	=> true,
+				)
+			);
+			break;
+
+		case ( 'cb_activity_bits' ) :
+
+			bp_notifications_add_notification(
+				array(
+					'user_id'           => $recipient_id,
+					'item_id'           => $amount,		// this can be any number i think
+					'secondary_item_id' => $sender_id,	// this is the profile pic
+					'component_name'    => 'confetti_bits',
+					'component_action'  => $component_action,
+					'date_notified'     => bp_core_current_time(),
+					'is_new'            => 1,
+				)
+			);
+			break;
+
+		default :
+
+			bp_notifications_add_notification(
+				array(
+					'user_id'           => $recipient_id,
+					'item_id'           => $sender_id,
+					'secondary_item_id' => $recipient_id,
+					'component_name'    => 'confetti_bits',
+					'component_action'  => $component_action,
+					'date_notified'     => bp_core_current_time(),
+					'is_new'            => 1,
+				)
+			);
+
+	}
+
+	cb_update_total_bits( $recipient_id );
+
+}
+add_action( 'cb_transactions_after_send', 'cb_transactions_notifications' );
