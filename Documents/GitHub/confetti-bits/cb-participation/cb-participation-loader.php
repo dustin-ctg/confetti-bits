@@ -1,17 +1,16 @@
 <?php
-
-/**
- * Confetti Bits Participation Loader.
- *
- * A participation component, for admins to track culture participation.
- *
- * @since Confetti Bits 2.2.0
- */
-
 // Exit if accessed directly.
 defined('ABSPATH') || exit;
 
-function cb_setup_confetti_bits_participation() {
-	Confetti_Bits()->participation = new Confetti_Bits_Participation_Component();
+/**
+ * CB Setup Participation
+ *
+ * Sets up our participation component, so we have easy access to component globals.
+ *
+ * @package ConfettiBits\Participation
+ * @since 2.2.0
+ */
+function cb_setup_participation() {
+	Confetti_Bits()->participation = new CB_Participation_Component();
 }
-add_action('bp_setup_components', 'cb_setup_confetti_bits_participation', 14);
+add_action( 'cb_setup_components', 'cb_setup_participation', 4 );

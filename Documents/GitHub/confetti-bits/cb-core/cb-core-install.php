@@ -1,116 +1,126 @@
 <?php 
-function cb_core_prepare_install() {
+// Exit if accessed directly.
+defined('ABSPATH') || exit;
+
+/**
+ * CB Core Install Events
+ * 
+ * Installs our events table on the database.
+ * 
+ * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
+ * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
+ * 
+ * @package ConfettiBits\Core
+ * @since 2.3.0
+ */
+function cb_core_install_events() {
 
 	global $wpdb;
-
-	$raw_db_version = (int) bp_get_db_version_raw();
-	$bp_prefix      = bp_core_get_table_prefix();
-	$participation_table_name = $bp_prefix . 'confetti_bits_participation';
-
-	$row = $wpdb->get_results( 
-		"SELECT * FROM {$participation_table_name} WHERE column_name = 'event_note'"  
-	);
-
-	if(empty($row)){
-		$wpdb->query("ALTER TABLE {$participation_table_name} ADD event_note longtext NOT NULL DEFAULT ''");
-	}
-
-	// 2.3.0: Change index lengths to account for utf8mb4.
-	if ( $raw_db_version < 9695 ) {
-		// Map table_name => columns.
-		$tables = array(
-			$bp_prefix . 'confetti_bits_transactions'       => array( 'meta_key' ),
-		);
-
-		foreach ( $tables as $table_name => $indexes ) {
-			foreach ( $indexes as $index ) {
-				if ( $wpdb->query( $wpdb->prepare( "SHOW TABLES LIKE %s", bp_esc_like( $table_name ) ) ) ) {
-					$wpdb->query( "ALTER TABLE {$table_name} DROP INDEX {$index}" );
-				}
-			}
-		}
-	}
-}
-
-
-function cb_core_install_transactions() {
-
+	$prefix = $wpdb->prefix;
+	$charset_collate = $wpdb->get_charset_collate();
 	$sql = array();
 
-	$bp_prefix      = bp_core_get_table_prefix();
-	$charset_collate = $GLOBALS['wpdb']->get_charset_collate();
-
-	$sql[] = "CREATE TABLE {$bp_prefix}confetti_bits_transactions (
+	$sql[] = "CREATE TABLE {$prefix}confetti_bits_events (
 				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				item_id bigint(20) NOT NULL,
-				secondary_item_id bigint(20) NOT NULL,
-				user_id bigint(20) NOT NULL,
-				sender_id bigint(20) NOT NULL,
-				sender_name varchar(75) NOT NULL,
-				recipient_id bigint(20) NOT NULL,
-				recipient_name varchar(75) NOT NULL,
-				identifier varchar(75) NOT NULL,
-				date_sent datetime NOT NULL,
-				log_entry longtext NOT NULL,
-				component_name varchar(75) NOT NULL,
-				component_action varchar(75) NOT NULL,
-				amount bigint(20) NOT NULL,
-				KEY item_id (item_id),
-				KEY secondary_item_id (secondary_item_id),
+				event_title varchar(75) NOT NULL,
+				event_desc varchar(500) NULL,
+				event_location varchar(100) NULL,
+				date_created datetime NOT NULL,
+				date_modified datetime NOT NULL,
+				participation_amount int(8) DEFAULT 0,
+				event_start datetime NOT NULL,
+				event_end datetime NOT NULL,
+				user_id int(20) NOT NULL,
+				location_id int(20) NULL,
+				KEY event_title (event_title),
+				KEY event_desc (event_desc),
+				KEY event_location (event_location),
+				KEY date_created (date_created),
+				KEY date_modified (date_modified),
+				KEY participation_amount (participation_amount),
+				KEY event_start (event_start),
+				KEY event_end (event_end),
 				KEY user_id (user_id),
-				KEY sender_id (sender_id),
-				KEY sender_name (sender_name),
-				KEY recipient_id (recipient_id),
-				KEY recipient_name (recipient_name),
-				KEY identifier (identifier),
-				KEY date_sent (date_sent),
-				KEY component_name (component_name),
-				KEY component_action (component_action),
-				KEY amount (amount)
-			) {$charset_collate};";
-
-
-	$sql[] = "CREATE TABLE {$bp_prefix}confetti_bits_transactions_recipients (
-				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				item_id bigint(20) NOT NULL,
-				secondary_item_id bigint(20) NOT NULL,
-				user_id bigint(20) NOT NULL,
-				sender_id bigint(20) NOT NULL,
-				sender_name varchar(75) NOT NULL,
-				recipient_id bigint(20) NOT NULL,
-				recipient_name varchar(75) NOT NULL,
-				identifier varchar(75) NOT NULL,
-				date_sent datetime NOT NULL,
-				log_entry longtext NOT NULL,
-				component_name varchar(75) NOT NULL,
-				component_action varchar(75) NOT NULL,
-				amount bigint(20) NOT NULL,
-				KEY item_id (item_id),
-				KEY secondary_item_id (secondary_item_id),
-				KEY user_id (user_id),
-				KEY sender_id (sender_id),
-				KEY sender_name (sender_name),
-				KEY recipient_id (recipient_id),
-				KEY recipient_name (recipient_name),
-				KEY identifier (identifier),
-				KEY date_sent (date_sent),
-				KEY component_name (component_name),
-				KEY component_action (component_action),
-				KEY amount (amount)
+				KEY location_id (location_id)
 			) {$charset_collate};";
 
 	dbDelta( $sql );
 
 }
 
+/**
+ * CB Core Install Transactions
+ * 
+ * Installs our transactions table on the database.
+ * 
+ * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
+ * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
+ * 
+ * @package ConfettiBits\Core
+ * @since 1.0.0
+ */
+function cb_core_install_transactions() {
+
+	global $wpdb;
+	$sql = array();
+	$prefix = $wpdb->prefix;
+	$charset_collate = $wpdb->get_charset_collate();
+
+	$sql = "CREATE TABLE {$prefix}confetti_bits_transactions (
+				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				item_id bigint(20) NOT NULL,
+				secondary_item_id bigint(20) NOT NULL,
+				user_id bigint(20) NULL,
+				sender_id bigint(20) NOT NULL,
+				sender_name varchar(75) NULL,
+				recipient_id bigint(20) NOT NULL,
+				recipient_name varchar(75) NULL,
+				identifier varchar(75) NULL,
+				date_sent datetime NOT NULL,
+				log_entry longtext NOT NULL,
+				component_name varchar(75) NOT NULL,
+				component_action varchar(75) NOT NULL,
+				amount bigint(20) NOT NULL,
+				event_id bigint(20) NULL,
+				KEY item_id (item_id),
+				KEY secondary_item_id (secondary_item_id),
+				KEY user_id (user_id),
+				KEY sender_id (sender_id),
+				KEY sender_name (sender_name),
+				KEY recipient_id (recipient_id),
+				KEY recipient_name (recipient_name),
+				KEY identifier (identifier),
+				KEY date_sent (date_sent),
+				KEY component_name (component_name),
+				KEY component_action (component_action),
+				KEY amount (amount),
+				KEY event_id (event_id)
+			) {$charset_collate};";
+
+	dbDelta( $sql );
+
+}
+
+/**
+ * CB Core Install Participation
+ * 
+ * Installs our transactions table on the database.
+ * 
+ * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
+ * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
+ * 
+ * @package ConfettiBits\Core
+ * @since 2.1.0
+ */
 function cb_core_install_participation() {
 
+	global $wpdb;
 	$sql = array();
+	$prefix = $wpdb->prefix;
+	$table_name = "{$prefix}confetti_bits_participation";
+	$charset_collate = $wpdb->get_charset_collate();
 
-	$bp_prefix      = bp_core_get_table_prefix();
-	$charset_collate = $GLOBALS['wpdb']->get_charset_collate();
-
-	$sql[] = "CREATE TABLE {$bp_prefix}confetti_bits_participation (
+	$sql[] = "CREATE TABLE {$table_name} (
 				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				item_id bigint(20) NOT NULL,
 				secondary_item_id bigint(20) NOT NULL,
@@ -124,8 +134,8 @@ function cb_core_install_participation() {
 				component_name varchar(75) NOT NULL,
 				component_action varchar(75) NOT NULL,
 				status varchar(75) NOT NULL,
-				media_filepath varchar(150) NOT NULL,
-				transaction_id bigint(20),
+				transaction_id bigint(20) NULL,
+				event_id bigint(20) NULL,
 				KEY item_id (item_id),
 				KEY secondary_item_id (secondary_item_id),
 				KEY applicant_id (applicant_id),
@@ -138,67 +148,166 @@ function cb_core_install_participation() {
 				KEY component_name (component_name),
 				KEY component_action (component_action),
 				KEY status (status),
-				KEY media_filepath (media_filepath),
-				KEY transaction_id (transaction_id)
+				KEY transaction_id (transaction_id),
+				KEY event_id (event_id)
+			) {$charset_collate};";
+
+	dbDelta( $sql );
+	
+}
+
+/**
+ * CB Core Install Contests
+ * 
+ * Installs our contests table on the database.
+ * 
+ * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
+ * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
+ * 
+ * @package ConfettiBits\Core
+ * @since 2.3.0
+ */
+function cb_core_install_contests() {
+
+	global $wpdb;
+	$charset_collate = $wpdb->get_charset_collate();
+	$prefix = $wpdb->prefix;
+	$sql = array();
+
+
+	$sql[] = "CREATE TABLE {$prefix}confetti_bits_contests (
+				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				amount int(20) NOT NULL,
+				placement int(20) NOT NULL,
+				recipient_id int(20) NULL,
+				event_id bigint(20) NOT NULL,
+				KEY amount (amount),
+				KEY placement (placement),
+				KEY recipient_id (recipient_id),
+				KEY event_id (event_id)
 			) {$charset_collate};";
 
 	dbDelta( $sql );
 
 }
 
-function cb_core_install_download_logs() {
+/**
+ * CB Core Install Request Items
+ * 
+ * Installs our request items table on the database.
+ * 
+ * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
+ * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
+ * 
+ * @package ConfettiBits\Core
+ * @since 2.3.0
+ */
+function cb_core_install_request_items() {
 
+	global $wpdb;
 	$sql = array();
+	$prefix = $wpdb->prefix;
+	$charset_collate = $wpdb->get_charset_collate();
 
-	$bp_prefix      = bp_core_get_table_prefix();
-	$charset_collate = $GLOBALS['wpdb']->get_charset_collate();
+	$sql[] = "CREATE TABLE {$prefix}confetti_bits_request_items (
+				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				item_name varchar(75) NOT NULL,
+				item_desc varchar(500) NULL,
+				date_created datetime NOT NULL,
+				date_modified datetime NOT NULL,
+				amount int(20) NOT NULL,
+				KEY item_name (item_name),
+				KEY item_desc (item_desc),
+				KEY date_created (date_created),
+				KEY date_modified (date_modified),
+				KEY amount (amount)
+			) {$charset_collate};";
 
-	$sql[] = "CREATE TABLE {$bp_prefix}confetti_bits_downloads (
+	dbDelta( $sql );
+
+}
+
+/**
+ * CB Core Install Requests
+ * 
+ * Installs our requests table on the database.
+ * 
+ * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
+ * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
+ * 
+ * @package ConfettiBits\Core
+ * @since 2.3.0
+ */
+function cb_core_install_requests() {
+
+	global $wpdb;
+	$sql = array();
+	$prefix = $wpdb->prefix;
+	$charset_collate = $wpdb->get_charset_collate();
+
+	$sql[] = "CREATE TABLE {$prefix}confetti_bits_requests (
 				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				item_id bigint(20) NOT NULL,
 				secondary_item_id bigint(20) NOT NULL,
-				user_id bigint(20) NOT NULL,
-				user_name varchar(75) NOT NULL,
-				download_date datetime NOT NULL,
+				applicant_id bigint(20) NOT NULL,
+				admin_id bigint(20) NOT NULL,
+				date_created datetime NOT NULL,
+				date_modified datetime NOT NULL,
 				component_name varchar(75) NOT NULL,
 				component_action varchar(75) NOT NULL,
+				status varchar(75) NOT NULL,
+				request_item_id bigint(20) NOT NULL,
 				KEY item_id (item_id),
 				KEY secondary_item_id (secondary_item_id),
-				KEY user_id (user_id),
-				KEY user_name (user_name),
-				KEY download_date (download_date),
+				KEY applicant_id (applicant_id),
+				KEY admin_id (admin_id),
+				KEY date_created (date_created),
+				KEY date_modified (date_modified),
 				KEY component_name (component_name),
 				KEY component_action (component_action),
+				KEY status (status),
+				KEY request_item_id (request_item_id)
 			) {$charset_collate};";
 
 	dbDelta( $sql );
 
 }
 
+/**
+ * Put stuff here that you want to run before installation.
+ * 
+ * @package ConfettiBits\Core
+ * @since 1.0.0
+ */
+function cb_core_prepare_install() {}
+
+/**
+ * Installs all our tables on the database.
+ * 
+ * Also flushes the WordPress cache and rewrite rules
+ * so that our pages still show up after plugins get updated.
+ * 
+ * @see cb_core_install_transactions()
+ * @see cb_core_install_participation()
+ * @see cb_core_install_events()
+ * @see cb_core_install_contests()
+ * 
+ * @package ConfettiBits\Core
+ * @since 1.0.0
+ */
 function cb_core_install( $active_components = array() ) {
 
+	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	
 	cb_core_prepare_install();
-
-	if ( empty( $active_components ) ) {
-		$active_components = bp_get_option( 'cb_active_components' );	
-	}
-
-	if ( ! empty ( $active_components['transactions'] ) ) {
-		cb_core_install_transactions();		
-	}
-
-	if ( ! empty ( $active_components['downloads'] ) ) {
-		cb_core_install_download_logs();
-	}
-
+	cb_core_install_events();
+	cb_core_install_contests();
+	cb_core_install_transactions();
 	cb_core_install_participation();
-
+	cb_core_install_request_items();
+	cb_core_install_requests();
 	do_action('cb_core_install');
-
-	// Needs to flush all cache when component activate/deactivate.
 	wp_cache_flush();
-
-	// Reset the permalink to fix the 404 on some pages.
 	flush_rewrite_rules();
 
 }
