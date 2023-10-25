@@ -1,36 +1,36 @@
-<?php 
+<?php
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
 /**
  * A place for our core component functions. At least... some of them.
- * 
+ *
  * This is where we house all of our component-related functions.
  * These functions are typically used to determine what component
- * a user is interacting with, which resources are being requested, 
+ * a user is interacting with, which resources are being requested,
  * and determining access levels for certain features within the app.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 
 
 /**
  * Sets a global based on the current URI.
- * 
+ *
  * The goal here at one point was to have each component
- * dynamically registered through the URI and accessible 
- * via a stacking path, like this: 
- * 
+ * dynamically registered through the URI and accessible
+ * via a stacking path, like this:
+ *
  * https://{{domain}}/{{component}}/{{action}}/{{item}}
- * 
- * This is no easy feat. It would also require some 
+ *
+ * This is no easy feat. It would also require some
  * significant shenanigans on our end to make that happen.
  * So we've opted to using REST API endpoints, and just
  * checking whether $cb->current_component exists, and
  * is indeed === 'confetti-bits'.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_core_set_uri_globals() {
@@ -59,20 +59,20 @@ function cb_core_set_uri_globals() {
 
 /**
  * Does an entire song and dance to see if this is the component you want.
- * 
+ *
  * 1. Checks to see if the current component is the same as the supplied
- * component. 
+ * component.
  * 2. Checks to see if the supplied component has a slug that matches.
- * 3. Checks to see if the supplied component is in the array of active 
+ * 3. Checks to see if the supplied component is in the array of active
  * components.
  * 4. Checks one last time to see if any of the active components has a
  * slug that matches the supplied component.
- * 
+ *
  * @param string $component The component to check for.
- * 
+ *
  * @return bool True if it's one of ours, false in any other scenario.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_is_current_component( $component = '' ) {
@@ -89,7 +89,7 @@ function cb_is_current_component( $component = '' ) {
 
 	if ( $cb->current_component == $component ) {
 		return true;
-	} 
+	}
 
 	if ( isset( $cb->{$component}->slug ) && $cb->{$component}->slug == $cb->current_component ) {
 		return true;
@@ -112,17 +112,17 @@ function cb_is_current_component( $component = '' ) {
 			return true;
 		}
 	}
-	
+
 	return false;
 
 }
 
 /**
  * Asks the wizard if we could have some porridge.
- * 
+ *
  * @return bool Whether we may have some porridge.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_is_confetti_bits_component() {
@@ -131,11 +131,11 @@ function cb_is_confetti_bits_component() {
 
 /**
  * Checks whether there is a currently logged-in user.
- * 
+ *
  * @see is_user_logged_in()
  * @link https://developer.wordpress.org/reference/functions/is_user_logged_in/
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_is_user() {
@@ -144,10 +144,10 @@ function cb_is_user() {
 
 /**
  * Checks to see if we're in the land of wonder.
- * 
+ *
  * @return bool Whether we're in the land of wonder.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_is_user_confetti_bits() {
@@ -156,10 +156,10 @@ function cb_is_user_confetti_bits() {
 
 /**
  * Gives us an array of all active components.
- * 
+ *
  * @return array Active components.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_get_active_components() {
@@ -242,7 +242,7 @@ function cb_is_active( $component = '' ) {
 		$component = cb_current_component();
 	}
 
-	if ( isset( Confetti_Bits()->active_components[ $component ] ) 
+	if ( isset( Confetti_Bits()->active_components[ $component ] )
 		|| isset( Confetti_Bits()->required_components[ $component ] ) ) {
 
 		$retval = true;

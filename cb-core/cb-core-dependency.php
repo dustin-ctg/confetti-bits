@@ -4,15 +4,15 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Sets up our own actions to give us more control over what happens when.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 
 /**
  * Fires the cb_admin_enqueue_scripts action, where plugins can enqueue admin scripts.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_admin_enqueue_scripts() {
@@ -21,8 +21,8 @@ function cb_admin_enqueue_scripts() {
 
 /**
  * Fires the cb_loaded action, where plugins can load their files.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_loaded() {
@@ -31,8 +31,8 @@ function cb_loaded() {
 
 /**
  * Fires the cb_init action, where plugins can initialize their components.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_init() {
@@ -41,8 +41,8 @@ function cb_init() {
 
 /**
  * Fires the cb_customize_register action, where plugins can register their customizer settings.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_customize_register( WP_Customize_Manager $customizer ) {
@@ -51,8 +51,8 @@ function cb_customize_register( WP_Customize_Manager $customizer ) {
 
 /**
  * Fires the cb_ready action, where plugins can do things after the CB plugin is ready.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_ready() {
@@ -61,8 +61,8 @@ function cb_ready() {
 
 /**
  * Fires the cb_setup_current_user action, where plugins can do things after the current user is setup.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_setup_current_user() {
@@ -70,10 +70,10 @@ function cb_setup_current_user() {
 }
 
 /**
- * Fires the cb_setup_theme action, where plugins can modify what happens 
+ * Fires the cb_setup_theme action, where plugins can modify what happens
  * while the theme is being setup.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_setup_theme() {
@@ -82,8 +82,8 @@ function cb_setup_theme() {
 
 /**
  * Fires the cb_after_setup_theme action, where plugins can do things after the theme is setup.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_after_setup_theme() {
@@ -91,10 +91,10 @@ function cb_after_setup_theme() {
 }
 
 /**
- * Fires the cb_enqueue_scripts action, where plugins can register their 
+ * Fires the cb_enqueue_scripts action, where plugins can register their
  * front-end scripts.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_enqueue_scripts() {
@@ -104,8 +104,8 @@ function cb_enqueue_scripts() {
 /**
  * Fires the cb_template_redirect action, where plugins can do things
  * before the template is loaded.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_template_redirect() {
@@ -114,8 +114,8 @@ function cb_template_redirect() {
 
 /**
  * Fires the cb_widgets_init action, where plugins can register their widgets.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_widgets_init() {
@@ -124,8 +124,8 @@ function cb_widgets_init() {
 
 /**
  * Fires the cb_generate_rewrite_rules action, where plugins can add their rewrite rules.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_generate_rewrite_rules( $wp_rewrite ) {
@@ -134,8 +134,8 @@ function cb_generate_rewrite_rules( $wp_rewrite ) {
 
 /**
  * Fires the cb_setup_components action, where plugins can register their components.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_setup_components() {
@@ -144,8 +144,8 @@ function cb_setup_components() {
 
 /**
  * Fires the cb_include action, where plugins can include their files.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_include() {
@@ -154,8 +154,8 @@ function cb_include() {
 
 /**
  * Fires the cb_register_post_types action, where plugins can register their post types.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_register_post_types() {
@@ -164,8 +164,8 @@ function cb_register_post_types() {
 
 /**
  * Fires the cb_register_taxonomies action, where plugins can register their taxonomies.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_register_taxonomies() {
@@ -174,8 +174,8 @@ function cb_register_taxonomies() {
 
 /**
  * Fires the cb_setup_globals action, where plugins can register their globals.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_setup_globals() {
@@ -183,10 +183,10 @@ function cb_setup_globals() {
 }
 
 /**
- * Fires the cb_setup_canonical_stack action, where plugins can 
+ * Fires the cb_setup_canonical_stack action, where plugins can
  * register their canonical stack.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_setup_canonical_stack() {
@@ -195,8 +195,8 @@ function cb_setup_canonical_stack() {
 
 /**
  * Fires the cb_setup_nav action, where plugins can register their nav items.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_setup_nav() {
@@ -205,8 +205,8 @@ function cb_setup_nav() {
 
 /**
  * Fires the cb_setup_title action, where plugins can register their title.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_setup_title() {
@@ -215,8 +215,8 @@ function cb_setup_title() {
 
 /**
  * Fires the cb_add_rewrite_tags action, where plugins can add their rewrite tags.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_add_rewrite_tags() {
@@ -225,8 +225,8 @@ function cb_add_rewrite_tags() {
 
 /**
  * Fires the cb_add_rewrite_rules action, where plugins can add their rewrite rules.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_add_rewrite_rules() {
@@ -235,8 +235,8 @@ function cb_add_rewrite_rules() {
 
 /**
  * Fires the cb_add_permastructs action, where plugins can add their permastructs.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_add_permastructs() {
@@ -245,8 +245,8 @@ function cb_add_permastructs() {
 
 /**
  * Fires the cb_register_member_types action, where plugins can register their member types.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_register_member_types() {
@@ -255,8 +255,8 @@ function cb_register_member_types() {
 
 /**
  * Fires the cb_actions action, where plugins can register their actions.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_actions() {
@@ -265,8 +265,8 @@ function cb_actions() {
 
 /**
  * Fires the cb_screens action, where plugins can register their screens.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_screens() {
@@ -275,10 +275,10 @@ function cb_screens() {
 
 
 /**
- * Fires the cb_late_include action, where plugins can add include files after 
+ * Fires the cb_late_include action, where plugins can add include files after
  * the canonical stack has been established.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_late_include() {
@@ -287,8 +287,8 @@ function cb_late_include() {
 
 /**
  * Fires the cb_post_request action, where plugins can register their post requests.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_post_request() {
@@ -330,8 +330,8 @@ function cb_get_request() {
 
 /**
  * Fires the cb_head action, where plugins can register their head items.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_head() {
@@ -364,10 +364,10 @@ function cb_login_redirect( $redirect_to = '', $redirect_to_raw = '', $user = fa
 
 /**
  * Fires the cb_template_include action, where plugins can modify the template.
- * 
+ *
  * @param string $template The template to include.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_template_include( $template = '' ) {
@@ -376,10 +376,10 @@ function cb_template_include( $template = '' ) {
 
 /**
  * Fires the cb_allowed_themes action, where plugins can modify the allowed themes.
- * 
+ *
  * @param array $themes The allowed themes.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_allowed_themes( $themes ) {
@@ -388,8 +388,8 @@ function cb_allowed_themes( $themes ) {
 
 /**
  * Fires the cb_rest_api_init action, so we (and others) can easily hook into our REST API.
- * 
- * @package ConfettiBits
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_rest_api_init() {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 
@@ -7,8 +7,8 @@ defined('ABSPATH') || exit;
  *
  * This is going to allow an admin user to bulk import
  * transactions, birthdays, and anniversaries from CSV files.
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @since 1.0.0
  */
 
@@ -17,8 +17,8 @@ defined('ABSPATH') || exit;
  *
  * This is going to allow an admin user to bulk import
  * Confetti Bits transactions from a CSV file.
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @since 1.0.0
  */
 function cb_import_bits($args = [] ) {
@@ -41,7 +41,7 @@ function cb_import_bits($args = [] ) {
 		$feedback['text'] = "Your transaction was not sent. Missing one of the following: sender, recipient, amount, or log entry.";
 		return $feedback;
 	}
-	
+
 	$sender_id = intval( $r['sender_id'] );
 	$recipient_id = intval( $r['recipient_id'] );
 	$amount = intval($r['amount']);
@@ -72,7 +72,7 @@ function cb_import_bits($args = [] ) {
 	}
 
 	return $transaction->id;
-	
+
 }
 
 /**
@@ -95,8 +95,8 @@ function cb_import_bits($args = [] ) {
  * 		Compile the feedback and shove it into a session token
  * 		Redirect
  * 		Get the messages, kick back and enjoy
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @since 1.0.0
  */
 function cb_importer() {
@@ -140,7 +140,7 @@ function cb_importer() {
 	$max_upload_display_text = size_format($max_upload_size);
 	$upload_dir = wp_upload_dir();
 
-	$_FILES['import'] = $_FILES['cb_transactions_import']; 
+	$_FILES['import'] = $_FILES['cb_transactions_import'];
 
 	// start the actual business
 	$file = wp_import_handle_upload();
@@ -321,7 +321,7 @@ function cb_importer() {
 					'component_action' => 'cb_transactions_import_bits',
 					'amount' => $amount
 				]);
-				
+
 				if ( !is_int( $send ) ) {
 					$skip_list[] = "Transaction failed to process in row {$row_number}. Error: {$send['text']}";
 					$skipped++;
@@ -341,7 +341,7 @@ function cb_importer() {
 
 		$success = true;
 		$ran = true;
-		$feedback = $imported === 1 ? 
+		$feedback = $imported === 1 ?
 			__('Not a problem in sight, we successfully imported ' . $imported . ' row!.', 'confetti-bits')
 			: __('Not a problem in sight, we successfully imported ' . $imported . ' rows!.', 'confetti-bits');
 
@@ -379,8 +379,8 @@ add_action('cb_actions', 'cb_importer');
  *
  * This is going to allow an admin user to bulk import
  * birthdays and anniversaries from a CSV file.
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @since 1.0.0
  */
 function cb_import_bda($args = '') {
@@ -424,8 +424,8 @@ function cb_import_bda($args = '') {
  * 		Compile the feedback and shove it into a session token
  * 		Redirect
  * 		Get the messages, kick back and enjoy
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @since 1.0.0
  */
 function cb_bda_importer() {
@@ -456,11 +456,11 @@ function cb_bda_importer() {
 	$skipped = 0;
 	$row_number = 2;
 	$skip_list = array();
-	
+
 	if ( empty( $_FILES['cb_transactions_import_bda'] ) ) {
 		return;
 	}
-	
+
 	$_FILES['import'] = $_FILES['cb_transactions_import_bda'];
 
 	/**

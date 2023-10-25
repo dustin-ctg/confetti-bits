@@ -5,7 +5,7 @@
  * These are going to be all of our CRUD functions for
  * the events component.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 // Exit if accessed directly.
@@ -14,7 +14,7 @@ defined('ABSPATH') || exit;
 /**
  * Creates a new event object and saves it to the database.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_new_events()
@@ -78,7 +78,7 @@ function cb_ajax_new_events()
 	}
 
 	$event = new CB_Events_Event();
-	$event->user_id = $user_id; 
+	$event->user_id = $user_id;
 	$event->date_created = cb_core_current_date();
 	$event->date_modified = cb_core_current_date();
 	$event->event_title = $event_title;
@@ -113,7 +113,7 @@ function cb_ajax_new_events()
 				$feedback['type'] = 'warning';
 				continue;
 			} else {
-				$contest_placement = intval($contest_entry['placement']);	
+				$contest_placement = intval($contest_entry['placement']);
 			}
 
 			if ( empty( $contest_entry['amount'] ) ) {
@@ -154,7 +154,7 @@ function cb_ajax_new_events()
 /**
  * Updates an existing event object and saves it to the database.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_update_events() {
@@ -232,7 +232,7 @@ function cb_ajax_update_events() {
 /**
  * Deletes an existing event object from the database.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_delete_events()
@@ -288,7 +288,7 @@ function cb_ajax_delete_events()
 /**
  * Retrieves event objects from the database.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_get_events() {
@@ -375,7 +375,7 @@ function cb_ajax_get_events() {
 /**
  * Retrieves a list of participants for a given event.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_get_event_participants()
@@ -418,7 +418,7 @@ function cb_ajax_get_event_participants()
 /**
  * Saves contest placements for a given event.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_new_contest()
@@ -485,7 +485,7 @@ function cb_ajax_get_bda() {
 	$event = new CB_Events_Event();
 	$field_id = intval($_GET['field_id']);
 	$bda = array_filter(
-		$event->get_member_data(['select' => ['user_id', 'value'], 'where' => ['field_id' => $field_id]]), 
+		$event->get_member_data(['select' => ['user_id', 'value'], 'where' => ['field_id' => $field_id]]),
 		function ($e) use ($month) {
 			$value = new DateTime($e['value']);
 			return $month === intval($value->format('m'));

@@ -5,7 +5,7 @@ defined('ABSPATH') || exit;
 /**
  * Sets up our Core component, which loads all of our other components.
  *
- * @package ConfettiBits\Core
+ * @package Core
  * @since 1.0.0
  */
 function cb_setup_core() {

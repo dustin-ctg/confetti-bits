@@ -2,7 +2,7 @@
 /**
  * Manages the CRUD operations for the Events component.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 // Exit if accessed directly
@@ -11,7 +11,7 @@ defined('ABSPATH') || exit;
 /**
  * Handles the creation and management of events.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 class CB_Events_Event
@@ -189,7 +189,7 @@ class CB_Events_Event
 
 	/**
 	 * Determines whether the given Event exists in the database.
-	 * 
+	 *
 	 * Because we can't easily use foreign keys in a WordPress instance, we'll have
 	 * to check ourselves whether
 	 */
@@ -280,12 +280,12 @@ class CB_Events_Event
 	}
 
 	/**
-	 * A general purpose method to retrieve member profile data. Used with 
-	 * BuddyBoss Platform. Will not work if you don't have that. Will we 
+	 * A general purpose method to retrieve member profile data. Used with
+	 * BuddyBoss Platform. Will not work if you don't have that. Will we
 	 * replace it? Maybe someday. I would like to. But I have two hands,
 	 * and barely three brain cells; have mercy, I beg your pardon.
-	 * 
-	 * @param array $args { 
+	 *
+	 * @param array $args {
 	 * 		An opinionated albeit mostly optional array of arguments.
 	 * 		@type string|array	$select Columns you want to select.
 	 * 		@type array 		$where Key-value pairs of parameters to pack into a WHERE clause.
@@ -293,9 +293,9 @@ class CB_Events_Event
 	 * 		@type array			$pagination [ 'page' => 1+, 'per_page' => 1+ ]
 	 * 		@type string		$group Columns you want to group by.
 	 * }
-	 * 
+	 *
 	 * @return An array of members whose data is in an associative array format.
-	 * 
+	 *
 	 * @package Events
 	 * @since 3.0.1
 	 */
@@ -661,7 +661,7 @@ class CB_Events_Event
 			$user_id_in = implode(',', wp_parse_id_list($args['user_id']));
 			$where_conditions['user_id'] = "user_id IN ({$user_id_in})";
 		}
-		
+
 		// For birthdays and anniversaries in BuddyBoss Platform
 		if ( !empty( $args['field_id'] ) ) {
 			$field_id_in = implode(',', wp_parse_id_list($args['field_id']));

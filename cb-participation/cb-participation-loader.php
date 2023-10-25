@@ -7,7 +7,7 @@ defined('ABSPATH') || exit;
  *
  * Sets up our participation component, so we have easy access to component globals.
  *
- * @package ConfettiBits\Participation
+ * @package Participation
  * @since 2.2.0
  */
 function cb_setup_participation() {

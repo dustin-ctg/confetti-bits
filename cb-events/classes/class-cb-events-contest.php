@@ -2,7 +2,7 @@
 /**
  * Manages the creation and management of contests within the Events component.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 // Exit if accessed directly
@@ -11,7 +11,7 @@ defined('ABSPATH') || exit;
 /**
  * CB_Events_Contest class.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 class CB_Events_Contest
@@ -129,7 +129,7 @@ class CB_Events_Contest
 		if (!empty($result)) {
 
 			global $wpdb;
-			
+
 			$this->id = $wpdb->insert_id;
 
 			do_action('cb_contests_after_save', $data);

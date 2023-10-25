@@ -2,7 +2,7 @@
 /**
  * These are going to be all of our CRUD functions for spot bonuses.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @subpackage SpotBonuses
  * @since 3.0.0
  */
@@ -33,7 +33,7 @@ function cb_dev_func_add_spot_bonuses() {
 /**
  * Creates a new spot bonus and saves it to the database.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @subpackage SpotBonuses
  * @since 3.0.0
  */
@@ -108,7 +108,7 @@ function cb_ajax_new_spot_bonuses()
 /**
  * Updates an existing spot bonus and saves it to the database.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @subpackage SpotBonuses
  * @since 3.0.0
  */
@@ -183,7 +183,7 @@ function cb_ajax_update_spot_bonuses() {
 /**
  * Deletes an existing spot bonus from the database.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @subpackage SpotBonuses
  * @since 3.0.0
  */
@@ -229,7 +229,7 @@ function cb_ajax_delete_spot_bonuses()
 /**
  * Retrieves spot bonuses from the database.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @subpackage SpotBonuses
  * @since 3.0.0
  */

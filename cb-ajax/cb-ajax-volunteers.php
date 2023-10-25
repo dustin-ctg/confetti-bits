@@ -29,7 +29,7 @@ function cb_ajax_new_volunteers() {
 		echo json_encode($feedback);
 		die();
 	}
-	
+
 	if ( empty( $_POST['hours'] ) ) {
 		$feedback['text'] = "Missing recipient volunteer data.";
 		echo json_encode($feedback);
@@ -75,7 +75,7 @@ function cb_ajax_new_volunteers() {
 	$transaction = new CB_Transactions_Transaction();
 	$amount = intval( Confetti_Bits()->volunteer_amount ) * intval($_POST['hours']);
 	$recipient_id = intval($_POST['recipient_id']);
-	
+
 	$transaction->item_id = $event_id;
 	$transaction->secondary_item_id = $recipient_id;
 	$transaction->recipient_id = $recipient_id;
@@ -86,10 +86,10 @@ function cb_ajax_new_volunteers() {
 	$transaction->amount = $amount;
 	$transaction->date_sent = cb_core_current_date();
 	$transaction->event_id = $event_id;
-	
+
 	$user_name = cb_core_get_user_display_name($recipient_id);
 	$save = $transaction->save();
-	
+
 	if ( is_int( $save ) ) {
 		$feedback['text'] = "Successfully added {$user_name}'s volunteer hours.";
 		$feedback['type'] = "success";
@@ -150,7 +150,7 @@ function cb_ajax_new_volunteers() {
 /**
  * Updates an existing spot bonus and saves it to the database.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @subpackage SpotBonuses
  * @since 3.0.0
  *//*
@@ -225,7 +225,7 @@ function cb_ajax_update_spot_bonuses() {
 /**
  * Deletes an existing spot bonus from the database.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @subpackage SpotBonuses
  * @since 3.0.0
  *//*
@@ -271,7 +271,7 @@ function cb_ajax_delete_spot_bonuses()
 /**
  * Retrieves spot bonuses from the database.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @subpackage SpotBonuses
  * @since 3.0.0
  *//*

@@ -1,24 +1,24 @@
-<?php 
+<?php
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
 /**
  * CB Events Template
- * 
+ *
  * This will house all our template functions for the
  * Events component.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @since 3.0.0
  */
 
 /**
- * Formats markup for the new event module in the 
+ * Formats markup for the new event module in the
  * Confetti Bits Events panel.
- * 
+ *
  * @return string The formatted markup.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @since 3.0.0
 
 function cb_events_get_new_events_module() {
@@ -59,8 +59,8 @@ function cb_events_get_new_events_module() {
 */
 /**
  * Outputs the markup for the new events module.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @since 3.0.0
 
 function cb_events_new_events_module() {
@@ -76,11 +76,11 @@ function cb_events_new_events_module() {
 
 /**
  * Gets markup for the calendar header.
- * 
+ *
  * @param string $class_prefix The prefix to add to the calendar header.
  * @return string The formatted header markup.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @since 3.0.0
  */
 function cb_events_get_calendar_header( $class_prefix = '' ) {
@@ -100,10 +100,10 @@ function cb_events_get_calendar_header( $class_prefix = '' ) {
 }
 /**
  * Outputs a calendar view of events.
- * 
+ *
  * @return string The formatted markup.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @since 3.0.0
  */
 function cb_events_get_calendar_view() {
@@ -127,7 +127,7 @@ function cb_events_get_calendar_view() {
 	$content = "{$header}{$weekdays}{$days}";
 
 	return cb_templates_container([
-		'classes' => ['cb-events-calendar'], 
+		'classes' => ['cb-events-calendar'],
 		'output' => $content
 	]);
 
@@ -137,8 +137,8 @@ function cb_events_get_calendar_view() {
 
 /**
  * Outputs the markup for the calendar view.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @subpackage Templates
  * @since 3.0.0
  */
@@ -148,10 +148,10 @@ function cb_events_calendar_view() {
 
 /**
  * Gets the markup for the events list view.
- * 
+ *
  * @param bool $is_admin Whether the table is for an admin.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @subpackage Templates
  * @since 3.0.0
  */
@@ -165,10 +165,10 @@ function cb_events_get_list_view( $is_admin = false ) {
 
 /**
  * Outputs the markup for the events list view.
- * 
+ *
  * @param bool $is_admin Whether the table is for an admin.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @subpackage Templates
  * @since 3.0.0
  */
@@ -178,8 +178,8 @@ function cb_events_list_view( $is_admin = false ) {
 
 /**
  * Adds rewrite rules to the events component so we don't get a false 404 when we update plugins.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @since 3.0.0
  */
 function cb_events_rewrite_rules() {
@@ -204,10 +204,10 @@ add_filter( 'template_include', 'cb_events_template_include' );
 
 /**
  * Returns markup for a create or update form, determined by the given string.
- * 
+ *
  * @param bool $is_edit_form Whether the form is for editing event data.
  * @return string The form markup.
- * 
+ *
  * @package Events\Templates
  * @since 3.0.0
  */
@@ -227,7 +227,7 @@ function cb_events_get_form_module( $is_edit_form = false ) {
 	$inputs = array_merge($inputs, [
 		['type' => 'date', 'args' => [
 			'component' => "{$component}_event_start",
-			'label' => 'Start Date', 
+			'label' => 'Start Date',
 			'placeholder' => $today->format('m/d/Y')
 		]],
 		['type' => 'time_selector', 'args' => [
@@ -237,7 +237,7 @@ function cb_events_get_form_module( $is_edit_form = false ) {
 		]],
 		['type' => 'date', 'args' => [
 			'component' => "{$component}_event_end",
-			'label' => 'End Date', 
+			'label' => 'End Date',
 			'placeholder' => $today->format('m/d/Y')
 		]],
 		['type' => 'time_selector', 'args' => [
@@ -250,15 +250,15 @@ function cb_events_get_form_module( $is_edit_form = false ) {
 			'name' => 'action_buttons',
 			'classes' => ['gap-3', 'modal-footer'],
 			'output' => cb_templates_get_form_button([
-				'name' => "cb_{$component}_submit", 
+				'name' => "cb_{$component}_submit",
 				'type' => 'submit',
-				'value' => 'Done', 
+				'value' => 'Done',
 				'classes' => ['btn', 'btn-outline-primary', 'rounded'],
 				'custom_attrs' => ['data-bs-dismiss' => 'modal'],
 			])
 			. cb_templates_get_form_button([
 				'name' => "cb_{$component}_cancel",
-				'value' => 'Cancel', 
+				'value' => 'Cancel',
 				'custom_attrs' => ['data-bs-dismiss' => 'modal'],
 				'classes' => ['btn', 'btn-outline-secondary'],
 			])
@@ -283,7 +283,7 @@ function cb_events_get_form_module( $is_edit_form = false ) {
 
 /**
  * Gets the markup for the new events form module.
- * 
+ *
  * @package Events\Templates
  * @since 3.0.0
  */
@@ -293,7 +293,7 @@ function cb_events_get_new_event_module() {
 
 /**
  * Outputs the markup for the new events module.
- * 
+ *
  * @package Events\Templates
  * @since 3.0.0
  */
@@ -307,7 +307,7 @@ add_action('cb_events_admin_template', 'cb_events_new_event_module', 1);
 
 /**
  * Returns markup for the edit_event form module.
- * 
+ *
  * @package Events\Templates
  * @since 3.0.0
  */
@@ -317,20 +317,20 @@ function cb_events_get_edit_event_module() {
 
 /**
  * Outputs markup for the edit_events module.
- * 
+ *
  * @package Events\Templates
  * @since 3.0.0
  */
 function cb_events_edit_event_module() {
-	echo cb_events_get_edit_event_module();	
+	echo cb_events_get_edit_event_module();
 }
 add_action('cb_events_admin_template', 'cb_events_edit_event_module');
 
 
 /**
  * Adds a table for spot bonuses to the transactions tab.
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @subpackage Templates
  * @since 3.0.0
  */

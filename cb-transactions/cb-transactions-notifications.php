@@ -1,23 +1,23 @@
-<?php 
+<?php
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 /**
  * Houses all of our transaction notification functions.
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @subpackage Notifications
  * @since 1.1.0
  */
 
 /**
  * Sends a notification to members of a group when someone posts.
- * 
+ *
  * @param string $content The notification content.
  * @param int $user_id The ID of the user who is posting in the group.
  * @param int $group_id The group ID.
  * @param int $activity_id The ID of the activity post.
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @subpackage Notifications
  * @since 1.3.0
  */
@@ -65,18 +65,18 @@ add_action('bp_groups_posted_update', 'cb_groups_activity_notifications', 10, 4)
 
 /**
  * Sends transaction notifications based on component action.
- * 
- * @param array $data { 
- *     An associative array of data received from the 
+ *
+ * @param array $data {
+ *     An associative array of data received from the
  *     CB_Transactions_Transaction::save() method.
- * 
+ *
  *     @see CB_Transactions_Transaction::save().
- * 
+ *
  * }
- * 
+ *
  * @return int|bool Notification ID on success, false on failure.
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @subpackage Notifications
  * @since 1.1.0
  */
@@ -104,7 +104,7 @@ function cb_transactions_notifications( $data = [] ) {
 		return;
 	}
 
-	
+
 
 	if ( $r['component_action'] === "cb_transactions_spot_bonus" ) {
 		return cb_transactions_spot_bonus_notifications($r);
@@ -113,7 +113,7 @@ function cb_transactions_notifications( $data = [] ) {
 	if ( $r['component_action'] === 'cb_transactions_volunteer_bits' ) {
 		return cb_transactions_volunteer_bits_notifications($r);
 	}
-	
+
 	if ( $r['component_name'] === 'events' || !empty($r['event_id'] ) ) {
 		return cb_events_notifications($r);
 	}
@@ -193,8 +193,8 @@ function cb_transactions_format_notifications( $component_action = '', $args = [
 		$transaction_obj = new CB_Transactions_Transaction();
 		$transaction = $transaction_obj->get_transactions([
 			'where' => [
-				'event_id' => intval($args['event_id']), 
-				'recipient_id' => intval($args['recipient_id']), 
+				'event_id' => intval($args['event_id']),
+				'recipient_id' => intval($args['recipient_id']),
 				'component_action' => $component_action
 			],
 			'orderby' => [
@@ -277,7 +277,7 @@ function cb_transactions_volunteer_bits_notifications( $args = [] ) {
 		'is_new' => 1,
 	];
 	$event = new CB_Events_Event($args['event_id']);
-	
+
 
 	$unsubscribe_args = [
 		'user_id' => $recipient_id,

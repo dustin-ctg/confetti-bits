@@ -45,23 +45,23 @@ class CB_Core extends CB_Component {
 
 	/**
 	 * Enqueues scripts for the core component.
-	 * 
-	 * @package ConfettiBits\Core
+	 *
+	 * @package Core
 	 * @since 3.0.0
 	 */
 	public function enqueue_scripts( $components = [] ) {
 
 		$components = [
-			'core' => [ 
-				'transactions' => ['get'], 
+			'core' => [
+				'transactions' => ['get'],
 				'dependencies' => ['jquery'],
 			],
 			'core_modules' => ['dependencies' => ['jquery']]
 		];
-		
+
 		if ( cb_is_user_admin() ) {
-			$components['core_admin'] = [ 
-				'participation' => ['get', 'update'], 
+			$components['core_admin'] = [
+				'participation' => ['get', 'update'],
 				'transactions' => ['get'],
 				'dependencies' => ['jquery'],
 			];

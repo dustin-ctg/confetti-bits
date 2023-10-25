@@ -5,30 +5,30 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Adds component globals and includes related files.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @since 1.0.0
  */
 class CB_Transactions_Component extends CB_Component {
 
 	/**
 	 * Initializes the transactions component.
-	 * 
-	 * @package ConfettiBits\Transactions
+	 *
+	 * @package Transactions
 	 * @since 1.0.0
 	 */
 	public function __construct() {
 		parent::start(
-			'transactions', 
-			__( 'Confetti Bits Transactions', 'confetti-bits' ), 
-			CONFETTI_BITS_PLUGIN_PATH, 
-			[] 
+			'transactions',
+			__( 'Confetti Bits Transactions', 'confetti-bits' ),
+			CONFETTI_BITS_PLUGIN_PATH,
+			[]
 		);
 	}
 
 	/**
 	 * Includes required files.
-	 * 
-	 * @package ConfettiBits\Transactions
+	 *
+	 * @package Transactions
 	 * @since 1.0.0
 	 */
 	public function includes( $includes = array() ) {
@@ -49,8 +49,8 @@ class CB_Transactions_Component extends CB_Component {
 
 	/**
 	 * Registers API endpoints for the transactions component.
-	 * 
-	 * @package ConfettiBits\Transactions
+	 *
+	 * @package Transactions
 	 * @since 2.3.1
 	 */
 	public function register_api_endpoints( $components = [] ) {
@@ -63,8 +63,8 @@ class CB_Transactions_Component extends CB_Component {
 
 	/**
 	 * Enqueue scripts for the transactions component.
-	 * 
-	 * @package ConfettiBits\Transactions
+	 *
+	 * @package Transactions
 	 * @since 3.0.0
 	 */
 	public function enqueue_scripts( $components = [] ) {
@@ -76,14 +76,14 @@ class CB_Transactions_Component extends CB_Component {
 				'dependencies' => ['jquery'],
 			]
 		];
-		
+
 		if ( cb_is_user_staffing_admin() ) {
 			$components['staffing_admin'] = [
 				'spot_bonuses' => ['new', 'get', 'update', 'delete' ],
 				'dependencies' => ['jquery', 'jquery-ui-datepicker'],
 			];
 		}
-		
+
 		if ( cb_is_user_admin() ) {
 			$components['volunteers'] = [
 				'volunteers' => ['new'],
@@ -98,8 +98,8 @@ class CB_Transactions_Component extends CB_Component {
 
 	/**
 	 * Sets up component globals for the transactions component.
-	 * 
-	 * @package ConfettiBits\Transactions
+	 *
+	 * @package Transactions
 	 * @since 1.0.0
 	 */
 	public function setup_globals( $args = array() ) {

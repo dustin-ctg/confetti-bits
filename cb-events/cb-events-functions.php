@@ -5,7 +5,7 @@
  * These are going to be all of our CRUD functions for
  * the events component.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 // Exit if accessed directly.
@@ -13,10 +13,10 @@ defined('ABSPATH') || exit;
 
 /**
  * Saves a new event to the database.
- * 
- * @param array $args { 
+ *
+ * @param array $args {
  *     An associative array of arguments.
- *     Accepts any parameters of a 
+ *     Accepts any parameters of a
  *     CB_Events_Event object.
  * }
  */
@@ -28,21 +28,21 @@ function cb_events_new_event( $args = [] ) {
 		'event_desc' => '',
 		'participation_amount' => 5,
 	]);
-	
+
 	$feedback = ['type' => 'error', 'text' => ''];
 	$start_date = new DateTimeImmutable($r['event_start_date']);
 
-	if ( 
-		empty( $r['user_id'] ) || 
-		empty( $r['event_title'] ) || 
-		empty( $r['participation_amount'] ) || 
-		empty( $r['event_start_date'] ) || 
-		empty( $r['event_end_date'] ) 
+	if (
+		empty( $r['user_id'] ) ||
+		empty( $r['event_title'] ) ||
+		empty( $r['participation_amount'] ) ||
+		empty( $r['event_start_date'] ) ||
+		empty( $r['event_end_date'] )
 	) {
 		$feedback["text"] = "Event creation failed. Missing one of the following parameters: user ID, event title, participation amount, start date, or end date.";
 		return $feedback;
 	}
-	
+
 	$event = new CB_Events_Event();
 	$event->user_id = intval($r['user_id']);
 	$event->event_title = cb_core_sanitize_string($r['event_title']);
@@ -55,15 +55,15 @@ function cb_events_new_event( $args = [] ) {
 
 /**
  * Sends out notifications when a new event is created.
- * 
- * @param array $data { 
+ *
+ * @param array $data {
  *     An associative array of key => value pairs from
  *     a CB_Events_Event object.
- * 
+ *
  *     @see CB_Events_Event::save()
  * }
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_events_new_notifications($data = [])
@@ -134,7 +134,7 @@ function cb_events_new_notifications($data = [])
  *
  * Sends out an update notification when an event is updated.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_events_update_notifications($data = [])

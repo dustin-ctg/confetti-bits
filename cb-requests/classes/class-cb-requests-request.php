@@ -5,8 +5,8 @@ defined('ABSPATH') || exit;
 /**
  * A component that allows users to submit requests to cash in
  * their points.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 class CB_Requests_Request
@@ -98,9 +98,9 @@ class CB_Requests_Request
 	public $request_item_id;
 
 	/**
-	 * The columns available in the database. Used to help 
+	 * The columns available in the database. Used to help
 	 * build our orderby clause.
-	 * 
+	 *
 	 * @var array
 	 */
 	public static $columns = [
@@ -132,9 +132,9 @@ class CB_Requests_Request
 
 	/**
 	 * Populate
-	 * 
+	 *
 	 * Populates object data associated with the given ID.
-	 * 
+	 *
 	 * @param int $id The requests ID.
 	 */
 	public function populate($id = 0)
@@ -167,10 +167,10 @@ class CB_Requests_Request
 
 	/**
 	 * Save
-	 * 
+	 *
 	 * Handles saving data to the database using our static
 	 * _insert method.
-	 * 
+	 *
 	 * @return obj|int WP_Error on failure, requests ID on success.
 	 */
 	public function save()
@@ -247,7 +247,7 @@ class CB_Requests_Request
 	 *
 	 *
 	 * @param array $args Associative array of filter arguments.
-	 *                    
+	 *
 	 * @return array Associative array of 'data' and 'format' args.
 	 */
 	protected static function get_query_clauses($args = array())
@@ -258,28 +258,28 @@ class CB_Requests_Request
 		);
 
 		if (!empty($args['id'])) {
-			$where_clauses['data']['id'] = is_array($args['id']) ? 
-				implode(', ', wp_parse_id_list($args['id'])) 
+			$where_clauses['data']['id'] = is_array($args['id']) ?
+				implode(', ', wp_parse_id_list($args['id']))
 				: intval( $args['id'] );
 			$where_clauses['format'][] = '%d';
 		}
 
 		if (!empty($args['applicant_id'])) {
 			$where_clauses['data']['applicant_id'] = is_array($args['applicant_id']) ?
-				implode( ', ', wp_parse_id_list($args['applicant_id'])) 
+				implode( ', ', wp_parse_id_list($args['applicant_id']))
 				: intval($args['applicant_id']);
 			$where_clauses['format'][] = '%d';
 		}
 
 		if (!empty($args['admin_id'])) {
-			$where_clauses['data']['admin_id'] = is_array( $args['admin_id'] ) ? 
+			$where_clauses['data']['admin_id'] = is_array( $args['admin_id'] ) ?
 				implode( ', ', wp_parse_id_list($args['admin_id']))
 				: intval($args['admin_id']);
 			$where_clauses['format'][] = '%d';
 		}
 
 		if (!empty($args['item_id'])) {
-			$where_clauses['data']['item_id'] = is_array( $args['item_id'] ) ? 
+			$where_clauses['data']['item_id'] = is_array( $args['item_id'] ) ?
 				implode( ', ', wp_parse_id_list($args['item_id']))
 				: intval($args['item_id']);
 			$where_clauses['format'][] = '%d';
@@ -329,9 +329,9 @@ class CB_Requests_Request
 
 	/**
 	 * _insert
-	 * 
+	 *
 	 * Handles the actual insertion into the database.
-	 * 
+	 *
 	 * @return int|bool The inserted ID on success, false on failure.
 	 */
 	protected static function _insert($data = array(), $data_format = array())
@@ -370,7 +370,7 @@ class CB_Requests_Request
 		);
 
 		do_action('cb_requests_after_update', $data );
-		
+
 		return $retval;
 	}
 
@@ -426,15 +426,15 @@ class CB_Requests_Request
 	}
 
 	/**
-	 * Deletes rows from the database. 
-	 * 
+	 * Deletes rows from the database.
+	 *
 	 * Careful there, bucko. It's dangerous round these parts.
-	 * 
+	 *
 	 * @param array $where_args An array of key-value pairs that gets passed
 	 * 							to self::get_query_clauses()
-	 * 
+	 *
 	 * @return int|false The number of rows affected, or false on failure.
-	 * 
+	 *
 	 * @since 2.3.0
 	 */
 	public function delete( $where_args = [] ) {
@@ -447,14 +447,14 @@ class CB_Requests_Request
 
 	/**
 	 * get_requests
-	 * 
+	 *
 	 * Handles retrieving data from the database. Nice and clean!
-	 * 
-	 * @param array $args An array of stuff to get! { 
+	 *
+	 * @param array $args An array of stuff to get! {
 	 *   @type string $select The database column to get
-	 *   @type array $where A selection of key-value pairs that 
+	 *   @type array $where A selection of key-value pairs that
 	 *         get evaluated by another method. See self::get_where_sql()
-	 * 
+	 *
 	 * @TODO: Finish documenting this (sweat emoji)
 	 * }
 	 */
@@ -488,7 +488,7 @@ class CB_Requests_Request
 
 	/**
 	 * Assembles a date query into SQL for use in a WHERE clause.
-	 * 
+	 *
 	 * @param array $date_query An array of date query clauses.
 	 * @return string The SQL WHERE clause for the query.
 	 * @see WP_Date_Query
@@ -511,11 +511,11 @@ class CB_Requests_Request
 
 	/**
 	 * Get Orderby SQL
-	 * 
+	 *
 	 * Checks against the columns available and order
 	 * arguments, then spits out usable SQL if everything
 	 * looks okay.
-	 * 
+	 *
 	 * @return string The ORDER BY clause of an SQL query.
 	 */
 	public static function get_orderby_sql($args = [])
@@ -553,14 +553,14 @@ class CB_Requests_Request
 	 * Used by CB_Requests_Requests::get_requests() to create its LIMIT clause.
 	 *
 	 *
-	 * @param	array	$args	Array consisting of 
-	 * 							the page number and items per page. { 
+	 * @param	array	$args	Array consisting of
+	 * 							the page number and items per page. {
 	 * 			@type	int		$page		page number
 	 * 			@type	int		$per_page	items to return
 	 * }
-	 * 
+	 *
 	 * @return string $retval LIMIT clause.
-	 * 
+	 *
 	 */
 	protected static function get_paged_sql($args = array())
 	{
@@ -580,13 +580,13 @@ class CB_Requests_Request
 
 	/**
 	 * Assemble the WHERE clause of a get() SQL statement.
-	 * 
+	 *
 	 * Used by CB_Requests_Requests::get_requests() to create its WHERE clause.
-	 * 
-	 * 
-	 * @param	array	$args { 
-	 *     Optional array of arguments. 
-	 *     
+	 *
+	 *
+	 * @param	array	$args {
+	 *     Optional array of arguments.
+	 *
 	 *     @type	int		$id				One or more request IDs.
 	 *     @type	int		$applicant_id	One or more applicant IDs.
 	 *     @type	int		$admin_id		One or more admin IDs.
@@ -598,9 +598,9 @@ class CB_Requests_Request
 	 *     @type    secondary_item_id	One or more secondary item IDs.
 	 *     @type    string $date_query	A date query to restrict the result set by.
 	 * }
-	 * 
+	 *
 	 * @return string $retval WHERE clause.
-	 * 
+	 *
 	 * @since 2.3.0
 	 */
 	protected static function get_where_sql($args = array())

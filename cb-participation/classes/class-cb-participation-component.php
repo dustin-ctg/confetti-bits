@@ -4,18 +4,18 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * CB Participation Component
- * 
+ *
  * Lets us set some global values to use elsewhere.
  *
- * @package ConfettiBits\Participation
+ * @package Participation
  * @since 2.0.0
  */
 class CB_Participation_Component extends CB_Component {
 
 	/**
 	 * Initializes participation component.
-	 * 
-	 * @package ConfettiBits\Participation
+	 *
+	 * @package Participation
 	 * @since 2.0.0
 	 */
 	public function __construct() {
@@ -32,8 +32,8 @@ class CB_Participation_Component extends CB_Component {
 
 	/**
 	 * Includes required files.
-	 * 
-	 * @package ConfettiBits\Participation
+	 *
+	 * @package Participation
 	 * @since 2.0.0
 	 */
 	public function includes( $includes = array() ) {
@@ -50,8 +50,8 @@ class CB_Participation_Component extends CB_Component {
 
 	/**
 	 * Registers API endpoints for the participation component.
-	 * 
-	 * @package ConfettiBits\Participation
+	 *
+	 * @package Participation
 	 * @since 2.0.0
 	 */
 	public function register_api_endpoints( $components = [] ) {
@@ -63,14 +63,14 @@ class CB_Participation_Component extends CB_Component {
 
 	/**
 	 * Enqueues scripts for the participation component.
-	 * 
-	 * @package ConfettiBits\Participation
+	 *
+	 * @package Participation
 	 * @since 3.0.0
 	 */
 	public function enqueue_scripts( $components = [] ) {
 
 		$components = [
-			'participation' => [ 
+			'participation' => [
 				'participation' => ['get', 'new', 'update'],
 				'dependencies' => ['jquery'],
 			],
@@ -78,7 +78,7 @@ class CB_Participation_Component extends CB_Component {
 
 		if ( cb_is_user_participation_admin() ) {
 			$components['participation_admin'] = [
-				'participation' => ['get', 'update'], 
+				'participation' => ['get', 'update'],
 				'transactions' => ['get'],
 				'dependencies' => ['jquery']
 			];
@@ -90,8 +90,8 @@ class CB_Participation_Component extends CB_Component {
 
 	/**
 	 * Sets component globals for the participation component.
-	 * 
-	 * @package ConfettiBits\Participation
+	 *
+	 * @package Participation
 	 * @since 2.0.0
 	 */
 	public function setup_globals( $args = array() ) {

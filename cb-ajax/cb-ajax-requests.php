@@ -1,17 +1,17 @@
-<?php 
+<?php
 // Exit if accessed directly.
 defined('ABSPATH') || exit;
 
-/** 
+/**
  * Handles HTTP PATCH requests to update requests entries.
- * 
- * Processes standard and bulk requests updates from an 
+ *
+ * Processes standard and bulk requests updates from an
  * HTTP PATCH request.
- * 
- * @see cb_get_patch_data() for more info on how we handle PATCH 
+ *
+ * @see cb_get_patch_data() for more info on how we handle PATCH
  * requests.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_ajax_update_requests() {
@@ -23,7 +23,7 @@ function cb_ajax_update_requests() {
 	$_PATCH = cb_get_patch_data();
 	$feedback = ['text' => '','type' => 'error'];
 
-	if ( !isset( 
+	if ( !isset(
 		$_PATCH['request_id'],
 		$_PATCH['api_key'],
 	) ) {
@@ -146,10 +146,10 @@ function cb_ajax_update_requests() {
 
 /**
  * CB Ajax New Requests
- * 
+ *
  * We'll use this to process the new requests entries sent via ajax.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.2.0
  */
 function cb_ajax_new_requests() {
@@ -160,7 +160,7 @@ function cb_ajax_new_requests() {
 
 	$feedback = ['type' => 'error', 'text' => ''];
 
-	if ( !isset( 
+	if ( !isset(
 		$_POST['applicant_id'],
 		$_POST['request_item_id'],
 		$_POST['api_key'],
@@ -211,11 +211,11 @@ function cb_ajax_new_requests() {
 
 /**
  * CB AJAX Get Requests
- * 
- * Our REST API handler for the endpoint at 
+ *
+ * Our REST API handler for the endpoint at
  * "/wp-json/cb-ajax/v1/requests/get"
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_ajax_get_requests() {
@@ -280,18 +280,18 @@ function cb_ajax_get_requests() {
 
 /**
  * Deletes requests from the requests table.
- * 
- * @param array $items { 
+ *
+ * @param array $items {
  *     An array of arguments.
- * 
+ *
  *     @type int|array $request_id A comma-separated list (or array)
  * 					   of IDs for the request(s) to remove. Required.
- * 
+ *
  * }
- * 
+ *
  * @return int The number of rows affected, or false on failure.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_ajax_delete_requests() {

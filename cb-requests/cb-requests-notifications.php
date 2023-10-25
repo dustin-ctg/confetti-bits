@@ -14,7 +14,7 @@ defined('ABSPATH') || exit;
  * @var int $amount The amount of Confetti Bits being sent.
  * @var string $request_item The item being requested.
  *
- * @package ConfettiBits\Transactions
+ * @package Transactions
  * @since 1.0.0
  */
 function cb_bits_request_sender_email_notification($args = array()) {
@@ -62,7 +62,7 @@ function cb_bits_request_sender_email_notification($args = array()) {
  *     @see CB_Requests_Request::save()
  * }
  *
- * @package ConfettiBits\Requests
+ * @package Requests
  * @subpackage Notifications
  * @since 3.0.0
  */
@@ -76,7 +76,7 @@ function cb_requests_new_request_notifications($args = []) {
 	if ( empty($r['applicant_id']) || empty($r['request_item_id']) ) {
 		return;
 	}
-	
+
 	$applicant_id = intval($r['applicant_id']);
 
 	$request_item = new CB_Requests_Request_Item($r['request_item_id']);
@@ -124,7 +124,7 @@ add_action( 'cb_requests_after_save', 'cb_requests_new_request_notifications' );
  *     @see CB_Requests_Request::save()
  * }
  *
- * @package ConfettiBits\Requests
+ * @package Requests
  * @subpackage Notifications
  * @since 3.0.0
  */
@@ -192,7 +192,7 @@ add_action( 'cb_requests_after_save', 'cb_requests_admin_new_request_notificatio
  *     @see CB_Requests_Request::save()
  * }
  *
- * @package ConfettiBits\Requests
+ * @package Requests
  * @subpackage Notifications
  * @since 3.0.0
  */
@@ -260,7 +260,7 @@ add_action( 'cb_requests_after_save', 'cb_requests_leadership_new_request_notifi
  *     @see CB_Requests_Request::save()
  * }
  *
- * @package ConfettiBits\Requests
+ * @package Requests
  * @subpackage Notifications
  * @since 3.0.0
  */
@@ -326,7 +326,7 @@ add_action( 'cb_requests_after_save', 'cb_requests_site_admins_new_request_notif
  *   @see CB_Requests_Request::update()
  * }
  *
- * @package ConfettiBits\Requests
+ * @package Requests
  * @subpackage Notifications
  * @since 3.0.0
  */
@@ -392,21 +392,21 @@ function cb_requests_format_notifications( $component_action = '', $args = [] ) 
 	if ( !isset( $args['title'], $args['text'], $args['item_id'], $component_action ) ) {
 		return;
 	}
-	
+
 	$retval = [
 		'title' => $args['title'],
 		'link' => home_url('confetti-bits')
 	];
 	$user_name_notifications = ['cb_requests_admin_new_request', 'cb_requests_update_request'];
-	
+
 	if ( in_array( $component_action, $user_name_notifications ) ) {
 		$retval['text'] = sprintf($args['text'], cb_core_get_user_display_name($args['item_id']));
 		return $retval;
 	}
-	
+
 	$retval['text'] = $args['text'];
 	return $retval;
-	
+
 }
 
 

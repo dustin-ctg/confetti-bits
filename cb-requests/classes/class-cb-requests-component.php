@@ -4,10 +4,10 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * A component class that gives us access to important globals throughout the app.
- * 
+ *
  * Lets us set some global values to use elsewhere.
  *
- * @package ConfettiBits\Requests
+ * @package Requests
  * @since 2.3.0
  */
 class CB_Requests_Component extends CB_Component {
@@ -15,8 +15,8 @@ class CB_Requests_Component extends CB_Component {
 
 	/**
 	 * Initializes the requests component.
-	 * 
-	 * @package ConfettiBits\Requests
+	 *
+	 * @package Requests
 	 * @since 2.3.0
 	 */
 	public function __construct() {
@@ -30,8 +30,8 @@ class CB_Requests_Component extends CB_Component {
 
 	/**
 	 * Includes required files.
-	 * 
-	 * @package ConfettiBits\Requests
+	 *
+	 * @package Requests
 	 * @since 2.3.0
 	 */
 	public function includes( $includes = array() ) {
@@ -48,8 +48,8 @@ class CB_Requests_Component extends CB_Component {
 
 	/**
 	 * Registers API endpoints for the requests component.
-	 * 
-	 * @package ConfettiBits\Requests
+	 *
+	 * @package Requests
 	 * @since 2.3.1
 	 */
 	public function register_api_endpoints( $components = [] ) {
@@ -62,12 +62,12 @@ class CB_Requests_Component extends CB_Component {
 
 	/**
 	 * Enqueues scripts for the requests component.
-	 * 
-	 * @package ConfettiBits\Requests
+	 *
+	 * @package Requests
 	 * @since 3.0.0
 	 */
 	public function enqueue_scripts( $components = [] ) {
-		
+
 		$components = [
 			'requests' => [
 				'requests' => ['new', 'get', 'update', 'delete' ],
@@ -90,8 +90,8 @@ class CB_Requests_Component extends CB_Component {
 
 	/**
 	 * Sets component globals for the requests component.
-	 * 
-	 * @package ConfettiBits\Requests
+	 *
+	 * @package Requests
 	 * @since 2.3.0
 	 */
 	public function setup_globals( $args = [] ) {

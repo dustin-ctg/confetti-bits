@@ -5,7 +5,7 @@ defined('ABSPATH') || exit;
 /**
  * Loads our AJAX component, so we can play nice with Javascript.
  *
- * @package ConfettiBits\AJAX
+ * @package AJAX
  * @since 2.3.0
  */
 function cb_setup_ajax() {

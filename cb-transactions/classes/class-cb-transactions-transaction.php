@@ -4,10 +4,10 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * CB Transactions Transaction
- * 
+ *
  * A component that allows users to send bits.
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @since 1.0.0
  */
 class CB_Transactions_Transaction {
@@ -15,88 +15,88 @@ class CB_Transactions_Transaction {
 
 	/**
 	 * Last recorded Transaction ID in the database.
-	 * 
+	 *
 	 * @var int
 	 */
-	public static $last_inserted_id; 
+	public static $last_inserted_id;
 
 	/**
 	 * The Transaction ID.
-	 * 
+	 *
 	 * @var int
 	 */
-	public $id; 
+	public $id;
 
 	/**
-	 * The item ID of the Transaction. Used with the 
+	 * The item ID of the Transaction. Used with the
 	 * BuddyBoss Notifications API. We'll use the
 	 * sender_id.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $item_id;
 
 	/**
-	 * The secondary item ID of the Transaction. Used 
+	 * The secondary item ID of the Transaction. Used
 	 * with the BuddyBoss Notifications API. We'll use
 	 * the recipient_id.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $secondary_item_id;
 
 	/**
 	 * The ID of the user sending the Confetti Bits.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $sender_id;
 
 	/**
 	 * The ID of the user receiving the Confetti Bits.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $recipient_id;
 
 	/**
 	 * The date of the Transaction.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $date_sent;
 
 	/**
 	 * A memo for the Transaction.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $log_entry;
 
 	/**
 	 * The component associated with the Transaction.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $component_name;
 
 	/**
 	 * The component action associate with the Transaction.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $component_action;
 
 	/**
 	 * The amount of Confetti Bits that were sent.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $amount;
 
 	/**
 	 * The ID of the event associated with the Transaction.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $event_id;
@@ -148,7 +148,7 @@ class CB_Transactions_Transaction {
 	/**
 	 * Uses CB_Transactions_Transaction::_insert to plop a new
 	 * transaction in the database.
-	 * 
+	 *
 	 * @return int|false The transaction ID on success, false on failure.
 	 */
 	public function send_bits() {
@@ -196,7 +196,7 @@ class CB_Transactions_Transaction {
 	/**
 	 * Uses CB_Transactions_Transaction::_insert to plop a new
 	 * transaction in the database.
-	 * 
+	 *
 	 * @return int|false The transaction ID on success, false on failure.
 	 */
 	public function save() {
@@ -240,7 +240,7 @@ class CB_Transactions_Transaction {
 
 	/**
 	 * Populates the object with data when passed a valid ID.
-	 * 
+	 *
 	 * @param int $id A valid transaction ID.
 	 */
 	public function populate( $id ) {
@@ -266,19 +266,19 @@ class CB_Transactions_Transaction {
 
 	/**
 	 * Creates a new transaction in the database.
-	 * All the parameters for this are handled by 
+	 * All the parameters for this are handled by
 	 * CB_Transactions_Transaction->send_bits().
-	 * 
-	 * @param array $data { 
+	 *
+	 * @param array $data {
 	 *     An associative array of data to insert.
 	 *     Takes keys/values associated with a Transactions object.
 	 * }
-	 * 
-	 * @param array $data_format { 
+	 *
+	 * @param array $data_format {
 	 *     A single-dimensional array of formats (i.e., '%s', '%d', etc.)
 	 * 	   Should match the same order of the data array.
 	 * }
-	 * 
+	 *
 	 * @return int The number of rows inserted.
 	 */
 	protected static function _insert( $data = [], $data_format = [] ) {
@@ -288,7 +288,7 @@ class CB_Transactions_Transaction {
 
 	/**
 	 * Deletes a transaction entry from the database.
-	 * 
+	 *
 	 * @param array $args An associative array of arguments that gets passed
 	 * 					  to self::get_query_clauses for formatting. Accepts
 	 * 					  any property of a CB_Transactions_Transaction object.
@@ -317,7 +317,7 @@ class CB_Transactions_Transaction {
 	 *                            CB_Transactions_Transaction object.
 	 * @param array $where_format See {@link wpdb::insert()}.
 	 * @return int|false The number of rows updated, or false on error.
-	 * 
+	 *
 	 * @since 2.3.0
 	 */
 	protected static function _delete( $where = array(), $where_format = array() ) {
@@ -331,29 +331,29 @@ class CB_Transactions_Transaction {
 
 	/**
 	 * Gets transactions from the database.
-	 * 
-	 * Pieces together an SQL query based on the given 
+	 *
+	 * Pieces together an SQL query based on the given
 	 * arguments.
-	 * 
+	 *
 	 * @global $wpdb The WordPress database global.
-	 * 
-	 * @param array $args { 
-	 *     Optional. An array of arguments that get 
+	 *
+	 * @param array $args {
+	 *     Optional. An array of arguments that get
 	 *     merged with some defaults.
-	 * 
+	 *
 	 *     @type string|array $select Default '*'. Either a comma-separated list or array
 	 *                                of the columns to select.
 	 *     @type array $where Array of key => value pairs that get passed to an internal
 	 * 						  method. @see CB_Transactions_Transaction::get_where_sql()
 	 *     @type array $orderby Array of specific key => value pairs that determine
-	 * 							the ORDER BY clause. 
+	 * 							the ORDER BY clause.
 	 * 							@see CB_Transactions_Transaction::get_orderby_sql()
 	 *     @type string $groupby A string that determines whether the query should be
 	 * 							 grouped by a specific column.
-	 *     @type array $pagination An array of specific key => value pairs that 
+	 *     @type array $pagination An array of specific key => value pairs that
 	 * 							   determine the LIMIT clause.
 	 * }
-	 * 
+	 *
 	 * @return array An associative array of transaction data.
 	 */
 	public function get_transactions( $args = [] ) {
@@ -383,19 +383,19 @@ class CB_Transactions_Transaction {
 
 	/**
 	 * Get Orderby SQL.
-	 * 
+	 *
 	 * Checks against the columns available and order
 	 * arguments, then spits out usable SQL if everything
 	 * looks okay.
-	 * 
-	 * @param array $args { 
+	 *
+	 * @param array $args {
 	 *     Optional. An array of arguments.
-	 *     
+	 *
 	 *     @type string $column Default 'id'. The column to order by.
 	 *     @type string $order Default 'DESC'. The order of the items.
 	 * }
-	 * 
-	 * @return string The ORDER BY clause of an SQL query, or 
+	 *
+	 * @return string The ORDER BY clause of an SQL query, or
 	 * 				  nothing if the args are empty or malformed.
 	 */
 	public static function get_orderby_sql( $args = [] ) {
@@ -433,14 +433,14 @@ class CB_Transactions_Transaction {
 	 * Used by CB_Participation_Participation::get_participation() to create its LIMIT clause.
 	 *
 	 *
-	 * @param	array	$args	Array consisting of 
-	 * 							the page number and items per page. { 
+	 * @param	array	$args	Array consisting of
+	 * 							the page number and items per page. {
 	 * 			@type	int		$page		page number
 	 * 			@type	int		$per_page	items to return
 	 * }
-	 * 
+	 *
 	 * @return string $retval LIMIT clause.
-	 * 
+	 *
 	 */
 	protected static function get_paged_sql( $args = array() ) {
 
@@ -512,10 +512,10 @@ class CB_Transactions_Transaction {
 
 	/**
 	 * Assembles a date query clause for an SQL WHERE statement.
-	 * 
+	 *
 	 * @see CB_Core_Date_Query()
-	 * 
-	 * @package ConfettiBits\Transactions
+	 *
+	 * @package Transactions
 	 * @since 2.3.0
 	 */
 	public static function get_date_query_sql( $date_query = array() ) {
@@ -535,10 +535,10 @@ class CB_Transactions_Transaction {
 
 	/**
 	 * Assembles the SQL WHERE clause.
-	 * 
-	 * @param array $args { 
+	 *
+	 * @param array $args {
 	 *     An associative array of arguments. All optional.
-	 * 
+	 *
 	 *     @type int $id One or more transaction IDs.
 	 *     @type int $item_id One or more item IDs.
 	 *     @type int $secondary_item_id One or more secondary item IDs.
@@ -546,14 +546,14 @@ class CB_Transactions_Transaction {
 	 *     @type int $item_id One or more recipient IDs.
 	 *     @type string $log_entry Search terms that may be in a log_entry.
 	 *     @type string $component_name This will probably always be "confetti_bits".
-	 *                                  But we've added this just in case that ever 
+	 *                                  But we've added this just in case that ever
 	 * 									changes.
 	 *     @type string $component_action A component action to search for.
 	 * }
-	 * 
+	 *
 	 * @return string The WHERE clause.
-	 * 
-	 * @package ConfettiBits\Transactions
+	 *
+	 * @package Transactions
 	 * @since 1.0.0
 	 */
 	protected static function get_where_sql( $args = [] ) {
@@ -644,8 +644,8 @@ class CB_Transactions_Transaction {
 			}
 			*/
 
-			$component_actions = ! is_array( $args['component_action'] ) ? 
-				explode( ',', $args['component_action'] ) 
+			$component_actions = ! is_array( $args['component_action'] ) ?
+				explode( ',', $args['component_action'] )
 				: $args['component_action'];
 
 			$ca_clean = array();
@@ -660,8 +660,8 @@ class CB_Transactions_Transaction {
 		}
 
 		if ( ! empty( $args['excluded_action'] ) ) {
-			$excluded_action = ! is_array( $args['excluded_action'] ) ? 
-				explode( ',', $args['excluded_action'] ) 
+			$excluded_action = ! is_array( $args['excluded_action'] ) ?
+				explode( ',', $args['excluded_action'] )
 				: $args['excluded_action'];
 
 			$ca_clean = array();
@@ -691,8 +691,8 @@ class CB_Transactions_Transaction {
 
 
 		if ( ! empty( $where_conditions ) ) {
-			$where = !empty( $args['or'] ) ? 
-				'WHERE ' . implode( ' OR ', $where_conditions ) 
+			$where = !empty( $args['or'] ) ?
+				'WHERE ' . implode( ' OR ', $where_conditions )
 				: 'WHERE ' . implode( ' AND ', $where_conditions );
 		}
 
@@ -736,7 +736,7 @@ class CB_Transactions_Transaction {
 	 *
 	 *
 	 * @param array $args Associative array of filter arguments.
-	 *                    
+	 *
 	 * @return array Associative array of 'data' and 'format' args.
 	 */
 	protected static function get_query_clauses( $args = array() ) {

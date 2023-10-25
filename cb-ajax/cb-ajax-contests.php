@@ -2,7 +2,7 @@
 /**
  * All of our CRUD functions for contests.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 // Exit if accessed directly.
@@ -12,7 +12,7 @@ defined('ABSPATH') || exit;
  * Accepts either a singular contest object or an array of contest objects
  * and adds them to the database.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_new_contests()
@@ -120,21 +120,21 @@ function cb_ajax_new_contests()
 
 /**
  * Updates contest objects for a given event.
- * 
- * I'm a goofy goober. I ended up making this a lot more 
+ *
+ * I'm a goofy goober. I ended up making this a lot more
  * dynamic so it can handle a lot of different user interactions.
- * 
+ *
  * Sit back and enjoy, friend.
- * 
- * It's important to note that we aren't necessarily always modifying a 
- * singular contest object within the database. Here's a breakdown of 
+ *
+ * It's important to note that we aren't necessarily always modifying a
+ * singular contest object within the database. Here's a breakdown of
  * what's going on here:
- * 
+ *
  * ##### Arguments
  * - An event_id
  * - An array of contest objects, with 'placement' and 'amount' keys
  * - An API key
- * 
+ *
  * ##### Data Logistics
  * 1. Validate that we meet all the above constraints.
  * 2. Validate that the event actually exists in the database.
@@ -142,14 +142,14 @@ function cb_ajax_new_contests()
  * 		a. Validate that we have both a placement and an amount.
  * 		b. Check to see if that placement exists, and update it if so.
  * 		c. If the placement doesn't exist, we'll create one.
- * 
+ *
  * Should be fairly straightforward, but I've been wrong so many times before.
  * ~~We might just run everything through the new_contests endpoint~~
  * ~~We're almost definitely going to be running updates through the new_contests endpoint.~~
- * 
+ *
  * We are absolutely **not** running updates through the new_contests endpoint.
- * 
- * @package ConfettiBits\Events
+ *
+ * @package Events
  * @subpackage Contests
  * @since 3.0.0
  */
@@ -248,7 +248,7 @@ function cb_ajax_update_contests() {
 	foreach ($existing_entries as $entry) {
 		$existing_entries_map[$entry['placement']] = $entry;
 	}
-	
+
 	foreach ( $_PATCH['contests'] as $entry ) {
 		$input_entries_map[$entry['placement']] = $entry;
 	}
@@ -273,11 +273,11 @@ function cb_ajax_update_contests() {
 				'amount' => $amount,
 			];
 		}
-		
+
 	}
 
 	$response = ['type' => 'error', 'text' => ''];
-	
+
 	// Identify entries to remove
 	foreach ($existing_entries as $existing_entry) {
 		$placement = $existing_entry['placement'];
@@ -349,7 +349,7 @@ function cb_ajax_update_contests() {
 /**
  * Deletes existing contest objects from the database.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_delete_contests()
@@ -402,10 +402,10 @@ function cb_ajax_delete_contests()
 
 /**
  * Retrieves contest objects from the database.
- * 
+ *
  * Typically used to retrieve a list of placements based on a given event_id.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @subpackage Contests
  * @since 3.0.0
  */
@@ -489,7 +489,7 @@ function cb_ajax_get_contests() {
 /**
  * Saves contest placements for a given event.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
 
 function cb_ajax_new_contest()

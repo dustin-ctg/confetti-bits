@@ -6,8 +6,8 @@ defined( 'ABSPATH' ) || exit;
  * CB Core Roles Component
  *
  * Helps manage roles and capabilities within the application.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 class CB_Core_Role_Manager {
@@ -19,7 +19,7 @@ class CB_Core_Role_Manager {
 	 */
 	private $data;
 
-	/** Methods ***************************************************************/		
+	/** Methods ***************************************************************/
 
 	/**
 	 * Construct the role manager.
@@ -32,8 +32,8 @@ class CB_Core_Role_Manager {
 	 * @param string $key Key to return the value for.
 	 *
 	 * @return mixed
-	 * 
-	 * @package ConfettiBits\Core
+	 *
+	 * @package Core
 	 * @since 2.3.0
 	 */
 	public function __get( $key ) {
@@ -45,12 +45,12 @@ class CB_Core_Role_Manager {
 	 *
 	 * @param string $key   Key to set a value for.
 	 * @param mixed  $value Value to set.
-	 * 
-	 * @package ConfettiBits\Core
+	 *
+	 * @package Core
 	 * @since 3.0.0
 	 */
 	public function __set( $key, $value ) {
-		$this->data[ $key ] = $value; 
+		$this->data[ $key ] = $value;
 	}
 
 	/**
@@ -66,5 +66,5 @@ class CB_Core_Role_Manager {
 	public function setup_globals() {
 		Confetti_Bits()->roles->{$this->id} = $this;
 	}
-	
+
 }

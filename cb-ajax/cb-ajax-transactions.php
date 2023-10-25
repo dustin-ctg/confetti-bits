@@ -1,17 +1,17 @@
-<?php 
+<?php
 // Exit if accessed directly
 defined('ABSPATH') || exit;
 /**
  * CB AJAX Get Transactions
- * 
+ *
  * Gets transactions for a user based on the user_id passed in the $_GET array.
- * 
+ *
  * @return JSON {
  * 		'text': JSON (JSON encoded array of transactions, or error message),
  * 		'type': string (success or error)
  * }
- * 
- * @package ConfettiBits\AJAX
+ *
+ * @package AJAX
  * @since 2.3.0
  */
 function cb_ajax_get_transactions() {
@@ -69,19 +69,19 @@ function cb_ajax_get_transactions() {
 
 /**
  * CB AJAX New Transactions
- * 
+ *
  * AJAX handler for creating transactions.
- * 
+ *
  * All parameters are passed via POST request.
- * 
+ *
  * The following parameters are required:
- * 
+ *
  * - sender_id (int) - The ID of the user sending the bits.
  * - recipient_id (int) - The ID of the user receiving the bits.
  * - amount (int) - The amount of bits to send.
  * - log_entry (string) - The log entry to record for this transaction.
- * 
- * @package ConfettiBits\AJAX
+ *
+ * @package AJAX
  * @since 2.3.0
  */
 function cb_ajax_new_transactions() {
@@ -109,11 +109,11 @@ function cb_ajax_new_transactions() {
 		echo json_encode($feedback);
 		die();
 	}
-	
+
 	$recipient_id = intval($_POST['recipient_id']);
-	
+
 	if ( !empty( $_POST['event_id'] ) ) {
-		
+
 		$event_id = intval($_POST['event_id']);
 		$event_transaction = cb_transactions_new_events_transaction([
 			'event_id' => $event_id,
@@ -130,16 +130,16 @@ function cb_ajax_new_transactions() {
 		echo json_encode($feedback);
 		die();
 	}
-	
+
 	if ( !empty( $_POST['contest_id'] ) ) {
-		
+
 		$contest_id = intval($_POST['contest_id']);
-		
+
 		$contest_transction = cb_transactions_new_contests_transaction([
 			'contest_id' => $contest_id,
 			'recipient_id' => $recipient_id
 		]);
-		
+
 		if ( $contest_transction == false ) {
 			$feedback['text'] = "Failed to process contest transaction: {$contest_transaction}";
 		} else {
@@ -148,7 +148,7 @@ function cb_ajax_new_transactions() {
 		}
 		echo json_encode($feedback);
 		die();
-		
+
 	}
 
 	if ( empty( $_POST['sender_id'] ) || empty( $_POST['amount'] ) ) {
@@ -205,8 +205,8 @@ function cb_ajax_new_transactions() {
 		$amount = intval( $_POST['amount'] );
 	}
 
-	if ( ( abs( $amount ) > cb_transactions_get_transfer_balance( $recipient_id ) ) && 
-		( $amount < 0 ) 
+	if ( ( abs( $amount ) > cb_transactions_get_transfer_balance( $recipient_id ) ) &&
+		( $amount < 0 )
 	   ) {
 		$feedback["text"] = "{$recipient_name} doesn't have enough Confetti Bits for that.";
 		$feedback["type"] = "warning";
@@ -214,7 +214,7 @@ function cb_ajax_new_transactions() {
 		die();
 	}
 
-	if ( ( $amount + $total_today ) > 20 ) { 
+	if ( ( $amount + $total_today ) > 20 ) {
 		$feedback["text"] = "Transaction not sent. This would put you over the 20 Confetti Bits per diem limit. Your counter will reset tomorrow!";
 		$feedback["type"] = "warning";
 		echo json_encode($feedback);

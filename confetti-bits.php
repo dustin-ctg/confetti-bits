@@ -90,8 +90,8 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		 * @param string $key Key to check the set status for.
 		 *
 		 * @return bool
-		 * 
-		 * @package ConfettiBits
+		 *
+		 * @package Core
 		 * @since 2.3.0
 		 */
 		public function __isset( $key ) {
@@ -103,12 +103,12 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		 * @param string $key Key to return the value for.
 		 *
 		 * @return mixed
-		 * 
-		 * @package ConfettiBits
+		 *
+		 * @package Core
 		 * @since 2.3.0
 		 */
 		public function __get( $key ) {
-			return isset( $this->data[ $key ] ) ? $this->data[ $key ] : null; 
+			return isset( $this->data[ $key ] ) ? $this->data[ $key ] : null;
 		}
 
 		/**
@@ -116,20 +116,20 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		 *
 		 * @param string $key   Key to set a value for.
 		 * @param mixed  $value Value to set.
-		 * 
-		 * @package ConfettiBits
+		 *
+		 * @package Core
 		 * @since 2.3.0
 		 */
 		public function __set( $key, $value ) {
-			$this->data[ $key ] = $value; 
+			$this->data[ $key ] = $value;
 		}
 
 		/**
 		 * Magic method for unsetting ConfettiBits variables.
 		 *
 		 * @param string $key Key to unset a value for.
-		 * 
-		 * @package ConfettiBits
+		 *
+		 * @package Core
 		 * @since 2.3.0
 		 */
 		public function __unset( $key ) {
@@ -156,7 +156,7 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		/**
 		 * Define constants.
 		 *
-		 * @package ConfettiBits
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		private function define_constants() {
@@ -184,14 +184,14 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 			if ( ! defined( 'CONFETTI_BITS_PLUGIN_PATH' ) ) {
 				$this->define( 'CONFETTI_BITS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 			}
-			
+
 			if ( ! defined( 'CONFETTI_BITS_PLUGIN_URL' ) ) {
 				$this->define( 'CONFETTI_BITS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 			}
 
 			$this->plugin_dir = trailingslashit( constant( 'CONFETTI_BITS_PLUGIN_PATH' ) );
 			$this->plugin_url = trailingslashit( constant( 'CONFETTI_BITS_PLUGIN_URL' ) );
-			
+
 		}
 
 		/**
@@ -206,7 +206,7 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		/**
 		 * Include required files.
 		 *
-		 * @package ConfettiBits
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function includes() {
@@ -232,7 +232,7 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		 *
 		 * Globals are accessible via Confetti_Bits()->{$global_name}.
 		 *
-		 * @package ConfettiBits
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		private function setup_globals() {
@@ -250,7 +250,7 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		/**
 		 * This method is passed to spl_autoload_register to load classes on demand.
 		 *
-		 * @package ConfettiBits
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function load_components( $class ) {
@@ -303,8 +303,8 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		 * Get the plugin url.
 		 *
 		 * @return string The plugin url.
-		 * 
-		 * @package ConfettiBits
+		 *
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function plugin_url() {
@@ -315,8 +315,8 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		 * Get the plugin path.
 		 *
 		 * @return string The plugin path.
-		 * 
-		 * @package ConfettiBits
+		 *
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function plugin_path() {
@@ -327,8 +327,8 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 		 * Load the plugin text domain for translation.
 		 *
 		 * @return void
-		 * 
-		 * @package ConfettiBits
+		 *
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function load_plugin_textdomain() {
@@ -345,8 +345,8 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 	 * The main function responsible for returning the one true Confetti_Bits
 	 *
 	 * @return Confetti_Bits
-	 * 
-	 * @package ConfettiBits
+	 *
+	 * @package Core
 	 * @since 1.0.0
 	 */
 	function Confetti_Bits() {
@@ -383,10 +383,10 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 
 	/**
 	 * Init the plugin.
-	 * 
+	 *
 	 * @return void
-	 * 
-	 * @package ConfettiBits
+	 *
+	 * @package Core
 	 * @since 1.0.0
 	 */
 	function cb_plugin_init() {
@@ -406,5 +406,5 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 	}
 
 	add_action( 'plugins_loaded', 'cb_plugin_init', 9 );
-	
+
 }

@@ -4,8 +4,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * A component that allows certain users to schedule spot bonuses.
- * 
- * @package ConfettiBits\Transactions
+ *
+ * @package Transactions
  * @since 1.0.0
  */
 class CB_Transactions_Spot_Bonus {
@@ -13,42 +13,42 @@ class CB_Transactions_Spot_Bonus {
 
 	/**
 	 * Last recorded Transaction ID in the database.
-	 * 
+	 *
 	 * @var int
 	 */
-	public static $last_inserted_id; 
+	public static $last_inserted_id;
 
 	/**
 	 * The Transaction ID.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $id;
 
 	/**
 	 * The ID of the user sending the Confetti Bits.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $sender_id;
 
 	/**
 	 * The ID of the user receiving the Confetti Bits.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $recipient_id;
 
 	/**
 	 * The date of the spot bonus.
-	 * 
+	 *
 	 * @var datetime
 	 */
 	public $spot_bonus_date;
-	
+
 	/**
 	 * The ID of the associated transaction.
-	 * 
+	 *
 	 * @var int
 	 */
 	public $transaction_id;
@@ -99,7 +99,7 @@ class CB_Transactions_Spot_Bonus {
 			}
 
 			$retval = $this->id;
-			
+
 		}
 
 		return $retval;
@@ -107,11 +107,11 @@ class CB_Transactions_Spot_Bonus {
 
 	/**
 	 * Populates a spot bonus object with data when given an ID.
-	 * 
+	 *
 	 * @param int $id The ID of the spot bonus to fetch.
 	 */
 	public function populate( $id ) {
-		
+
 		global $wpdb;
 		$spot_bonus = $this->get_spot_bonuses([ 'where' => ['id' => $id ] ]);
 
@@ -134,7 +134,7 @@ class CB_Transactions_Spot_Bonus {
 
 	/**
 	 * Deletes a spot bonus entry from the database.
-	 * 
+	 *
 	 * @param array $args An associative array of arguments that gets passed
 	 * 					  to self::get_query_clauses for formatting. Accepts
 	 * 					  any property of a CB_Transactions_Transaction object.
@@ -156,7 +156,7 @@ class CB_Transactions_Spot_Bonus {
 	 *                            CB_Transactions_Transaction object.
 	 * @param array $where_format See {@link wpdb::insert()}.
 	 * @return int|false The number of rows updated, or false on error.
-	 * 
+	 *
 	 * @since 2.3.0
 	 */
 	protected static function _delete( $where = [], $where_format = [] ) {
@@ -172,29 +172,29 @@ class CB_Transactions_Spot_Bonus {
 
 	/**
 	 * Gets spot bonuses from the database.
-	 * 
-	 * Pieces together an SQL query based on the given 
+	 *
+	 * Pieces together an SQL query based on the given
 	 * arguments.
-	 * 
+	 *
 	 * @global $wpdb The WordPress database global.
-	 * 
-	 * @param array $args { 
-	 *     Optional. An array of arguments that get 
+	 *
+	 * @param array $args {
+	 *     Optional. An array of arguments that get
 	 *     merged with some defaults.
-	 * 
+	 *
 	 *     @type string|array $select Default '*'. Either a comma-separated list or array
 	 *                                of the columns to select.
 	 *     @type array $where Array of key => value pairs that get passed to an internal
 	 * 						  method. @see CB_Transactions_Spot_Bonus::get_where_sql()
 	 *     @type array $orderby Array of specific key => value pairs that determine
-	 * 							the ORDER BY clause. 
+	 * 							the ORDER BY clause.
 	 * 							@see CB_Transactions_Spot_Bonus::get_orderby_sql()
 	 *     @type string $groupby A string that determines whether the query should be
 	 * 							 grouped by a specific column.
-	 *     @type array $pagination An array of specific key => value pairs that 
+	 *     @type array $pagination An array of specific key => value pairs that
 	 * 							   determine the LIMIT clause.
 	 * }
-	 * 
+	 *
 	 * @return array An associative array of spot bonus data.
 	 */
 	public function get_spot_bonuses( $args = [] ) {
@@ -222,7 +222,7 @@ class CB_Transactions_Spot_Bonus {
 		return $wpdb->get_results( $sql, "ARRAY_A" );
 
 	}
-	
+
 	/**
 	 * Update spot bonus entry in the database.
 	 * @param array $data Array of spot bonus data to update, passed to
@@ -285,19 +285,19 @@ class CB_Transactions_Spot_Bonus {
 
 	/**
 	 * Get Orderby SQL.
-	 * 
+	 *
 	 * Checks against the columns available and order
 	 * arguments, then spits out usable SQL if everything
 	 * looks okay.
-	 * 
-	 * @param array $args { 
+	 *
+	 * @param array $args {
 	 *     Optional. An array of arguments.
-	 *     
+	 *
 	 *     @type string $column Default 'id'. The column to order by.
 	 *     @type string $order Default 'DESC'. The order of the items.
 	 * }
-	 * 
-	 * @return string The ORDER BY clause of an SQL query, or 
+	 *
+	 * @return string The ORDER BY clause of an SQL query, or
 	 * 				  nothing if the args are empty or malformed.
 	 */
 	public static function get_orderby_sql( $args = [] ) {
@@ -335,14 +335,14 @@ class CB_Transactions_Spot_Bonus {
 	 * Used by CB_Transactions_Spot_Bonus::get_spot_bonuses() to create its LIMIT clause.
 	 *
 	 *
-	 * @param	array	$args	Array consisting of 
-	 * 							the page number and items per page. { 
+	 * @param	array	$args	Array consisting of
+	 * 							the page number and items per page. {
 	 * 			@type	int		$page		page number
 	 * 			@type	int		$per_page	items to return
 	 * }
-	 * 
+	 *
 	 * @return string $retval LIMIT clause.
-	 * 
+	 *
 	 */
 	protected static function get_paged_sql( $args = array() ) {
 
@@ -361,10 +361,10 @@ class CB_Transactions_Spot_Bonus {
 
 	/**
 	 * Assembles a date query clause for an SQL WHERE statement.
-	 * 
+	 *
 	 * @see CB_Core_Date_Query()
-	 * 
-	 * @package ConfettiBits\Transactions
+	 *
+	 * @package Transactions
 	 * @since 2.3.0
 	 */
 	public static function get_date_query_sql( $date_query = array() ) {
@@ -384,18 +384,18 @@ class CB_Transactions_Spot_Bonus {
 
 	/**
 	 * Assembles the SQL WHERE clause.
-	 * 
-	 * @param array $args { 
+	 *
+	 * @param array $args {
 	 *     An associative array of arguments. All optional.
-	 * 
+	 *
 	 *     @type int $id One or more spot bonus IDs.
 	 *     @type int $sender_id One or more sender IDs.
 	 *     @type string $date_query A date query to send to CB_Transactions_Spot_Bonus::get_date_query_sql
 	 * }
-	 * 
+	 *
 	 * @return string The WHERE clause.
-	 * 
-	 * @package ConfettiBits\Transactions
+	 *
+	 * @package Transactions
 	 * @since 1.0.0
 	 */
 	protected static function get_where_sql( $args = [] ) {
@@ -417,7 +417,7 @@ class CB_Transactions_Spot_Bonus {
 			$recipient_id_in                  = implode( ',', wp_parse_id_list( $args['recipient_id'] ) );
 			$where_conditions['recipient_id'] = "recipient_id IN ({$recipient_id_in})";
 		}
-		
+
 		if ( ! empty( $args['transaction_id'] ) ) {
 			$transaction_id_in = implode(',', wp_parse_id_list( $args['transaction_id'] ) );
 			$where_conditions['transaction_id'] = "transaction_id IN ({$transaction_id_in})";
@@ -428,8 +428,8 @@ class CB_Transactions_Spot_Bonus {
 		}
 
 		if ( ! empty( $where_conditions ) ) {
-			$where = !empty( $args['or'] ) ? 
-				'WHERE ' . implode( ' OR ', $where_conditions ) 
+			$where = !empty( $args['or'] ) ?
+				'WHERE ' . implode( ' OR ', $where_conditions )
 				: 'WHERE ' . implode( ' AND ', $where_conditions );
 		}
 
@@ -473,7 +473,7 @@ class CB_Transactions_Spot_Bonus {
 	 *
 	 *
 	 * @param array $args Associative array of filter arguments.
-	 *                    
+	 *
 	 * @return array Associative array of 'data' and 'format' args.
 	 */
 	protected static function get_query_clauses( $args = [] ) {
@@ -501,7 +501,7 @@ class CB_Transactions_Spot_Bonus {
 			$where_clauses['data']['spot_bonus_date'] = $args['spot_bonus_date'];
 			$where_clauses['format'][]               = '%s';
 		}
-		
+
 		if ( ! empty( $args['transaction_id'] ) ) {
 			$where_clauses['data']['transaction_id'] = $args['transaction_id'];
 			$where_clauses['format'][] = '%d';

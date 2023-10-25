@@ -4,10 +4,10 @@ defined('ABSPATH') || exit;
 
 /**
  * CB Requests Nav
- * 
+ *
  * Outputs the requests nav.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_nav() {
@@ -16,17 +16,17 @@ function cb_requests_nav() {
 
 /**
  * CB Requests Format Nav Data
- * 
+ *
  * Formats the nav data for the requests component.
- * We need a pretty complicated set of arguments for 
+ * We need a pretty complicated set of arguments for
  * cb_templates_get_nav() and cb_templates_get_nav_items()
  * and this helps us achieve that in a structured way.
- * 
+ *
  * @param array $items A collection of key => value pairs
- * 
+ *
  * @return array The list of formatted nav data.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_format_nav_data( $component = '', $items = array() ) {
@@ -55,12 +55,12 @@ function cb_requests_format_nav_data( $component = '', $items = array() ) {
 
 /**
  * CB Requests Get Nav
- * 
+ *
  * Returns the nav for the requests filtering system.
- * 
+ *
  * @return string The nav markup.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_get_nav() {
@@ -79,10 +79,10 @@ function cb_requests_get_nav() {
 
 /**
  * CB Requests Admin Nav
- * 
+ *
  * Outputs the requests admin nav.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_admin_nav() {
@@ -91,19 +91,19 @@ function cb_requests_admin_nav() {
 
 /**
  * CB Requests Admin Get Nav
- * 
+ *
  * Returns the nav for the requests admin filtering system.
- * 
+ *
  * @return string The nav markup.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_admin_get_nav() {
 
 	$items = cb_requests_format_nav_data(
 		'requests_admin',
-		array( 
+		array(
 			'New' => 'new',
 			'Approved' => 'approved',
 			'Denied' => 'denied',
@@ -117,10 +117,10 @@ function cb_requests_admin_get_nav() {
 
 /**
  * Gets markup for the request items form.
- * 
+ *
  * @return string The formatted markup.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @subpackage Templates
  * @since 2.3.0
  */
@@ -143,8 +143,8 @@ function cb_requests_get_request_items_form() {
 
 /**
  * Outputs markup for request items form.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @subpackage Templates
  * @since 2.3.0
  */
@@ -154,15 +154,15 @@ function cb_request_items_form() {
 
 /**
  * Gets markup for the request items form.
- * 
+ *
  * @return string The formatted markup.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @subpackage Templates
  * @since 2.3.0
  */
 function cb_requests_get_requests_form() {
-	
+
 	$items = cb_requests_get_request_items([
 		'select' => 'id, item_name, amount',
 		'pagination' => [
@@ -171,11 +171,11 @@ function cb_requests_get_requests_form() {
 		]
 	]);
 	$options = [];
-	
+
 	foreach ( $items as $item ) {
 		$options["{$item['item_name']} - {$item['amount']}"] = ['value' => $item['id'] ];
 	}
-	
+
 	return cb_templates_get_form_module([
 		'method' => 'POST',
 		'component' => 'requests',
@@ -195,8 +195,8 @@ function cb_requests_get_requests_form() {
 
 /**
  * Outputs markup for request items form.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @subpackage Templates
  * @since 2.3.0
  */

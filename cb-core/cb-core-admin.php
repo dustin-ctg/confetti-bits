@@ -1,8 +1,8 @@
-<?php 
+<?php
 /**
  * CB Core Admin
- * 
- * This file will register fields for admin settings, using 
+ *
+ * This file will register fields for admin settings, using
  * some of the following actions associated with
  * BuddyBoss Platform:
  * - bp_admin_setting_general_register_fields
@@ -14,23 +14,23 @@
  * - bp_admin_setting_friends_register_fields
  * - bp_admin_setting_invites_register_fields
  * - bp_admin_setting_search_register_fields
- * We're going to have our own little box for these settings. 
- * 
- * @package ConfettiBits\Core
+ * We're going to have our own little box for these settings.
+ *
+ * @package Core
  * @since 1.0.0
  */
 
 /**
  * CB Core Admin Settings General Register Fields
- * 
- * Registers our settings fields in the general context of 
+ *
+ * Registers our settings fields in the general context of
  * the BuddyBoss settings page environment.
  * Key part of this is the "bp_admin_setting_{ component }_register_fields"
  * `add_section` is a wordpress method to create the settings section. It requires a setting object.
  * `add_field` is a wordpress method that creates a field within the section we just made.
  * `bp_admin_setting_{ component }_register_fields` handles the rest.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_core_admin_setting_general_register_fields( $setting ) {
@@ -84,8 +84,8 @@ function cb_core_admin_setting_general_register_fields( $setting ) {
 
 		foreach ( $current_components as $name => $labels ) {
 			$setting->add_checkbox_field(
-				"cb_components[{$name}]", 
-				__( 'Enable ' . $labels['title'], 'confetti-bits' ), 
+				"cb_components[{$name}]",
+				__( 'Enable ' . $labels['title'], 'confetti-bits' ),
 				array(
 					'input_name'		=> "cb_components[{$name}]",
 					'input_id'			=> "cb_components[{$name}]",
@@ -184,7 +184,7 @@ function cb_core_admin_settings_handler() {
 }
 //add_action( 'bp_admin_init', 'cb_core_admin_settings_handler' );
 */
-function cb_core_admin_components_settings() { 
+function cb_core_admin_components_settings() {
 	cb_admin_components_options();
 }
 
@@ -212,7 +212,7 @@ function cb_admin_components_options() {
 		$disabled_attr = ( isset( $required_components[$name] ) ) ? 'disabled' : '';
 ?>
 
-<input id="<?php echo esc_attr( "cb_components[$name]" ) ?>" 
+<input id="<?php echo esc_attr( "cb_components[$name]" ) ?>"
 	   name="<?php echo esc_attr( "cb_components[$name]" ) ?>" type="checkbox"
 	   value="1"
 	   <?php echo $disabled_attr; ?>
@@ -237,12 +237,12 @@ function cb_admin_components_options() {
 
 /**
  * Sets some useful globals for specialized roles for later use.
- * 
+ *
  * The idea here is that once these globals are set, we can access
  * them to grant certain permissions to certain roles, which will
  * help us determine who can see what in our template loop.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_set_role_globals() {
@@ -329,8 +329,8 @@ function cb_core_set_role_globals() {
 
 /**
  * Grants all capabilities to administrator users.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_add_admin_caps() {
@@ -363,12 +363,12 @@ function cb_core_add_admin_caps() {
 
 /**
  * An alias for current_user_can()
- * 
+ *
  * @param string $cap The capability to check for.
- * 
+ *
  * @return bool Whether the user has the capability.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_current_user_can( $cap = '' ) {
@@ -377,12 +377,12 @@ function cb_core_current_user_can( $cap = '' ) {
 
 /**
  * Checks whether a user is an admin of the given component.
- * 
+ *
  * @param string $component The component to check for.
- * 
+ *
  * @return bool Whether the user is an admin for the component.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_is_component_admin( $component = '' ) {
@@ -391,21 +391,21 @@ function cb_core_is_component_admin( $component = '' ) {
 
 /**
  * Checks whether user has certain administrative privileges.
- * 
+ *
  * These include:
  * 		- cb_participation_admin
  * 		- cb_events_admin
  * 		- cb_requests_admin
- * 
+ *
  * It's important to note that the cb_admin capability
  * is shared by both the cb_leadership role as well as
  * the cb_executive role, so checking for this capability
  * will return true for both of those roles, along with
  * users that have the 'administrator' capability.
- * 
+ *
  * @return bool Whether the current user is a cb_admin.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_is_user_admin( $user_id = 0 ) {
@@ -414,12 +414,12 @@ function cb_is_user_admin( $user_id = 0 ) {
 
 /**
  * Checks to see if the user is an executive user.
- * 
+ *
  * This role carries specific, high-level privileges
  * in certain areas of the application, so it exists
  * as its own separate capability.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.3.0
  */
 function cb_is_user_executive() {
@@ -428,18 +428,18 @@ function cb_is_user_executive() {
 
 /**
  * Checks if the user has site admin privileges.
- * 
+ *
  * Checks whether a user has administrative privileges.
  * Also, @see cb_core_admin_is_user_site_admin(), because
- * we're deprecating this for the sake of our API and 
+ * we're deprecating this for the sake of our API and
  * sanity (sorry besties).
- * 
+ *
  * @TODO: Figure out a better dev environment setup; this
  * isn't particularly good to use as a feature-blocker.
- * 
+ *
  * @return bool Whether a user has administrative privileges.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_is_user_site_admin( $user_id = 0 ) {
@@ -448,15 +448,15 @@ function cb_is_user_site_admin( $user_id = 0 ) {
 
 /**
  * CB Core Admin Is User Site Admin
- * 
+ *
  * Checks whether a user has administrative privileges.
- * 
+ *
  * @TODO: Figure out a better dev environment setup; this
  * isn't particularly good to use as a feature-blocker.
- * 
+ *
  * @return bool Whether a user has administrative privileges.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_admin_is_user_site_admin( $user_id = 0 ) {
@@ -468,15 +468,15 @@ function cb_core_admin_is_user_site_admin( $user_id = 0 ) {
 	$user = new WP_User($user_id);
 
 	return $user->has_cap('administrator');
-	
+
 }
 
 /**
  * Checks whether a user has the cb_admin capability.
- * 
+ *
  * @return bool Whether a user has cb_admin privileges.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.1
  */
 function cb_core_admin_is_user_admin( $user_id = 0 ) {
@@ -488,19 +488,19 @@ function cb_core_admin_is_user_admin( $user_id = 0 ) {
 	$user = new WP_User($user_id);
 
 	return $user->has_cap('cb_admin');
-	
+
 }
 
 /**
  * Checks to see if the user is a participation admin.
- * 
- * Checks whether a user has administrative privileges over the 
+ *
+ * Checks whether a user has administrative privileges over the
  * participation component. These privileges are granted by
  * assigning a role on the Edit User admin page.
- * 
+ *
  * @return bool Whether a user is a participation admin.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_is_user_participation_admin() {
@@ -509,14 +509,14 @@ function cb_is_user_participation_admin() {
 
 /**
  * Checks to see if the user is a requests admin.
- * 
- * Checks whether a user has administrative privileges over the 
+ *
+ * Checks whether a user has administrative privileges over the
  * requests component. These privileges are granted by
  * assigning a role on the Edit User admin page.
- * 
+ *
  * @return bool Whether a user is a requests admin.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_is_user_requests_admin() {
@@ -525,14 +525,14 @@ function cb_is_user_requests_admin() {
 
 /**
  * Checks to see if the user is a staffing admin.
- * 
+ *
  * Checks whether a user has administrative privileges for
  * user moderation. These privileges are granted by
  * assigning a role on the Edit User admin page.
- * 
+ *
  * @return bool Whether a user is a staffing admin.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_is_user_staffing_admin() {
@@ -541,21 +541,21 @@ function cb_is_user_staffing_admin() {
 
 /**
  * Checks to see if the user is an events admin.
- * 
- * Checks whether a user has administrative privileges over the 
+ *
+ * Checks whether a user has administrative privileges over the
  * events component. These privileges are granted by
  * assigning a role on the Edit User admin page.
- * 
+ *
  * @return bool Whether a user is an events admin.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_is_user_events_admin() {
 	return cb_core_is_component_admin('events');
 }
 
-/** 
+/**
  * Let Editors manage users, and run this only once.
  * Version: 1.0.0
  */
@@ -578,14 +578,14 @@ function editor_manage_users() {
 
 		update_option( 'give_editor_caps', 'done' );
 
-	} 
+	}
 }
 add_action( 'init', 'editor_manage_users' );
 
 /**
  * Remove privileged menus from the admin area.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.2.0
  */
 function get_rid_of_the_menus() {

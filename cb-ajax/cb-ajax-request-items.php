@@ -1,17 +1,17 @@
-<?php 
+<?php
 // Exit if accessed directly.
 defined('ABSPATH') || exit;
 
-/** 
+/**
  * Handles HTTP PATCH request_items to update request_items entries.
- * 
- * Processes standard and bulk request_items updates from an 
+ *
+ * Processes standard and bulk request_items updates from an
  * HTTP PATCH request.
- * 
- * @see cb_get_patch_data() for more info on how we handle PATCH 
+ *
+ * @see cb_get_patch_data() for more info on how we handle PATCH
  * request_items.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_ajax_update_request_items() {
@@ -23,7 +23,7 @@ function cb_ajax_update_request_items() {
 	$_PATCH = cb_get_patch_data();
 	$feedback = ['text' => '','type' => 'error'];
 
-	if ( !isset( 
+	if ( !isset(
 		$_PATCH['request_item_id'],
 		$_PATCH['api_key'],
 	) ) {
@@ -55,7 +55,7 @@ function cb_ajax_update_request_items() {
 	];
 
 	$where_args = ['id' => $request_item_id];
-	
+
 	$updated = $item->update($update_args, $where_args);
 
 	if ( ! is_int( $updated ) ) {
@@ -77,10 +77,10 @@ function cb_ajax_update_request_items() {
 
 /**
  * CB Ajax New Request Items
- * 
+ *
  * We'll use this to process the new request_items entries sent via ajax.
- * 
- * @package ConfettiBits\Request_items
+ *
+ * @package Request_items
  * @since 2.2.0
  */
 function cb_ajax_new_request_items() {
@@ -91,7 +91,7 @@ function cb_ajax_new_request_items() {
 
 	$feedback = ['type' => 'error', 'text' => ''];
 
-	if ( !isset( 
+	if ( !isset(
 		$_POST['item_name'],
 		$_POST['amount'],
 		$_POST['api_key'],
@@ -108,7 +108,7 @@ function cb_ajax_new_request_items() {
 	}
 
 	$item_name = sanitize_text_field($_POST['item_name']);
-	$item_desc = !empty($_POST['item_desc']) ? 
+	$item_desc = !empty($_POST['item_desc']) ?
 		sanitize_text_field( $_POST['item_desc'] )
 		: '';
 	$amount = intval( $_POST['amount'] );
@@ -142,18 +142,18 @@ function cb_ajax_new_request_items() {
 
 /**
  * Deletes request items from the request items table.
- * 
- * @param array $items { 
+ *
+ * @param array $items {
  *     An array of arguments.
- * 
+ *
  *     @type int|array $request_item_id A comma-separated list (or array)
  * 					   of IDs for the request item(s) to remove. Required.
- * 
+ *
  * }
- * 
+ *
  * @return int The number of rows affected, or false on failure.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_ajax_delete_request_items() {
@@ -170,19 +170,19 @@ function cb_ajax_delete_request_items() {
 		echo json_encode($feedback);
 		die();
 	}
-	
+
 	if ( empty($_DELETE['request_item_id'] ) ) {
 		$feedback['text'] = "Invalid or missing item id.";
 		echo json_encode($feedback);
 		die();
 	}
-	
+
 	$request_item_id = intval( $_DELETE['request_item_id'] );
-	
+
 
 	$item = new CB_Requests_Request_Item($request_item_id);
 	$delete = $item->delete([ 'id' => $request_item_id ]);
-			
+
 	if ( is_int( $delete ) ) {
 		$feedback['type'] = 'success';
 		$feedback['text'] = 'Item removed.';
@@ -198,11 +198,11 @@ function cb_ajax_delete_request_items() {
 
 /**
  * CB AJAX Get Request_items
- * 
- * Our REST API handler for the endpoint at 
+ *
+ * Our REST API handler for the endpoint at
  * "/wp-json/cb-ajax/v1/request_items/get"
- * 
- * @package ConfettiBits\Request_items
+ *
+ * @package Request_items
  * @since 2.3.0
  */
 function cb_ajax_get_request_items() {
@@ -262,8 +262,8 @@ function cb_ajax_get_request_items() {
 
 /**
  * Adds 5 request_items entries for testing purposes.
- * 
- * @package ConfettiBits\Request_items
+ *
+ * @package Request_items
  * @since 2.3.0
  */
 function cb_request_items_add_filler_data() {
@@ -346,7 +346,7 @@ function cb_request_items_add_filler_data() {
 		],
 	];
 	foreach ( $entries as $entry ) {
-		cb_request_items_new_request_items($entry);	
+		cb_request_items_new_request_items($entry);
 	}
 
 }

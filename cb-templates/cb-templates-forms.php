@@ -9,7 +9,7 @@ defined('ABSPATH') || exit;
  *
  * @TODO: Clean this up and start deprecating some stuff.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.1.0
  */
 
@@ -32,7 +32,7 @@ defined('ABSPATH') || exit;
  *
  * }
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_templates_get_text_input( $args = [] ) {
@@ -96,7 +96,7 @@ function cb_templates_get_text_input( $args = [] ) {
  * @param 	array 	$args	The array of arguments that get passed to the getter.
  * 							It would be wise to check what all is needed.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_text_input( $args = [] ) {
@@ -118,7 +118,7 @@ function cb_text_input( $args = [] ) {
  * 		Required.
  * 		@see cb_select_options()
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_templates_get_select_input($args = array())
@@ -172,7 +172,7 @@ function cb_templates_get_select_input($args = array())
  *
  * @see cb_select_input()
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_templates_get_select_options( $args = [] ) {
@@ -208,7 +208,7 @@ function cb_templates_get_select_options( $args = [] ) {
  *
  * @see cb_get_select_input()
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_select_input( $args = [] ) {
@@ -230,7 +230,7 @@ function cb_select_input( $args = [] ) {
  * @type bool 		$disabled Whether the element is disabled. Default false. Optional.
  * @type bool 		$readonly Whether the element is readonly. Default false. Optional.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_templates_get_number_input( $args = [] ) {
@@ -288,7 +288,7 @@ function cb_templates_get_number_input( $args = [] ) {
  * @param 	array 	$args	The array of arguments that get passed to the getter.
  * 							It would be wise to check what all is needed.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_number_input( $args = [] ) {
@@ -316,7 +316,7 @@ function cb_number_input( $args = [] ) {
  * 									Should be compliant with your Wordpress configuration.
  * 									Default empty.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.1.0
  */
 function cb_templates_get_file_input( $args = [] ) {
@@ -377,7 +377,7 @@ function cb_templates_get_file_input( $args = [] ) {
  * @param 	array 	$args	The array of arguments that get passed to the getter.
  * 							It would be wise to check what all is needed.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.1.0
  */
 function cb_file_input( $args = [] ) {
@@ -396,7 +396,7 @@ function cb_file_input( $args = [] ) {
  * 		@type	value	$value		Value for the submit input. Default "Submit".
  * 		@type	bool	$disabled	Whether or not the field is disabled. Default false.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_templates_get_submit_input( $args = [] ) {
@@ -423,7 +423,7 @@ function cb_templates_get_submit_input( $args = [] ) {
 		value='{$r['value']}'
 		{$name}
 		{$id}
-		{$disabled} 
+		{$disabled}
 		{$custom_attrs} />";
 
 	return $markup;
@@ -438,7 +438,7 @@ function cb_templates_get_submit_input( $args = [] ) {
  * @param 	array 	$args	The array of arguments that get passed to the getter.
  * 							It would be wise to check what all is needed.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.1.0
  */
 function cb_submit_input( $args = [] ) {
@@ -456,7 +456,7 @@ function cb_submit_input( $args = [] ) {
  *
  * @param array $args An array of arguments for the input. Name, id, value, disabled, multiple.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_templates_get_hidden_input( $args = [] ) {
@@ -493,7 +493,7 @@ function cb_templates_get_hidden_input( $args = [] ) {
  * @param 	array 	$args	The array of arguments that get passed to the getter.
  * 							It would be wise to check what all is needed.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_hidden_input( $args = [] ) {
@@ -517,7 +517,7 @@ function cb_hidden_input( $args = [] ) {
  *
  * }
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.2.0
  */
 function cb_templates_get_checkbox_input( $args = [] ) {
@@ -578,7 +578,7 @@ function cb_templates_get_checkbox_input( $args = [] ) {
  * @param 	array 	$args	The array of arguments that get passed to the getter.
  * 							It would be wise to check what all is needed.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.1.0
  */
 function cb_checkbox_input( $args = [] ) {
@@ -592,7 +592,7 @@ function cb_checkbox_input( $args = [] ) {
  *
  * @param array $args An array of arguments for the input. Name, id, value, disabled, multiple, etc.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.1.0
  */
 function cb_templates_get_dropzone_input( $args = [] ) {
@@ -644,7 +644,7 @@ function cb_templates_get_dropzone_input( $args = [] ) {
  * @param 	array 	$args	The array of arguments that get passed to the getter.
  * 							It would be wise to check what all is needed.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.1.0
  */
 function cb_dropzone_input( $args = [] ) {
@@ -654,7 +654,7 @@ function cb_dropzone_input( $args = [] ) {
 /**
  * Alias for cb_templates_get_toggle_switch_input().
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.2.0
  */
 function cb_templates_get_toggle_switch( $args = [])
@@ -678,7 +678,7 @@ function cb_templates_get_toggle_switch( $args = [])
  *
  * @return string The formatted markup.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 3.0.0
  */
 function cb_templates_get_toggle_switch_input($args = [])
@@ -728,7 +728,7 @@ function cb_templates_get_toggle_switch_input($args = [])
  * 		@type	bool	$checked	Whether the field is checked or not.
  * 		@type	bool	$disabled	Whether the field is disabled or not.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.2.0
  */
 function cb_toggle_switch($args = [])
@@ -743,7 +743,7 @@ function cb_toggle_switch($args = [])
  *
  * @return string The formatted markup.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_templates_get_form($args = array())
@@ -791,7 +791,7 @@ function cb_templates_get_form($args = array())
  *
  * @see cb_templates_get_form()
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_form($args = [])
@@ -821,7 +821,7 @@ function cb_form($args = [])
  *
  * @return string The formatted markup of the form module.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_templates_get_form_module($args = [])
@@ -869,19 +869,19 @@ function cb_templates_get_form_module($args = [])
 
 /**
  * Returns formatted markup for a form button. Note that this
- * should not be used as a submit button; we typically use 
+ * should not be used as a submit button; we typically use
  * input[type=submit] for that functionality. Here we'll
  * default to button[type=button] to ensure that we can have it
  * do what we want and not make the app have a heart attack.
- * 
- * @param array $args { 
+ *
+ * @param array $args {
  * 		An associative array of arguments.
- * 		Accepts various attributes of button elements, with 
+ * 		Accepts various attributes of button elements, with
  * 		support for your own custom attributes as well.
  * }
  * @return string The formatted markup.
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_templates_get_form_button( $args = [] ) {
@@ -914,7 +914,7 @@ function cb_templates_get_form_button( $args = [] ) {
  *     @see cb_templates_get_form_module()
  * }
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 2.3.0
  */
 function cb_form_module($args = [])
@@ -975,7 +975,7 @@ function cb_templates_get_form_output($args = [])
 	]) : '';
 	$content .= $r['modal'] ? '</div><div class="modal-body">' : '';
 	if (!empty($r['content'])) {
-		$content .= is_array($r['content']) ? 
+		$content .= is_array($r['content']) ?
 			sprintf("<p class='%s cb-form-content'>%s</p>", "cb-{$r['component']}-form-content", $r['content'])
 			: "<p class='cb-{$r['component']}-form-content cb-form-content'>{$r['content']}</p>";
 	}
@@ -1027,23 +1027,23 @@ function cb_templates_get_form_output($args = [])
 
 /**
  * A recursive helper function to help us process complex content trees.
- * 
+ *
  * It'll recurse through each node that's labeled as a 'new_node' and return
  * a string of content that's ready to echo out into the world.
- * 
- * @param array $args { 
+ *
+ * @param array $args {
  * 		An associative array of arguments. It expects a few things here:
  * 			@type array $new_node A node to recurse into for processing.
- * 			@type array $node_content { 
+ * 			@type array $node_content {
  * 				A node with content to process. Expects something like the following:
  * 				@type string $type The type of content.
  * 				@type array $args An array of arguments to pass to the processing function.
  * 			}
  * }
- * 
+ *
  * @return string The glorious content.
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_templates_recursive_helper($node = []) {
@@ -1098,7 +1098,7 @@ function cb_templates_recursive_helper($node = []) {
  *
  * @return string The markup for the time picker input.
  *
- * @package ConfettiBits\Templates
+ * @package Templates
  * @since 3.0.0
  */
 function cb_templates_get_time_picker_input($args = [])
@@ -1152,10 +1152,10 @@ function cb_templates_get_time_picker_input($args = [])
 
 /**
  * Outputs markup for a time picker.
- * 
+ *
  * @see cb_templates_get_time_picker_input()
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_time_picker_input( $args = [] ) {
@@ -1164,37 +1164,37 @@ function cb_time_picker_input( $args = [] ) {
 
 /**
  * Gets markup for a date picker input.
- * 
- * @param array $args { 
+ *
+ * @param array $args {
  *   An associative array of arguments for the inputs.
- * 
+ *
  *     @type string			$label 			A label for the input.
- * 
+ *
  *     @type string			$name			The name attribute for the input. Required.
- * 
+ *
  *     @type string 		$placeholder	A placeholder date string.
  * 											Default current date, formatted 'm/d/Y'.
- * 
+ *
  *     @type string 		$value			A preset value for the input.
- * 
+ *
  *     @type bool 			$disabled 		Whether the input should be disabled by default.
  * 									  		Default false.
- * 
+ *
  *     @type bool 			$hidden 		Whether the input should be hidden by default.
  * 						  					Default false.
- * 
- *     @type bool 			$required 		Whether the input should be required by default. 
+ *
+ *     @type bool 			$required 		Whether the input should be required by default.
  * 									  		Default false.
- * 
+ *
  *     @type string|array	$classes 		An array of classes that will be added
  * 											to the container element.
  * 											Default ['cb-date-picker'].
- * 
+ *
  * }
- * 
+ *
  * @return string The formatted markup for the inputs.
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_templates_get_date_picker_input( $args = [] ) {
@@ -1243,23 +1243,23 @@ function cb_templates_get_date_picker_input( $args = [] ) {
 
 /**
  * Gets markup for both date and time inputs on one line.
- * 
- * @param array $args { 
+ *
+ * @param array $args {
  *   An associative array of arguments for the inputs.
- * 
- *     @type array $date { 
+ *
+ *     @type array $date {
  *         @see cb_templates_get_date_picker_input()
  *     }
- * 
- *     @type array $time { 
+ *
+ *     @type array $time {
  *         @see cb_templates_get_time_picker_input()
  *     }
- * 
+ *
  * }
- * 
+ *
  * @return string The formatted markup for the inputs.
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_templates_get_datetime_picker_input( $args = [] ) {
@@ -1296,10 +1296,10 @@ function cb_templates_get_datetime_picker_input( $args = [] ) {
 
 /**
  * Outputs markup for a datetime picker input.
- * 
+ *
  * @see cb_templates_get_datetime_picker_input()
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_datetime_picker( $args = [] ) {
@@ -1308,12 +1308,12 @@ function cb_datetime_picker( $args = [] ) {
 
 /**
  * Formats markup for a datetime-local input.
- * 
+ *
  * I cannot believe I didn't know this existed until so recently.
- * 
- * @param array $args { 
+ *
+ * @param array $args {
  *     An associative array of arguments.
- * 
+ *
  *     @type string $label A label for the input.
  *     @type string $name A name for the input.
  *     @type string $placeholder A placeholder for the input.
@@ -1322,12 +1322,12 @@ function cb_datetime_picker( $args = [] ) {
  *     @type bool $hidden Whether the input is hidden by default.
  *     @type bool $required Whether the input is required by default.
  *     @type array $classes An array of class selectors to give the input.
- * 
+ *
  * }
- * 
+ *
  * @return string The formatted markup.
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_templates_get_datetime_local_input( $args = [] ) {
@@ -1369,16 +1369,16 @@ function cb_templates_get_datetime_local_input( $args = [] ) {
 	return cb_templates_container([
 		'classes' => $r['classes'],
 		'output' => $content
-	]);	
+	]);
 
 }
 
 /**
  * Outputs markup for a datetime-local input.
- * 
+ *
  * @see cb_templates_get_datetime_local_input()
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_datetime_local_input( $args = [] ) {
@@ -1389,10 +1389,10 @@ function cb_datetime_local_input( $args = [] ) {
  * Outputs markup for an actually nice date input. Uses
  * Bootstrap styling and plugs in some custom data based on
  * arguments passed.
- * 
- * @param array $args { 
- * 		An optional array of arguments. 
- * } 
+ *
+ * @param array $args {
+ * 		An optional array of arguments.
+ * }
  */
 function cb_templates_get_date_input( $args = [] ) {
 
@@ -1409,10 +1409,10 @@ function cb_templates_get_date_input( $args = [] ) {
 	$component_prefix = "cb_{$r['component']}";
 	$with_dashes = str_replace('_', '-', $component_prefix);
 	$placeholder = esc_attr($r['placeholder']);
-	$readonly = $r['readonly'] ? 'readonly' : ''; 
-	$disabled = $r['disabled'] ? 'disabled' : ''; 
-	$required = $r['required'] ? 'required' : ''; 
-	$value = !empty($r['value']) ? 'value="' . cb_core_sanitize_string($r['value']) . '"' : ''; 
+	$readonly = $r['readonly'] ? 'readonly' : '';
+	$disabled = $r['disabled'] ? 'disabled' : '';
+	$required = $r['required'] ? 'required' : '';
+	$value = !empty($r['value']) ? 'value="' . cb_core_sanitize_string($r['value']) . '"' : '';
 	$label = !empty($r['label']) ? cb_core_sanitize_string($r['label']) : '';
 
 	$input = cb_templates_get_text_input([
@@ -1422,8 +1422,8 @@ function cb_templates_get_date_input( $args = [] ) {
 		'placeholder' => $placeholder
 	]);
 
-	// <input type='text' class='form-control' 
-	//	id='{$component_prefix}_calendar_date_input' 
+	// <input type='text' class='form-control'
+	//	id='{$component_prefix}_calendar_date_input'
 	//	name='{$component_prefix}_calendar_date_input' {$placeholder} readonly>
 
 	return "<div class='date-picker-container position-relative'>
@@ -1466,8 +1466,8 @@ function cb_templates_get_date_input( $args = [] ) {
 
 /**
  * Outputs markup for a pretty date input.
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_date_input($args = []) {
@@ -1491,10 +1491,10 @@ function cb_templates_get_time_selector_input( $args = [] ) {
 	for ( $j = 0; $j <= 60; $j++ ) {
 		$minutes_options .= '<option value="' . ($j < 10 ? 0 : "") . $j . '"' . ($j === 0 ? " selected" : "") . '>' . ($j < 10 ? 0 : '') . $j . '</option>';
 	}
-	
+
 	$classes = ' class="' . implode(' ', array_merge( ['d-flex', 'my-2'], $r['container_classes'] ) ) . '"';
 	$ids = ["cb_{$r['component']}_time_selector_container", "cb_{$r['component']}_time_selector_hour", "cb_{$r['component']}_time_selector_minute", "cb_{$r['component']}_time_selector_meridiem" ];
-	
+
 	return sprintf('<div %s id="%s" style="gap:.25rem;">
       <select class="form-select" id="%s" >
 			%s
@@ -1511,7 +1511,7 @@ function cb_templates_get_time_selector_input( $args = [] ) {
 }
 
 function cb_time_selector_input( $args = [] ) {
-	
+
 	echo cb_templates_get_time_selector_input($args);
-	
+
 }

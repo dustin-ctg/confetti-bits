@@ -1,16 +1,16 @@
-<?php 
+<?php
 // Exit if accessed directly.
 defined('ABSPATH') || exit;
 
 /**
  * CB Core Install Events
- * 
+ *
  * Installs our events table on the database.
- * 
+ *
  * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
  * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_install_events() {
@@ -50,11 +50,11 @@ function cb_core_install_events() {
 
 /**
  * Installs our spot bonus table on the database.
- * 
+ *
  * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
  * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_install_spot_bonuses() {
@@ -82,13 +82,13 @@ function cb_core_install_spot_bonuses() {
 
 /**
  * CB Core Install Transactions
- * 
+ *
  * Installs our transactions table on the database.
- * 
+ *
  * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
  * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_core_install_transactions() {
@@ -135,13 +135,13 @@ function cb_core_install_transactions() {
 
 /**
  * CB Core Install Participation
- * 
+ *
  * Installs our transactions table on the database.
- * 
+ *
  * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
  * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.1.0
  */
 function cb_core_install_participation() {
@@ -185,18 +185,18 @@ function cb_core_install_participation() {
 			) {$charset_collate};";
 
 	dbDelta( $sql );
-	
+
 }
 
 /**
  * CB Core Install Contests
- * 
+ *
  * Installs our contests table on the database.
- * 
+ *
  * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
  * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_install_contests() {
@@ -225,13 +225,13 @@ function cb_core_install_contests() {
 
 /**
  * CB Core Install Request Items
- * 
+ *
  * Installs our request items table on the database.
- * 
+ *
  * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
  * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_install_request_items() {
@@ -261,13 +261,13 @@ function cb_core_install_request_items() {
 
 /**
  * CB Core Install Requests
- * 
+ *
  * Installs our requests table on the database.
- * 
+ *
  * @link https://developer.wordpress.org/reference/functions/dbdelta/ Uses dbDelta()
  * @link https://developer.wordpress.org/reference/classes/wpdb/ Also uses $wpdb
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_install_requests() {
@@ -307,30 +307,30 @@ function cb_core_install_requests() {
 
 /**
  * Put stuff here that you want to run before installation.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_core_prepare_install() {}
 
 /**
  * Installs all our tables on the database.
- * 
+ *
  * Also flushes the WordPress cache and rewrite rules
  * so that our pages still show up after plugins get updated.
- * 
+ *
  * @see cb_core_install_transactions()
  * @see cb_core_install_participation()
  * @see cb_core_install_events()
  * @see cb_core_install_contests()
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.0.0
  */
 function cb_core_install( $active_components = array() ) {
 
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	
+
 	cb_core_prepare_install();
 	cb_core_install_spot_bonuses();
 	cb_core_install_events();

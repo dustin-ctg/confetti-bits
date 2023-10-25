@@ -1,43 +1,43 @@
 <?php
 /**
  * Registers all Confetti Bits Notifications
- * 
- * There are a few methods in here that are inherited 
+ *
+ * There are a few methods in here that are inherited
  * from the parent class, where we can't really include
- * doc blocks without potentially breaking something 
- * by overriding those methods. 
- * 
+ * doc blocks without potentially breaking something
+ * by overriding those methods.
+ *
  * So we're going to document what you need for those here.
- * See BuddyBoss docs for more info. 
+ * See BuddyBoss docs for more info.
  * ({@link https://www.buddyboss.com/resources/dev-docs/web-development/migrating-custom-notifications-to-modern-notifications-api/})
- * 
- * 
- * 
+ *
+ *
+ *
  * For $this::register_notification_group():
- * 
+ *
  * @param string $group_key         Group key.
  * @param string $group_label       Group label.
  * @param string $group_admin_label Group admin label.
  * @param int    $priority          Priority of the group. Optional.
- * 
- * 
+ *
+ *
  * For $this::register_notification_type():
- * 
+ *
  * @param string $notification_type        Notification Type key.
  * @param string $notification_label       Notification label.
  * @param string $notification_admin_label Notification admin label.
  * @param string $notification_group       Notification group.
  * @param bool   $default                  Default status for enabled/disabled. Optional.
- * 
+ *
  * For $this::register_notification():
- * 
+ *
  * @param string $component         Component name.
  * @param string $component_action  Component action.
  * @param string $notification_type Notification Type key.
  * @param string $icon_class        Notification Small Icon.
 
  * For $this::register_email_type():
- * 
+ *
  * @param string $email_type        Type of email being sent.
  * @param array  $args              Email arguments.
  * @param string $notification_type Notification Type key.
@@ -51,13 +51,13 @@ if ( ! class_exists( 'BP_Core_Notification_Abstract' ) ) {
 
 /**
  * Formats Confetti Bits Notifications.
- * 
- * We use this in tandem with BuddyBoss Platform to give us 
+ *
+ * We use this in tandem with BuddyBoss Platform to give us
  * email, web, and push notifications. An absolute godsend,
- * this makes it a million times easier to do that stuff, so 
+ * this makes it a million times easier to do that stuff, so
  * we can focus on the actual functionality.
- * 
- * @package ConfettiBits\Notifications
+ *
+ * @package Notifications
  * @since 2.0.0
  */
 class CB_Notifications_Component extends BP_Core_Notification_Abstract {
@@ -80,9 +80,9 @@ class CB_Notifications_Component extends BP_Core_Notification_Abstract {
 
 	/**
 	 * Constructor function.
-	 * 
+	 *
 	 * Start your engines. We're gonna be so notified.
-	 * 
+	 *
 	 * @see CB_Notifications_Component::start()
 	 */
 	public function __construct() {
@@ -91,59 +91,59 @@ class CB_Notifications_Component extends BP_Core_Notification_Abstract {
 
 	/**
 	 * Registers notification formats.
-	 * 
+	 *
 	 * What's the difference between this and start(), you may ask?
 	 * Don't. Don't ask me, at least. Best guess? Start() calls load(),
 	 * and load() actually registers notifications.
-	 * 
-	 * @UPDATE: I was mostly right. $this::start() calls $this::load(), 
+	 *
+	 * @UPDATE: I was mostly right. $this::start() calls $this::load(),
 	 * 			and also adds a bunch of filter hooks that dynamically
 	 * 			update notification configurations based on the
 	 * 			what is supplied to the inherited class methods.
 	 * 			$this::load() is an abstract method that just calls
 	 * 			whatever is inside of it.
-	 * 
+	 *
 	 * Regardless, here we are. It works, doesn't it?
-	 * 
-	 * To be a little clearer: 
-	 * 
+	 *
+	 * To be a little clearer:
+	 *
 	 *     1. The *notification group* is the one true group for all our
 	 * 		  notifications. Everything we have will be registered under
-	 * 		  the confetti_bits group (unless I change my mind later 
-	 * 		  lmao). 
-	 * 
-	 *     2. Notification *types* are going to be for our different 
-	 * 		  components. So, cb_transactions, cb_requests, 
+	 * 		  the confetti_bits group (unless I change my mind later
+	 * 		  lmao).
+	 *
+	 *     2. Notification *types* are going to be for our different
+	 * 		  components. So, cb_transactions, cb_requests,
 	 * 		  cb_participation, are all going to get their own types.
 	 * 		  The type created by $this->register_notification_type()
 	 * 		  is used to add a settings field for a user to control
 	 * 		  their notification options. This is a little different
-	 * 		  from how BuddyBoss does things, because their notification 
-	 * 		  *groups* are based on their components, whereas we're 
-	 * 		  putting all our components into the main 'confetti_bits' 
-	 * 		  group. Ipso facto, our notification *types* are going to be 
+	 * 		  from how BuddyBoss does things, because their notification
+	 * 		  *groups* are based on their components, whereas we're
+	 * 		  putting all our components into the main 'confetti_bits'
+	 * 		  group. Ipso facto, our notification *types* are going to be
 	 * 		  component-based. It'll make sense eventually. Maybe.
-	 * 
-	 *     3. The notifications created by $this->register_notification() 
+	 *
+	 *     3. The notifications created by $this->register_notification()
 	 * 		  are going to distinguish which notification
 	 * 		  should be sent, based on a user's action. So this would
-	 * 		  be where the component_action comes in, like 
+	 * 		  be where the component_action comes in, like
 	 * 		  cb_send_bits, cb_anniversary_bits, cb_import_bits, etc.
 	 * 		  The notifications are sent out in a function that's
 	 * 		  typically defined in a cb-{$component}-notifications.php
 	 * 		  file. If that file doesn't exist... why does it not?
 	 * 		  Make one. That file needs to exist.
-	 * 
-	 *     4. Notification content is formatted in 
-	 * 		  $this->format_notification(). The tokens are usually 
+	 *
+	 *     4. Notification content is formatted in
+	 * 		  $this->format_notification(). The tokens are usually
 	 * 		  added in the same function talked about in part 3.
-	 * 
+	 *
 	 */
 	public function load() {
 
 		$this->register_notification_group(
 			'confetti_bits',
-			esc_html__( 'Confetti Bits Notifications', 'confetti-bits' ), 
+			esc_html__( 'Confetti Bits Notifications', 'confetti-bits' ),
 			esc_html__( 'Confetti Bits Notifications', 'confetti-bits' ),
 		);
 
@@ -206,7 +206,7 @@ class CB_Notifications_Component extends BP_Core_Notification_Abstract {
 		], 'cb_transactions_spot_bonus' );
 
 	}
-	
+
 	/**
 	 * Registers all our notifications for the transactions component.
 	 */
@@ -240,7 +240,7 @@ class CB_Notifications_Component extends BP_Core_Notification_Abstract {
 	 */
 	public function register_cb_events_notifications() {
 
-		
+
 		// Register the leadership transactions notification type.
 		$this->register_notification_type(
 			'cb_events_new_transactions',
@@ -762,7 +762,7 @@ class CB_Notifications_Component extends BP_Core_Notification_Abstract {
 			'participation' => [
 				'cb_participation_status_update' => ['title' => "Participation Update", 'text' => '%s just updated your participation status.', 'item_id' => $item_id ],
 			],
-			'events' => [ 
+			'events' => [
 				'cb_events_new_transactions' => ['title' => "%s Participation", 'text' => 'Thanks for participating in %s!', 'item_id' => $item_id],
 				'cb_events_contest_new_transactions' => ['title' => "%s Contest Winner", 'text' => 'Congratulations on winning the %s contest!', 'item_id' => $item_id],
 			],

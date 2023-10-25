@@ -4,29 +4,29 @@ defined('ABSPATH') || exit;
 
 /**
  * CB Requests Functions
- * 
- * These are going to be all of our CRUD functions for 
+ *
+ * These are going to be all of our CRUD functions for
  * the requests component.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.2.0
  */
 
 /**
  * CB Requests Create Requests
- * 
+ *
  * Creates a new requests object and saves it to the database.
- * 
+ *
  * @param	array	$args	Associative array of arguments for saving.
  * 							All arguments are optional except for media_filepath. {
  * 		@type	int		$item_id			For BuddyBoss Platform's Notifications API.
  * 											Registers the primary data for the notification.
  * 											We'll use the applicant_id for this.
- * 
+ *
  * 		@type	int		$secondary_item_id	For BuddyBoss Platform's Notifications API.
  * 											Register's the receiver's profile avatar in the notification.
  * 											We'll use the admin_id for this.
- * 
+ *
  * 		@type	int		$applicant_id		The user_id associated with the requests entry.
  * 		@type	int		$admin_id			The user_id of the last admin that modified the entry.
  * 		@type	string	$date_created		A mysql datetime entry for when the requests was registered.
@@ -39,8 +39,8 @@ defined('ABSPATH') || exit;
  * 											Common statuses include "new", "approved", "denied", or "pending".
  * 	    @type   int    $request_item_id    The ID of the item being requested.
  * }
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.2.0
  */
 function cb_requests_new_request(array $args)
@@ -83,21 +83,21 @@ function cb_requests_new_request(array $args)
 
 /**
  * CB Requests New Transaction
- * 
+ *
  * Add or subtract Confetti Bits based on request approval status.
- * 
- * @param array $args An array of parameters for us to work with. { 
+ *
+ * @param array $args An array of parameters for us to work with. {
  * 		@type int 		$transaction_id		A transaction ID for us to check for.
  * 		@type int 		$request_id	A requests ID for us to check for.
  * 		@type int 		$admin_id			An admin ID for us to check for.
  * 		@type string	$status 			The status of the requests entry.
- * 		@type string	$modified 			The date of the last modification 
+ * 		@type string	$modified 			The date of the last modification
  * 												for the requests entry.
  * }
- * 
+ *
  * @return int|string Transaction ID on success, error on failure.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_new_transaction($args = []) {
@@ -132,7 +132,7 @@ function cb_requests_new_transaction($args = []) {
 	if ( $amount > 0 ) {
 		$amount = - $amount;
 	}
-	
+
 	if ( $amount < 0 && abs($amount) > cb_transactions_get_request_balance($request->applicant_id) ) {
 		$feedback['text'] = "User does not have enough Confetti Bits for that item.";
 		return $feedback;
@@ -167,12 +167,12 @@ function cb_requests_new_transaction($args = []) {
 
 /**
  * Attempts to extract a predetermined value from a request item.
- * 
+ *
  * @param int $request_item_id	The ID of the request item with the request.
- * 
+ *
  * @return int The amount we extracted.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_get_amount( $request_item_id = 0 ) {
@@ -190,12 +190,12 @@ function cb_requests_get_amount( $request_item_id = 0 ) {
 
 /**
  * Gets the name of a request item.
- * 
+ *
  * @param int		$request_item_id	The ID for the request item we're checking.
- * 
+ *
  * @return string	The item name we extracted.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_get_item_name( $request_item_id = 0 ) {
@@ -212,28 +212,28 @@ function cb_requests_get_item_name( $request_item_id = 0 ) {
 
 /**
  * Lists all available request items.
- * 
+ *
  * There's a built-in limit of 15 items, but that can be
  * overridden in the arguments.
- * 
- * @param array $args { 
+ *
+ * @param array $args {
  *     An optional array of arguments.
- * 		
- * 	   @type string|array $select	A comma-separated list or 
+ *
+ * 	   @type string|array $select	A comma-separated list or
  * 									array of columns to get.
  *     @type int $page 				The page of request items.
  *     @type int $per_page 			How many request items should
  * 						   			appear on each page.
  * }
- * 
- * @return array A 2D array of request items, structured like so: { 
- * 		[ 
+ *
+ * @return array A 2D array of request items, structured like so: {
+ * 		[
  * 			[ 'id' => 1, 'item_name' => 'Item 1' ],
  * 			[ 'id' => 2, 'item_name' => 'Item 2' ],
  * 		]
  * }
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_get_request_items( $args = [] ) {
@@ -256,14 +256,14 @@ function cb_requests_get_request_items( $args = [] ) {
 
 /**
  * Gets a transaction object, if any are associated with a request.
- * 
+ *
  * Use this to check if a transaction already exists for a given request.
- * 
+ *
  * @param int $transaction_id The ID for the transaction we're looking for.
- * 
+ *
  * @return array|bool Transaction if the object exists, false if not or we get an error.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_get_transaction($transaction_id = 0) {
@@ -280,17 +280,17 @@ function cb_requests_get_transaction($transaction_id = 0) {
 
 /**
  * Gets an array of requests from the database.
- * 
- * @param array $args { 
+ *
+ * @param array $args {
  *   An associative array of arguments.
  *   @see CB_Requests_Request::get_requests()
  * }
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 3.0.0
  */
 function cb_requests_get_requests( $args = [] ) {
-	
+
 	$r = wp_parse_args( $args, [
 		'select' => '*',
 		'where' => [
@@ -298,29 +298,29 @@ function cb_requests_get_requests( $args = [] ) {
 		],
 		'pagination' => ['page' => 1, 'per_page' => 10],
 	]);
-	
+
 	$requests = new CB_Requests_Request();
 	return $requests->get_requests($r);
-	
+
 }
 
 /**
  * Returns the total amount of points the user has in open requests.
- * 
+ *
  * @param int $user_id The ID of the user to check.
  * @return int The total amount of points that the user has in open requests.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 3.0.0
  */
 function cb_requests_get_active_request_total( $user_id = 0 ) {
-	
+
 	if ( $user_id === 0 ) {
 		$user_id = get_current_user_id();
 	}
-	
+
 	$total = 0;
-	
+
 	$get_request_args = [
 		'select' => 'request_item_id',
 		'where' => [
@@ -329,93 +329,93 @@ function cb_requests_get_active_request_total( $user_id = 0 ) {
 		],
 		'pagination' => [],
 	];
-	
+
 	$requests = cb_requests_get_requests($get_request_args);
-	
+
 	if ( ! empty( $requests ) ) {
 		foreach ( $requests as $request ) {
 			$request_item = new CB_Requests_Request_Item($request['request_item_id']);
 			$total += $request_item->amount;
 		}
 	}
-	
+
 	return $total;
-	
+
 }
 
 /**
  * Checks to see if a user can request the given item.
- * 
+ *
  * @param int $user_id The ID of the user we're checking
  * @param int $item_id The ID of the item they want
- * 
+ *
  * @return boolean True if they have enough to get the item, false otherwise.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 3.0.0
  */
 function cb_requests_can_request( $applicant_id = 0, $item_id = 0 ) {
-	
+
 	if ( $item_id === 0 || $applicant_id === 0 ) {
 		return false;
 	}
-	
+
 	$item = new CB_Requests_Request_Item($item_id);
 	$request_balance = cb_transactions_get_request_balance($applicant_id);
 	$active_requests_balance = cb_requests_get_active_request_total($applicant_id);
-	
+
 	return ( $request_balance - ( $active_requests_balance + $item->amount ) ) > 0;
-	
+
 }
 
 /**
  * Checks to see if a user can update their request item.
- * 
+ *
  * It basically subtracts the existing item from the active request total,
  * adds on the cost of the new item, and checks to see if the items cost
  * more than they have to spend on requests.
- * 
+ *
  * @param int $applicant_id The ID of the user to check.
  * @param int $prev_item_id The ID of the previous item.
  * @param int $updated_item_id The ID of the new item that they would like to change to.
- * 
+ *
  * @return bool Whether the item would put the user over their request balance.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 3.0.0
  */
 function cb_requests_can_update( $applicant_id = 0, $prev_item_id = 0, $updated_item_id = 0 ) {
-	
+
 	if ( $prev_item_id === 0 || $applicant_id === 0 || $updated_item_id === 0 ) {
 		return false;
 	}
-	
+
 	$prev_item = new CB_Requests_Request_Item($prev_item_id);
 	$updated_item = new CB_Requests_Request_Item($updated_item_id);
 	$request_balance = cb_transactions_get_request_balance($applicant_id);
 	$active_requests_balance = cb_requests_get_active_request_total($applicant_id) - $prev_item->amount;
-	
+
 	return ( $request_balance - ( $active_requests_balance + $updated_item->amount ) ) > 0;
-	
+
 }
 
 /**
  * Sends a notification email when a request comes in.
- * 
+ *
  * @TODO: Implement this, maybe. Not a priority, but would be nice.
  *        We'll need to get a list of people who need to be notified.
  *        Probably could get that by fetching a list of all users with
  *        a particular role.
- * 
- * @param array $args { 
+ *
+ * @param array $args {
  *     An array of arguments.
- * 
+ *
  *     @type int	$applicant_id		The user ID for the applicant who sent the request. Required.
  *     @type int	$request_item_id	The ID of the item being requested. Required.
- * 
+ *
  * }
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  */
 function cb_requests_new_notifications($data = [])
@@ -465,13 +465,13 @@ function cb_requests_new_notifications($data = [])
 
 /**
  * CB Requests Update Notifications
- * 
- * This will notify a user after a requests entry 
+ *
+ * This will notify a user after a requests entry
  * has been updated to a new status.
- * 
+ *
  * @TODO: Add support for denied requests.
- * 
- * @package ConfettiBits\Requests
+ *
+ * @package Requests
  * @since 2.3.0
  *//*
 function cb_requests_update_notifications($data = array())

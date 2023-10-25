@@ -8,10 +8,10 @@ if ( ! class_exists( 'CB_Component' ) ) {
 	 * CB Component
 	 *
 	 * Helps create components that have similar properties and methods.
-	 * Gives us radical global values across the app that lets us 
+	 * Gives us radical global values across the app that lets us
 	 * dynamically call and/or create functions and the like.
-	 * 
-	 * @package ConfettiBits\Core
+	 *
+	 * @package Core
 	 * @since 1.0.0
 	 */
 	class CB_Component {
@@ -28,19 +28,19 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Unique ID for the component.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var string $id
 		 */
 		public $id = '';
 
 		/**
 		 * Unique slug for the component, for use in query strings and URLs.
-		 * 
-		 * @package ConfettiBits\Core
+		 *
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var string $slug
 		 */
 		public $slug = '';
@@ -48,9 +48,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Does the component need a top-level directory?
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var bool $has_directory
 		 */
 		public $has_directory = false;
@@ -58,9 +58,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * The path to the component's files.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var string $path
 		 */
 		public $path = '';
@@ -68,9 +68,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * The WP_Query loop for this component.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var WP_Query $query
 		 */
 		public $query = false;
@@ -78,9 +78,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * The current ID of the queried object.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var string $current_id
 		 */
 		public $current_id = '';
@@ -88,9 +88,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Callback for formatting notifications.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var callable $notification_callback
 		 */
 		public $notification_callback = '';
@@ -98,9 +98,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * WordPress Toolbar links.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var array $admin_menu
 		 */
 		public $admin_menu = '';
@@ -108,9 +108,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Placeholder text for component directory search box.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var string $search_string
 		 */
 		public $search_string = '';
@@ -118,9 +118,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Root slug for the component.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var string $root_slug
 		 */
 		public $root_slug = '';
@@ -128,7 +128,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Metadata tables for the component (if applicable).
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @var array
@@ -138,7 +138,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Global tables for the component (if applicable).
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @var array
@@ -148,9 +148,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Query argument for component search URLs.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @var string
 		 */
 		public $search_query_arg = 's';
@@ -160,7 +160,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Component loader.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @param string $id   Unique ID. Letters, numbers, and underscores only.
@@ -169,7 +169,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		 * @param string $path The file path for the component's files. Used by {@link CB_Component::includes()}.
 		 * @param array  $params {
 		 *     Additional parameters used by the component.
-		 *     @type int    $adminbar_myaccount_order Set the position for our menu under the 
+		 *     @type int    $adminbar_myaccount_order Set the position for our menu under the
 		 * 					WP Toolbar's "My Account menu".
 		 *     @type array  $features An array of feature names. This is used to load additional files from your
 		 * 					component directory and for feature active checks. eg. array( 'awesome' )
@@ -218,7 +218,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Set up component global variables.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @param array $args {
@@ -230,7 +230,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		 * 								 post_name of the directory page). Default: the slug of the directory page
 		 * 								 if one is found, otherwise an empty string.
 		 *     @type bool     $has_directory Set to true if the component requires an associated WordPress page.
-		 *     @type callable $notification_callback Optional. The callable function that formats the component's 
+		 *     @type callable $notification_callback Optional. The callable function that formats the component's
 		 * 								 notifications.
 		 *     @type string   $search_term Optional. The placeholder text in the component directory search box.
 		 * 								 Eg, 'Search Groups...'.
@@ -244,8 +244,8 @@ if ( ! class_exists( 'CB_Component' ) ) {
 
 			// If a WP directory page exists for the component, it should
 			// be the default value of 'root_slug'.
-			$default_root_slug = isset( Confetti_Bits()->pages->{$this->id}->slug ) ? 
-				Confetti_Bits()->pages->{$this->id}->slug 
+			$default_root_slug = isset( Confetti_Bits()->pages->{$this->id}->slug ) ?
+				Confetti_Bits()->pages->{$this->id}->slug
 				: '';
 
 			$r = wp_parse_args(
@@ -266,7 +266,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			/**
 			 * Filters the slug to be used for the permalink URI chunk after root.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 *
 			 * @param string $value Slug to use in permalink URI chunk.
@@ -276,7 +276,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			/**
 			 * Filters the slug used for root directory.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 *
 			 * @param string $value Root directory slug.
@@ -286,7 +286,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			/**
 			 * Filters the component's top-level directory if available.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 *
 			 * @param bool $value Whether or not there is a top-level directory.
@@ -296,7 +296,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			/**
 			 * Filters the component's directory title.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 *
 			 * @param string $value Title to use for the directory.
@@ -306,7 +306,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			/**
 			 * Filters the placeholder text for search inputs for component.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 *
 			 * @param string $value Name to use in search input placeholders.
@@ -316,7 +316,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			/**
 			 * Filters the callable function that formats the component's notifications.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 *
 			 * @param string $value Function callback.
@@ -347,7 +347,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_setup_globals' );
@@ -376,7 +376,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		 *   - ./cb-my_component/actions
 		 *   - ./cb-my_component/cb-my_component-actions.php
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @param array $includes An array of file names, or file name chunks,
@@ -418,7 +418,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_includes' );
@@ -431,19 +431,19 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		 * conditionals such as {@link cb_is_current_component()}. Intentionally left
 		 * empty.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function late_includes() {}
 
 		/**
 		 * Sets up REST endpoints for the component.
-		 * 
-		 * When passed a collection of strings, uses 
+		 *
+		 * When passed a collection of strings, uses
 		 * cb_ajax_register_api_endpoints() to register
 		 * endpoints based on the component.
-		 * 
-		 * @package ConfettiBits\Core
+		 *
+		 * @package Core
 		 * @since 2.3.1
 		 */
 		public function register_api_endpoints( $components = [] ) {
@@ -462,45 +462,45 @@ if ( ! class_exists( 'CB_Component' ) ) {
 
 		/**
 		 * Enqueues all of our scripts in a clean fashion.
-		 * 
+		 *
 		 * From each according to their capability, to each
 		 * according to their need.
  		 * Scripts are enqueued and localized using the following
-		 * nested array structure: [ 
-		 *     $unique_name_for_script => [ 
+		 * nested array structure: [
+		 *     $unique_name_for_script => [
 		 *         $name_of_api_component_to_use => [ $http_method1, $http_method2, ... ],
 		 *         'dependencies' => [ $dependency1, $dependency2, ... ]
 		 *     ]
 		 * ]
-		 * This structure is then picked apart to dynamically 
+		 * This structure is then picked apart to dynamically
 		 * enqueue and localize scripts. This gives us granular
 		 * control over who gets access to what API endpoints,
 		 * and can perform which actions, based on capability.
-		 * 
-		 * The scripts will be enqueued as: "cb_{$unique_name_for_script}", 
+		 *
+		 * The scripts will be enqueued as: "cb_{$unique_name_for_script}",
 		 * and will load a corresponding file, with the underscores
 		 * replaced with dashes, like so: "cb-{$unique-name-for-script}.js".
 		 * This will also load any dependencies found in the
 		 * 'dependencies' array.
-		 * 
+		 *
 		 * Scripts will then be localized using the same
-		 * "cb_{$unique_name_for_script}" identifier, which will 
+		 * "cb_{$unique_name_for_script}" identifier, which will
  		 * become the global name that is usable within the file.
- 		 * All API endpoints are localized as: 
-		 * "{$endpoint}_{$name_of_api_component}". 
-		 * 
+ 		 * All API endpoints are localized as:
+		 * "{$endpoint}_{$name_of_api_component}".
+		 *
 		 * So, for example:
-		 *     - "cb_participation.get_participation" will return the 
+		 *     - "cb_participation.get_participation" will return the
 		 *       API endpoint for getting participation entries ONLY when used
 		 * 		 within the cb-participation.js file.
-		 *     - "cb_core_admin.new_transactions" will return the API endpoint 
-		 *       for creating a new transaction ONLY when used within the 
+		 *     - "cb_core_admin.new_transactions" will return the API endpoint
+		 *       for creating a new transaction ONLY when used within the
 		 * 		 cb-core-admin.js file.
-		 * 
+		 *
 		 * To access the API key, use "{$unique_name_for_script}.api_key"
 		 * in the {$unique-name-for-script}.js file.
-		 * 
-		 * @package ConfettiBits\Core
+		 *
+		 * @package Core
 		 * @since 2.3.0
 		 */
 		public function enqueue_scripts( $components = [] ) {
@@ -520,9 +520,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 				$events_only = $components['events'];
 				$script_id = "cb_events";
 				$with_dashes = str_replace( '_', '-', $script_id );
-				wp_enqueue_script( 
+				wp_enqueue_script(
 					$script_id,
-					CONFETTI_BITS_PLUGIN_URL . "assets/js/{$with_dashes}.js", 
+					CONFETTI_BITS_PLUGIN_URL . "assets/js/{$with_dashes}.js",
 					$events_only['dependencies'],
 					$cache_bust,
 					true
@@ -552,9 +552,9 @@ if ( ! class_exists( 'CB_Component' ) ) {
 					$script_id = "cb_{$component}";
 					$with_dashes = str_replace( '_', '-', $script_id );
 
-					wp_enqueue_script( 
+					wp_enqueue_script(
 						$script_id,
-						CONFETTI_BITS_PLUGIN_URL . "assets/js/{$with_dashes}.js", 
+						CONFETTI_BITS_PLUGIN_URL . "assets/js/{$with_dashes}.js",
 						$params['dependencies'],
 						$cache_bust,
 						true
@@ -584,7 +584,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Set up the actions.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function setup_actions() {
@@ -649,7 +649,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_setup_actions' );
@@ -657,8 +657,8 @@ if ( ! class_exists( 'CB_Component' ) ) {
 
 		/**
 		 * Sets up filters for redirect shenanigans.
-		 * 
-		 * @package ConfettiBits\Core
+		 *
+		 * @package Core
 		 * @since 3.0.0
 		 */
 		public function setup_filters() {
@@ -671,17 +671,17 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Set up the canonical URL stack for this component.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function setup_canonical_stack() {}
 
 		/**
 		 * Set up component navigation.
-		 * 
+		 *
 		 * Maybe we'll use this someday.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @see cb_core_new_nav_item() For a description of the $main_nav
@@ -705,7 +705,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_setup_nav' );
@@ -714,7 +714,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Set up the component entries in the WordPress Admin Bar.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @see WP_Admin_Bar::add_menu() for a description of the syntax
@@ -743,7 +743,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 *
 			 * @param array $wp_admin_nav Array of navigation items to add.
@@ -792,7 +792,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_setup_admin_bar' );
@@ -801,7 +801,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Set up the component title.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function setup_title() {
@@ -811,7 +811,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_setup_title' );
@@ -820,7 +820,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Setup component-specific cache groups.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function setup_cache_groups() {
@@ -830,7 +830,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_setup_cache_groups' );
@@ -839,7 +839,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Register global tables for the component, so that it may use WordPress's database API.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @param array $tables Table names to register.
@@ -853,7 +853,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 * It allows for component-specific filtering of table names. To filter
 			 * *all* tables, use the 'cb_core_get_table_prefix' filter instead.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			$tables = apply_filters( 'cb_' . $this->id . '_global_tables', $tables );
@@ -873,7 +873,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_register_global_tables' );
@@ -885,7 +885,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		 * Metadata tables are registered in the $wpdb global, for
 		 * compatibility with the WordPress metadata API.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @param array $tables Table names to register.
@@ -900,7 +900,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 * It allows for component-specific filtering of table names. To filter
 			 * *all* tables, use the 'cb_core_get_table_prefix' filter instead.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			$tables = apply_filters( 'cb_' . $this->id . '_meta_tables', $tables );
@@ -923,7 +923,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-		 	 * @package ConfettiBits\Core
+		 	 * @package Core
 		 	 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_register_meta_tables' );
@@ -932,7 +932,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Set up the component post types.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function register_post_types() {
@@ -942,7 +942,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_register_post_types' );
@@ -951,7 +951,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Register component-specific taxonomies.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function register_taxonomies() {
@@ -961,7 +961,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_register_taxonomies' );
@@ -970,7 +970,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Add any additional rewrite tags.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function add_rewrite_tags() {
@@ -980,7 +980,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_add_rewrite_tags' );
@@ -989,7 +989,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Add any additional rewrite rules.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function add_rewrite_rules() {
@@ -999,7 +999,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_add_rewrite_rules' );
@@ -1008,7 +1008,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Add any permalink structures.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function add_permastructs() {
@@ -1018,7 +1018,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_add_permastructs' );
@@ -1027,7 +1027,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Allow components to parse the main query.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 *
 		 * @param object $query The main WP_Query.
@@ -1039,7 +1039,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 *
 			 * @param object $query Main WP_Query object. Passed by reference.
@@ -1050,7 +1050,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		/**
 		 * Generate any additional rewrite rules.
 		 *
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 1.0.0
 		 */
 		public function generate_rewrite_rules() {
@@ -1060,7 +1060,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 *
 			 * This is a dynamic hook that is based on the component string ID.
 			 *
-			 * @package ConfettiBits\Core
+			 * @package Core
 			 * @since 1.0.0
 			 */
 			do_action( 'cb_' . $this->id . '_generate_rewrite_rules' );

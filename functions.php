@@ -4,12 +4,12 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * CB Is Get Request
- * 
+ *
  * Checks if the current request is a GET request
- * 
+ *
  * @since 1.0.0
  * @return bool True if GET request, false otherwise
- * 
+ *
  */
 function cb_is_get_request() {
 	return (bool) ( 'GET' === strtoupper( $_SERVER['REQUEST_METHOD'] ) );
@@ -17,9 +17,9 @@ function cb_is_get_request() {
 
 /**
  * CB Is Post Request
- * 
+ *
  * Checks if the current request is a POST request
- * 
+ *
  * @since 1.0.0
  * @return bool True if POST request, false otherwise
  */
@@ -29,12 +29,12 @@ function cb_is_post_request() {
 
 /**
  * CB Is Patch Request
- * 
+ *
  * Checks if the current request is a PATCH request
- * 
+ *
  * @return bool True if PATCH request, false otherwise
- * 
- * @package ConfettiBits
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_is_patch_request() {
@@ -43,12 +43,12 @@ function cb_is_patch_request() {
 
 /**
  * CB Is Delete Request
- * 
+ *
  * Checks if the current request is a DELETE request
- * 
+ *
  * @return bool True if DELETE request, false otherwise
- * 
- * @package ConfettiBits
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_is_delete_request() {
@@ -65,10 +65,10 @@ if ( ! function_exists( 'confetti_bits_admin_enqueue_script' ) ) {
 
 /**
  * Initializes our notifications class.
- * 
+ *
  * So we can get those sweet, sweet noties.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.3.0
  */
 function cb_core_notifications_init() {
@@ -81,9 +81,9 @@ add_action( 'cb_init', 'cb_core_notifications_init', 10 );
 /**
  * Returns form markup that allows privileged users to manually
  * input the birthday and anniversary dates for other users.
- * 
+ *
  * @param object WP_User The current instance of WP_User
- * @package ConfettiBits\Core
+ * @package Core
  * @since 3.0.0
  */
 function cb_user_birthday_anniversary_fields( $user ) {
@@ -131,36 +131,36 @@ add_action( 'edit_user_created_user', 'cb_save_user_birthday_anniversary_fields'
 
 /**
  * CB Core Set Reset Date Globals
- * 
- * Sets a few internal globals using the DateTimeImmutable class 
- * so that we can reference these spending/earning cycles throughout 
+ *
+ * Sets a few internal globals using the DateTimeImmutable class
+ * so that we can reference these spending/earning cycles throughout
  * the app without running these calculations all the time.
- * 
+ *
  * A breakdown of what this does:
- * 
+ *
  * - There are two cycles: an earning cycle and a spending cycle
- * 
- * - The reset date refers to the earning cycle. That is when 
- * users start over with a zero'd out bank of confetti bits. 
+ *
+ * - The reset date refers to the earning cycle. That is when
+ * users start over with a zero'd out bank of confetti bits.
  * So the earning cycle "ends" on the reset date.
- * 
+ *
  * - The earning cycle "starts" one year prior to that, on the
  * same date. Please don't set it to February 29th, I did not
  * account for that when I built this forsaken system.
- * 
+ *
  * - The spending cycle is offset by 1 month after the earning
  * cycle. So the spending cycle "ends" 1 month after the earning
- * cycle does. That means that the spending cycle "starts" one month 
+ * cycle does. That means that the spending cycle "starts" one month
  * after the earning cycle does as well.
- * 
+ *
  * - There are situations where a user may want to look back
  * at a previous cycle, so we account for those here as well.
- * We only need the dates that those cycles started, because 
+ * We only need the dates that those cycles started, because
  * they ended when the current cycles started.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
- * 
+ *
  */
 function cb_core_set_reset_date_globals() {
 
@@ -191,11 +191,11 @@ add_action( 'cb_setup_globals', 'cb_core_set_reset_date_globals' );
 
 /**
  * Sets the amount for spot bonuses in our core class for easy access.
- * 
- * Make sure to set this value in the DB via admin settings, or else 
+ *
+ * Make sure to set this value in the DB via admin settings, or else
  * we may never experience the bliss of automation.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_set_spot_bonus_global() {
@@ -214,11 +214,11 @@ add_action( 'cb_setup_globals', 'cb_core_set_spot_bonus_global' );
 
 /**
  * Automatically increments the reset date by 1 year.
- * 
+ *
  * @returns DateTimeImmutable The DateTimeImmutable object, with the new reset
  * 							  date already locked and loaded.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_auto_reset() {
@@ -234,21 +234,21 @@ function cb_core_auto_reset() {
 
 /**
  * CB Core Current Date
- * 
+ *
  * Returns the current date and time in the given
  * format. Defaults to MySQL format in the site's
  * timezone.
- * 
- * 
+ *
+ *
  * @param bool $offset Whether to use the site's
  *   UTC offset setting. Default true.
- * 
+ *
  * @param string $format The desired datetime format.
  *   Default MySQL - 'Y-m-d H:i:s'
- * 
+ *
  * @return string The formatted datetime.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_current_date( $offset = false, $format = "Y-m-d H:i:s" ) {
@@ -264,15 +264,15 @@ function cb_core_current_date( $offset = false, $format = "Y-m-d H:i:s" ) {
 if (!function_exists('str_starts_with')) {
 	/**
 	 * Str Starts With
-	 * 
+	 *
 	 * PHP 8 Polyfill for str_starts_with
-	 * 
-	 * @package ConfettiBits
+	 *
+	 * @package Core
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @param string $haystack The string to search.
 	 * @param string $needle The substring to search for at the beginning.
-	 * 
+	 *
 	 * @return bool Whether the string starts with the given substring.
 	 */
 	function str_starts_with($haystack = '', $needle = '') {
@@ -282,15 +282,15 @@ if (!function_exists('str_starts_with')) {
 if (!function_exists('str_ends_with')) {
 	/**
 	 * Str Ends With
-	 * 
+	 *
 	 * PHP 8 Polyfill for str_ends_with
-	 * 
-	 * @package ConfettiBits
+	 *
+	 * @package Core
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @param string $haystack The string to search.
 	 * @param string $needle The substring to search for at the end.
-	 * 
+	 *
 	 * @return bool Whether the string ends with the given substring.
 	 */
 	function str_ends_with($haystack, $needle) {
@@ -301,15 +301,15 @@ if (!function_exists('str_ends_with')) {
 if (!function_exists('str_contains')) {
 	/**
 	 * Str Contains
-	 * 
+	 *
 	 * PHP 8 Polyfill for str_contains
-	 * 
-	 * @package ConfettiBits
+	 *
+	 * @package Core
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @param string $haystack The string to search.
 	 * @param string $needle The substring to search for.
-	 * 
+	 *
 	 * @return bool Whether the string contains the given substring.
 	 */
 	function str_contains($haystack, $needle) {
@@ -319,11 +319,11 @@ if (!function_exists('str_contains')) {
 
 /**
  * CB Flush Rewrite Rules
- * 
+ *
  * Flushes the rewrite rules after we update a
  * plugin or theme, so our pages stop disappearing.
- * 
- * @package ConfettiBits
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_flush_rewrite_rules() {
@@ -333,13 +333,13 @@ add_action( 'after_plugin_or_theme_update', 'cb_flush_rewrite_rules' );
 
 /**
  * Gets PATCH data from an HTTP PATCH request.
- * 
+ *
  * Retrieves data from a PATCH request and returns it as an
  * associative array.
- * 
+ *
  * @return array The PATCH request body as an associative array.
- * 
- * @package ConfettiBits
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_get_patch_data() {
@@ -354,13 +354,13 @@ function cb_get_patch_data() {
 
 /**
  * Gets DELETE data from an HTTP DELETE request.
- * 
+ *
  * Retrieves data from a DELETE request and returns it as an
  * associative array.
- * 
+ *
  * @return array The DELETE request body as an associative array.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_get_delete_data() {
@@ -375,15 +375,15 @@ function cb_get_delete_data() {
 
 /**
  * Gets a list of transactions for nonexistent users.
- * 
- * Get a list of users that are present in the 
- * confetti_bits_transactions table, but not in the 
+ *
+ * Get a list of users that are present in the
+ * confetti_bits_transactions table, but not in the
  * wp_users table. Returns an array of transactions where
  * the sender or recipient isn't on the platform anymore.
- * 
+ *
  * @return array An associative array of transaction data.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_get_missing_users() {
@@ -405,19 +405,19 @@ function cb_core_get_missing_users() {
 
 /**
  * Gets the user display name.
- * 
+ *
  * Attempts to get a display_name for the given user_id. If that
  * comes up empty, searches for the first_name. If that also
  * comes up empty, searches for the nickname. If there's no
  * display name to be found, it gives us a lovely bunch of
- * abject nothingness. 
- * 
+ * abject nothingness.
+ *
  * @param int $user_id The ID for the user whose name we want.
  * 					   Default current user_id.
- * 
+ *
  * @return string The display_name on success, empty on failure.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_get_user_display_name( $user_id = 0 ) {
@@ -446,12 +446,12 @@ function cb_core_get_user_display_name( $user_id = 0 ) {
 
 /**
  * Returns the email address for the given user.
- * 
+ *
  * @param int $user_id The ID of the user. Default current user.
- * 
+ *
  * @return string The user's email address, if one exists.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_get_user_email( $user_id = 0 ) {
@@ -468,12 +468,12 @@ function cb_core_get_user_email( $user_id = 0 ) {
 
 /**
  * Checks if the parameter is a multi-dimensional array.
- * 
+ *
  * @param array $arr The array to check.
- * 
+ *
  * @return bool Whether the array is multi-dimensional.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.3.0
  */
 function cb_core_is_multi_array(array $arr) {
@@ -483,20 +483,20 @@ function cb_core_is_multi_array(array $arr) {
 
 /**
  * Sends out a sitewide notice.
- * 
- * Use this to send out non-critical updates that are 
+ *
+ * Use this to send out non-critical updates that are
  * intended to be informative or nice to know, such as
  * an upcoming or recent update, new feature, etc.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 1.2.0
  */
 function cb_core_send_sitewide_notice() {
 
 	if (
 		!cb_is_confetti_bits_component() ||
-		!cb_is_post_request() || 
-		empty( $_POST['cb_sitewide_notice_heading'] ) || 
+		!cb_is_post_request() ||
+		empty( $_POST['cb_sitewide_notice_heading'] ) ||
 		empty( $_POST['cb_sitewide_notice_body'] )
 	) {
 		return;
@@ -526,10 +526,10 @@ add_action('cb_actions', 'cb_core_send_sitewide_notice');
 
 /**
  * Returns the number of days remaining until the reset date.
- * 
+ *
  * @return int The number of days remaining before the reset.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_get_doomsday_clock() {
@@ -545,18 +545,18 @@ function cb_core_get_doomsday_clock() {
 
 /**
  * Washes away the sins of bad actors.
- * 
+ *
  * Use this to aggressively scrub input strings.
  * I doubt that there are going to be any
  * elite hackers playing injecting nonsense
  * into this app, but this is good practice
  * for other kinds of sanitization that we might
  * want to do later.
- * 
+ *
  * @param string $input An input string
  * @return string A kinder, gentler string.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_sanitize_string( $input = '' ) {
@@ -565,8 +565,8 @@ function cb_core_sanitize_string( $input = '' ) {
 	$input = htmlentities($input, ENT_QUOTES, 'UTF-8');
 	$input = addslashes($input);
 	$input = preg_replace(
-		[ '/\\\\/', '/\0/', '/\n/', '/\r/', '/\'/', '/"/', '/\x1a/' ], 
-		[ '\\\\\\\\', '\\\\0', '\\\\n', '\\\\r', "\\'", '\\"', '\\\\Z' ], 
+		[ '/\\\\/', '/\0/', '/\n/', '/\r/', '/\'/', '/"/', '/\x1a/' ],
+		[ '\\\\\\\\', '\\\\0', '\\\\n', '\\\\r', "\\'", '\\"', '\\\\Z' ],
 		$input
 	);
 
@@ -576,10 +576,10 @@ function cb_core_sanitize_string( $input = '' ) {
 
 /**
  * Injects our own config settings into PHPMailer.
- * 
+ *
  * @param PHPMailer $phpmailer A PHPMailer object.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_smtp_init( $phpmailer ) {
@@ -598,8 +598,8 @@ add_action( 'phpmailer_init', 'cb_core_smtp_init' );
 
 /**
  * Adds a menu item for our settings.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @subpackage Templates
  * @since 3.0.0
  */
@@ -616,12 +616,12 @@ add_action('admin_menu', 'cb_core_admin_menu');
 
 /**
  * Formats markup for our admin settings page.
- * 
+ *
  * @TODO: Add a form here, friend.
- * 
+ *
  * @return string The formatted page markup.
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_templates_get_admin_page() {
@@ -637,10 +637,10 @@ function cb_templates_get_admin_page() {
 
 /**
  * Outputs markup for our admin settings page.
- * 
+ *
  * @see cb_templates_get_admin_page()
- * 
- * @package ConfettiBits\Templates
+ *
+ * @package Templates
  * @since 3.0.0
  */
 function cb_core_admin_page() {
@@ -649,7 +649,7 @@ function cb_core_admin_page() {
 	cb_templates_heading('Confetti Bits Settings', 1);
 	echo '<form method="POST" action="options.php">';
 	settings_fields('cb_core_admin_settings');
-	do_settings_sections('cb-core-admin-settings'); 
+	do_settings_sections('cb-core-admin-settings');
 	submit_button();
 	echo '</form>';
 	echo '</div>';
@@ -715,11 +715,11 @@ add_action('admin_init', 'cb_core_admin_settings_init');
 /**
  * Will eventually be used to sanitize user input in the
  * admin menu.
- * 
+ *
  * @param mixed $input The input passed via post.
  * @return string $input The "sanitized" input.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @subpackage Templates
  * @since 3.0.0
  */
@@ -732,10 +732,10 @@ add_action('admin_init', 'cb_core_admin_settings_sanitize');
 
 /**
  * Returns the content for our main settings section.
- * 
+ *
  * @return string Content.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @subpackage Templates
  * @since 3.0.0
  */
@@ -750,8 +750,8 @@ function cb_core_admin_settings_section_callback() {
 
 /**
  * Outputs the setting field for the reset date.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @subpackage Templates
  * @since 3.0.0
  */
@@ -765,8 +765,8 @@ function cb_core_admin_reset_date_setting() {
 
 /**
  * Outputs the setting field for the volunteer amount per hour.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @subpackage Templates
  * @since 3.0.0
  */
@@ -778,8 +778,8 @@ function cb_core_admin_volunteer_setting() {
 
 /**
  * Outputs the setting field for the volunteer amount per hour.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @subpackage Templates
  * @since 3.0.0
  */
@@ -809,12 +809,12 @@ add_filter('script_loader_tag', 'cb_core_convert_scripts_to_modules', 10, 3);
 
 /**
  * Deletes all Confetti Bits data associated with deleted user.
- * 
+ *
  * @param int $id The ID of the user that's being deleted.
  * @param int $reassign An optional user ID to reassign items to.
  * @param WP_User $user The instance of WP_User associated with the deleted user.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_delete_user_data( $id, $reassign, $user ) {
@@ -908,8 +908,8 @@ function cb_core_do_spot_bonuses() {
 
 	}
 
-	$message = !empty($recipient_list) ? 
-		'Here\'s a list of people who got their bits: <ul>' . implode('', array_map(cb_core_listify($recipient_list) ) ) . '</ul>' 
+	$message = !empty($recipient_list) ?
+		'Here\'s a list of people who got their bits: <ul>' . implode('', array_map(cb_core_listify($recipient_list) ) ) . '</ul>'
 		: "<p>We didn't find anyone waiting on their bits.</p> <p><b>Hooray!</b></p>";
 
 	wp_mail('dustin@celebrationtitlegroup.com', 'Cron Job Report', "<h4>Spot bonuses were sent out!</h4> {$message}", ['Content-Type: text/html; charset=UTF-8']);
@@ -949,11 +949,11 @@ function cb_core_utc_to_local( $date_string = '' ) {
 
 /**
  * Adds an ordinal suffix to a given integer.
- * 
+ *
  * @param int|string $int An integer.
- * 
+ *
  * @return string The same integer, but with a little spice.
- * 
+ *
  * @package Core
  * @since 3.0.0
  */

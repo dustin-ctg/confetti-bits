@@ -1,16 +1,16 @@
-<?php 
+<?php
 // Exit if accessed directly.
 defined('ABSPATH') || exit;
 
 /**
  * CB Core Secrets Manager
- * 
+ *
  * Manages our secret stash in the mysterious unknown.
- * No touchies. 
- * 
+ * No touchies.
+ *
  * @link https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/secretsmanager-examples-manage-secret.html More Info
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 
@@ -21,17 +21,17 @@ use Aws\Exception\AwsException;
 
 /**
  * CB Core Generate UUID
- * 
+ *
  * Generates a UUID that we can use to create unique
  * keys and other neat things for API validation and
  * the like. "Cryptographically secure", unless someone
  * is using a quantum computer. In which case... you're
  * really picking this program as the thing you want to
  * hack? Really?
- * 
+ *
  * @return string An RFC 4211 compliant universally unique identifier.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_generate_uuid($bytes = 32) {
@@ -54,26 +54,26 @@ function cb_core_generate_uuid($bytes = 32) {
 
 /**
  * CB Core Set API Key
- * 
+ *
  * Sets the encryption key that we use to encrypt and
- * decrypt our API key in the database. 
- * 
- * @param array $args { 
+ * decrypt our API key in the database.
+ *
+ * @param array $args {
  *     Array of arguments.
- * 
+ *
  *   @type string $Name 		Required. A name for the secret. We hang
  * 								onto this and use it to pull the secret
  * 								from our secrets manager.
- * 
+ *
  *   @type string $Description	Optional. A description for the secret.
  * 								Nice to have if you want, but not
  * 								entirely necessary.
- * 
+ *
  *   @type string $SecretString	Required. This is a secret! Handle
  * 								with extreme care. Please.
- * 
+ *
  * }
- * 
+ *
  * @return string Results of the createSecret method, or error message on failure.
  */
 function cb_core_set_api_key( $args = [] ) {
@@ -105,13 +105,13 @@ function cb_core_set_api_key( $args = [] ) {
 
 /**
  * CB Core Get API Key
- * 
- * Pulls the API key from our secrets manager. 
+ *
+ * Pulls the API key from our secrets manager.
  * You may wanna study up on AWS!
- * 
+ *
  * @return string The API key. Use with caution, share with none.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_get_api_key( $secret = '' ) {
@@ -144,15 +144,15 @@ function cb_core_get_api_key( $secret = '' ) {
 
 /**
  * CB Core Secrets Manager Init
- * 
+ *
  * Creates our first set of API credentials automatically.
  * Can refresh them at any time via WordPress admin panel.
- * 
+ *
  * @TODO: Add the aforementioned WordPress admin panel.
- * 
+ *
  * @return string The stringified Model data, or error message on failure.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_secrets_manager_init() {
@@ -177,13 +177,13 @@ function cb_core_secrets_manager_init() {
 
 /**
  * CB Core Update API Key
- * 
- * Creates a new API key in our secrets manager and 
+ *
+ * Creates a new API key in our secrets manager and
  * updates its safe name in the options table.
- * 
+ *
  * @return string The stringified Model data, or error message on failure.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_update_api_key() {
@@ -203,20 +203,20 @@ function cb_core_update_api_key() {
 
 /**
  * Validates against a supplied API key safe name.
- * 
- * We work with safe names here. We store the safe name 
+ *
+ * We work with safe names here. We store the safe name
  * in our DB, and that works as the current valid API key
  * for the current website. If the safe name that gets supplied
  * does not match our safe name, it will fail the test.
  * If the supplied safe name matches, it will then search our
  * secrets manager for a valid API key. If one is not found,
  * or it is expired or invalid, it will also fail.
- * 
+ *
  * @param string $safe_name The safe name for our API key.
- * 
+ *
  * @return bool Whether the API key exists and is valid.
- * 
- * @package ConfettiBits\Core
+ *
+ * @package Core
  * @since 2.3.0
  */
 function cb_core_validate_api_key( $safe_name = '' ) {

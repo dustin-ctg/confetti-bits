@@ -1,18 +1,18 @@
-<?php 
+<?php
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
 /**
  * A component that allows certain users to create and manage company events.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 class CB_Events_Component extends CB_Component {
 
 	/**
 	 * Initializes the component.
-	 * 
+	 *
 	 * @see CB_Component::start()
 	 */
 	public function __construct() {
@@ -21,14 +21,14 @@ class CB_Events_Component extends CB_Component {
 			'events',
 			__( 'Confetti Bits Events', 'confetti-bits' ),
 			CONFETTI_BITS_PLUGIN_PATH,
-			[]		
+			[]
 		);
 
 	}
 
 	/**
 	 * Includes required files.
-	 * 
+	 *
 	 * @see CB_Component::includes()
 	 */
 	public function includes( $includes = [] ) {
@@ -41,8 +41,8 @@ class CB_Events_Component extends CB_Component {
 
 	/**
 	 * Sets up component global values.
-	 * 
-	 * @package ConfettiBits\Events
+	 *
+	 * @package Events
 	 * @since 3.0.0
 	 */
 	public function setup_globals( $args = [] ) {
@@ -56,8 +56,8 @@ class CB_Events_Component extends CB_Component {
 		$globals = [
 			'slug' => CONFETTI_BITS_EVENTS_SLUG,
 			'global_tables' => [
-				'table_name' => $cb->table_prefix . 'confetti_bits_events', 
-				'table_name_contests' => $cb->table_prefix . 'confetti_bits_contests', 
+				'table_name' => $cb->table_prefix . 'confetti_bits_events',
+				'table_name_contests' => $cb->table_prefix . 'confetti_bits_contests',
 			],
 		];
 
@@ -69,8 +69,8 @@ class CB_Events_Component extends CB_Component {
 
 	/**
 	 * Registers API endpoints for events and contests.
-	 * 
-	 * @package ConfettiBits\Events
+	 *
+	 * @package Events
 	 * @since 3.0.0
 	 */
 	public function register_api_endpoints( $components = [] ) {
@@ -82,8 +82,8 @@ class CB_Events_Component extends CB_Component {
 
 	/**
 	 * Enqueues script for the events component.
-	 * 
-	 * @package ConfettiBits\Events
+	 *
+	 * @package Events
 	 * @since 3.0.0
 	 */
 	public function enqueue_scripts( $components = [] ) {

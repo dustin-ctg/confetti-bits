@@ -1,9 +1,13 @@
+@import url("https://use.typekit.net/zon5ahf.css");
+
 {% import 'css/macros/colours.macro.twig' as colours %}
+
+
 
 :root {
     /* Typography */
-    --font-primary: 'Open Sans', Helvetica, Arial, sans-serif;
-    --font-secondary: 'Open Sans', Helvetica, Arial, sans-serif;
+    --font-primary: bree-serif, 'Open Sans', Helvetica, Arial, sans-serif;
+    --font-secondary: dinosaur, 'Open Sans', Helvetica, Arial, sans-serif;
     --font-monospace: 'Source Code Pro', monospace;
     --line-height--primary: 1.6;
     --letter-spacing--primary: .05rem;
@@ -21,7 +25,7 @@
     --text-xxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
     --text-xxxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
 
-    --color-hue-red:
+    --color-hue-red: {{ colours.hue('red') }};
     --color-hue-pink: {{ colours.hue('pink') }};
     --color-hue-purple: {{ colours.hue('purple') }};
     --color-hue-deep-purple: {{ colours.hue('deep-purple') }};
@@ -95,4 +99,15 @@
     --spacing-xxxxl: calc(var(--spacing-base-size) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio) * var(--spacing-scale-ratio));
 
     --border-radius-base-size: 3px;
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry:before {
+all: unset;
+}
+
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-package:before,
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-class:before,
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-function:before,
+.phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-constant:before {
+    all: unset;
 }

@@ -7,7 +7,7 @@ defined('ABSPATH') || exit;
  *
  * Sets up our requests component, so we have easy access to component globals.
  *
- * @package ConfettiBits\Requests
+ * @package Requests
  * @since 2.3.0
  */
 function cb_setup_requests() {

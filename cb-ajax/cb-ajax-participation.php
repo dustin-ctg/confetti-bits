@@ -1,19 +1,19 @@
-<?php 
+<?php
 // Exit if accessed directly.
 defined('ABSPATH') || exit;
 
-/** 
+/**
  * Handles HTTP PATCH requests to update participation entries.
- * 
- * Processes standard and bulk participation updates from an 
+ *
+ * Processes standard and bulk participation updates from an
  * HTTP PATCH request.
- * 
- * @see cb_get_patch_data() for more info on how we handle PATCH 
+ *
+ * @see cb_get_patch_data() for more info on how we handle PATCH
  * requests.
- * 
+ *
  * @TODO: Add event_id for Events component compatibility
- * 
- * @package ConfettiBits\Participation
+ *
+ * @package Participation
  * @since 2.2.0
  */
 function cb_ajax_update_participation() {
@@ -25,8 +25,8 @@ function cb_ajax_update_participation() {
 	$_PATCH = cb_get_patch_data();
 	$feedback = ['text' => '','type' => 'error'];
 
-	if ( !isset( 
-		$_PATCH['admin_id'], 
+	if ( !isset(
+		$_PATCH['admin_id'],
 		$_PATCH['participation_id'],
 		$_PATCH['status'],
 		$_PATCH['api_key'],
@@ -75,9 +75,9 @@ function cb_ajax_update_participation() {
 	$where_args = ['id' => $participation_id];
 
 	// Attempt to extract an amount for a transaction
-	$amount = cb_participation_get_amount( 
+	$amount = cb_participation_get_amount(
 		$participation_id,
-		$status, 
+		$status,
 		$amount
 	);
 
@@ -133,10 +133,10 @@ function cb_ajax_update_participation() {
 
 /**
  * CB Ajax New Participation
- * 
+ *
  * We'll use this to process the new participation entries sent via ajax.
- * 
- * @package ConfettiBits\Participation
+ *
+ * @package Participation
  * @since 2.2.0
  */
 function cb_ajax_new_participation() {
@@ -192,11 +192,11 @@ function cb_ajax_new_participation() {
 
 /**
  * CB AJAX Get Participation
- * 
- * Our REST API handler for the endpoint at 
+ *
+ * Our REST API handler for the endpoint at
  * "/wp-json/cb-ajax/v1/participation/get"
- * 
- * @package ConfettiBits\Participation
+ *
+ * @package Participation
  * @since 2.3.0
  */
 function cb_ajax_get_participation() {
@@ -237,15 +237,15 @@ function cb_ajax_get_participation() {
 	if ( !empty( $_GET['status'] ) ) {
 		$get_args['where']['status'] = trim( $_GET['status'] );
 	}
-	
+
 	if ( ! empty($_GET['date_query'] ) ) {
 		$get_args['where']['date_query'] = $_GET['date_query'];
 	}
-	
+
 	if ( !empty($_GET['page'] ) && !empty($_GET['per_page']) ) {
 		$get_args['pagination'] = ['page' => intval($_GET['page']), 'per_page' => intval($_GET['per_page'])];
 	}
-	
+
 	if ( !empty( $_GET['orderby'] ) ) {
 		$get_args['orderby']['column'] = !empty($_GET['orderby']['column'] ) ? trim($_GET['orderby']['column']) : 'id';
 		$get_args['orderby']['order'] = !empty($_GET['orderby']['order'] ) ? trim($_GET['orderby']['order']) : 'DESC';
@@ -268,8 +268,8 @@ function cb_ajax_get_participation() {
 
 /**
  * Adds 5 participation entries for testing purposes.
- * 
- * @package ConfettiBits\Participation
+ *
+ * @package Participation
  * @since 2.3.0
  */
 function cb_participation_add_filler_data() {
@@ -352,7 +352,7 @@ function cb_participation_add_filler_data() {
 		],
 	];
 	foreach ( $entries as $entry ) {
-		cb_participation_new_participation($entry);	
+		cb_participation_new_participation($entry);
 	}
 
 }
