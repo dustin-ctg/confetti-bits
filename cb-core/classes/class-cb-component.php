@@ -456,6 +456,10 @@ if ( ! class_exists( 'CB_Component' ) ) {
 
 		}
 
+		public function register_scripts( $components = [] ) {
+
+		}
+
 		/**
 		 * Enqueues all of our scripts in a clean fashion.
 		 * 
@@ -505,23 +509,57 @@ if ( ! class_exists( 'CB_Component' ) ) {
 				return;
 			}
 
+
+
+			$cache_bust = 'v2.0';
+			$user_id = intval(get_current_user_id());
+			$api_key_safe_name = get_option( 'cb_core_api_key_safe_name' );
+
+			if ( isset( $components['events'] ) && is_page('events') ) {
+				$localize_params = [];
+				$events_only = $components['events'];
+				$script_id = "cb_events";
+				$with_dashes = str_replace( '_', '-', $script_id );
+				wp_enqueue_script( 
+					$script_id,
+					CONFETTI_BITS_PLUGIN_URL . "assets/js/{$with_dashes}.js", 
+					$events_only['dependencies'],
+					$cache_bust,
+					true
+				);
+				unset( $events_only['dependencies'] );
+
+				foreach ( $events_only as $api => $endpoints ) {
+					$api_with_dashes = str_replace( '_', '-', $api );
+					foreach ( $endpoints as $endpoint ) {
+						$localize_params["{$endpoint}_{$api}"] = home_url("wp-json/cb-ajax/v1/{$api_with_dashes}/{$endpoint}");
+					}
+
+					$localize_params['api_key'] = $api_key_safe_name;
+					$localize_params['user_id'] = $user_id;
+					$localize_params['home_url'] = home_url();
+
+				}
+
+				wp_localize_script( $script_id, $script_id, $localize_params );
+			}
+
 			if ( cb_is_confetti_bits_component() ) {
-				$cache_bust = 'v1.1';
-				$user_id = intval(get_current_user_id());
-				$api_key_safe_name = get_option( 'cb_core_api_key_safe_name' );
 
 				foreach( $components as $component => $params ) {
 
 					$localize_params = [];
-					$with_dashes = str_replace( '_', '-', $component );
+					$script_id = "cb_{$component}";
+					$with_dashes = str_replace( '_', '-', $script_id );
 
 					wp_enqueue_script( 
-						"cb_{$component}", 
-						CONFETTI_BITS_PLUGIN_URL . "assets/js/cb-{$with_dashes}.js", 
+						$script_id,
+						CONFETTI_BITS_PLUGIN_URL . "assets/js/{$with_dashes}.js", 
 						$params['dependencies'],
 						$cache_bust,
 						true
 					);
+
 
 					unset( $params['dependencies'] );
 
@@ -533,10 +571,11 @@ if ( ! class_exists( 'CB_Component' ) ) {
 
 						$localize_params['api_key'] = $api_key_safe_name;
 						$localize_params['user_id'] = $user_id;
+						$localize_params['home_url'] = home_url();
 
 					}
 
-					wp_localize_script( "cb_{$component}", "cb_{$component}", $localize_params );
+					wp_localize_script( $script_id, $script_id, $localize_params );
 
 				}
 			}
@@ -615,7 +654,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			 */
 			do_action( 'cb_' . $this->id . '_setup_actions' );
 		}
-		
+
 		/**
 		 * Sets up filters for redirect shenanigans.
 		 * 
@@ -623,10 +662,10 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		 * @since 3.0.0
 		 */
 		public function setup_filters() {
-			
+
 			//add_filter( 'cb_query_vars', [ $this, 'add_query_vars'] );
 			//add_filter( 'cb_template_include', [$this, 'template_include'] );
-			
+
 		}
 
 		/**

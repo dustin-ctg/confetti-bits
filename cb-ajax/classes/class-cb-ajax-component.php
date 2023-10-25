@@ -52,7 +52,8 @@ class CB_Ajax_Component extends CB_Component {
 			'events',
 			'contests',
 			'functions',
-			
+			'spot-bonuses',
+			'volunteers',
 		);
 		
 		parent::includes($includes);

@@ -102,21 +102,9 @@ function cb_core_admin_setting_general_register_fields( $setting ) {
 
 
 
-function cb_admin_reset_date_options() {
-
-	$cb_reset_date =  get_option('cb_reset_date');
-	//	$page      = bp_core_do_network_admin() ? 'admin.php' : 'admin.php';
-
-?>
-<input id="<?php echo esc_attr( "cb_reset_date" ) ?>" 
-	   name="<?php echo esc_attr( "cb_reset_date" ) ?>" 
-	   type="date"
-	   value="<?php echo date( 'Y-m-d', strtotime( $cb_reset_date ) ); ?>"
-	   />
-<?php
-}
 
 
+/*
 function cb_core_admin_settings_handler() {
 
 	if ( ! isset( $_GET['page'] ) ) {
@@ -195,7 +183,7 @@ function cb_core_admin_settings_handler() {
 	}
 }
 //add_action( 'bp_admin_init', 'cb_core_admin_settings_handler' );
-
+*/
 function cb_core_admin_components_settings() { 
 	cb_admin_components_options();
 }
@@ -356,6 +344,7 @@ function cb_core_add_admin_caps() {
 		'requests_admin',
 		'participation_admin',
 		'events_admin',
+		'staffing_admin',
 	];
 
 	foreach ( $roles as $role ) {
@@ -532,6 +521,22 @@ function cb_is_user_participation_admin() {
  */
 function cb_is_user_requests_admin() {
 	return cb_core_is_component_admin('requests');
+}
+
+/**
+ * Checks to see if the user is a staffing admin.
+ * 
+ * Checks whether a user has administrative privileges for
+ * user moderation. These privileges are granted by
+ * assigning a role on the Edit User admin page.
+ * 
+ * @return bool Whether a user is a staffing admin.
+ * 
+ * @package ConfettiBits\Core
+ * @since 1.0.0
+ */
+function cb_is_user_staffing_admin() {
+	return cb_core_is_component_admin('staffing');
 }
 
 /**

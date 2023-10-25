@@ -243,6 +243,7 @@ if ( ! class_exists( 'Confetti_Bits' ) ) {
 			$this->table_prefix = $wpdb->prefix;
 			$this->page = trailingslashit(site_url()) . "confetti-bits";
 			$this->roles = new stdClass;
+			$this->volunteer_amount = get_option('cb_core_volunteer_amount');
 
 		}
 

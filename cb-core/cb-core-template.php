@@ -93,13 +93,14 @@ function cb_get_active_templates() {
 	$templates = [
 		'Dashboard Header'	=> 'dashboard-header',
 		'Dashboard'			=> 'dashboard',
-		'My Participation'	=> 'participation',
+		//'My Participation'	=> 'participation',
 		'My Transactions'	=> 'transactions',
 		'My Requests'		=> 'requests',
+		'Events'			=> 'events',
 	];
 	
 	if ( cb_is_user_participation_admin() ) {
-		$templates['Participation Admin'] = 'participation-admin';
+		//$templates['Participation Admin'] = 'participation-admin';
 	}
 	
 	if ( cb_is_user_requests_admin() ) {
@@ -107,17 +108,16 @@ function cb_get_active_templates() {
 	}
 	
 	if ( cb_is_user_events_admin() ) {
-		
+		$templates['Events Admin'] = 'events-admin';
 	}
 
 	if ( 1 == $debug ) {
 		$templates['Debug'] = 'debug';
 	}
 
-	if ( cb_is_user_site_admin() ) {
-		$templates['Events'] = 'events';
-		$templates['Events Admin'] = 'events-admin';
-	}
+	//if ( cb_is_user_site_admin() ) {
+	//	$templates['Events Admin'] = 'events-admin';
+	//}
 
 	return $templates;
 

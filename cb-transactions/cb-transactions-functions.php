@@ -67,7 +67,7 @@ function cb_activity_bits($content, $user_id, $activity_id)
 		'recipient_id' => $user_id,
 		'date_sent' => cb_core_current_date(),
 		'log_entry' => 'Posted a new update',
-		'component_name' => 'confetti_bits',
+		'component_name' => 'activity',
 		'component_action' => 'cb_activity_bits',
 		'amount' => 1
 	]);
@@ -270,7 +270,7 @@ function cb_transactions_check_activity_bits($user_id = 0)
 					'recipient_id' => $id,
 					'date_sent' => date('Y-m-d H:i:s', strtotime($date_sent)),
 					'log_entry' => 'Posted a new update',
-					'component_name' => 'confetti_bits',
+					'component_name' => 'activity',
 					'component_action' => 'cb_activity_bits',
 					'amount' => 1,
 				)
@@ -477,7 +477,7 @@ function cb_transactions_birthday_bits()
 		$transaction->recipient_id = $user_id;
 		$transaction->date_sent = current_time('mysql');
 		$transaction->log_entry = "Happy birthday!";
-		$transaction->component_name = 'confetti_bits';
+		$transaction->component_name = 'transactions';
 		$transaction->component_action = 'cb_birthday_bits';
 		$transaction->amount = 25;
 
@@ -526,7 +526,7 @@ function cb_transactions_anniversary_bits()
 		$transaction->recipient_id = $user_id;
 		$transaction->date_sent = current_time('mysql');
 		$transaction->log_entry = "Happy anniversary!";
-		$transaction->component_name = 'confetti_bits';
+		$transaction->component_name = 'transactions';
 		$transaction->component_action = 'cb_anniversary_bits';
 		$transaction->amount = $amount;
 
@@ -824,7 +824,7 @@ function cb_transactions_remove_bits( $id, $reassign, $user ) {
 			'date_sent'			=> cb_core_current_date(),
 			'log_entry'			=> 'User Removed - from ' .
 			$sender_name,
-			'component_name'    => 'confetti_bits',
+			'component_name'    => 'transactions',
 			'component_action'  => 'cb_removal_bits',
 			'amount'    		=> 0,
 			'error_type' 		=> 'wp_error',
@@ -836,4 +836,130 @@ function cb_transactions_remove_bits( $id, $reassign, $user ) {
 		'updated'
 	);
 
+}
+
+/**
+ * A supplemental helper function that will let us process
+ * event-based transactions without modifying existing
+ * API stuff too much.
+ * 
+ * We'll likely add more robust error handling later on.
+ * It's just getting down to the wire and we gotta push
+ * this out ASAP.
+ * 
+ * @param array $args { 
+ * 		An array of arguments. All required.
+ * 		
+ * 		@type int $event_id The ID of the event object.
+ * 		@type int $recipient_id The ID of the recipient user.
+ * 
+ * }
+ * 
+ * @return int|bool|string Transaction ID on full success, false if something
+ * 						   is missing, an error message if something when wrong.
+ * 
+ * @package ConfettiBits\Transactions
+ * @since 3.0.0
+ */
+function cb_transactions_new_events_transaction( $args = [] ) {
+	
+	if ( empty( $args['event_id'] ) ) {
+		return "Missing event ID.";
+	}
+	
+	if ( empty( $args['recipient_id'] ) ) {
+		return "Missing recipient ID.";
+	}
+	
+	$event_id = intval($args['event_id']);
+	$recipient_id = intval($args['recipient_id']);
+	$event = new CB_Events_Event($event_id);
+	
+	if ( empty( $event->event_title ) ) {
+		return "Event title not found.";
+	}
+	
+	if ( empty( $event->participation_amount ) ) {
+		return "Event participation amount not found.";
+	}
+	
+	
+	$transaction = new CB_Transactions_Transaction();
+	$transaction->item_id = $event_id;
+	$transaction->secondary_item_id = $recipient_id;
+	$transaction->recipient_id = $recipient_id;
+	$transaction->sender_id = $recipient_id;
+	$transaction->component_name = "events";
+	$transaction->component_action = "cb_events_new_transactions";
+	$transaction->date_sent = cb_core_current_date();
+	$transaction->amount = intval($event->participation_amount);
+	$transaction->log_entry = $event->event_title;
+	$transaction->event_id = $event_id;
+	
+	$save = $transaction->send_bits();
+	
+	return $save;
+	
+}
+
+/**
+ * A supplemental helper function that will let us process
+ * contest-based transactions without modifying existing
+ * API stuff too much.
+ * 
+ * We'll likely add more robust error handling later on.
+ * It's just getting down to the wire and we gotta push
+ * this out ASAP.
+ * 
+ * @param array $args { 
+ * 		An array of arguments. All required.
+ * 		
+ * 		@type int $event_id The ID of the event object.
+ * 		@type int $recipient_id The ID of the recipient user.
+ * 
+ * }
+ * 
+ * @return int|bool|string Transaction ID on full success, false if something
+ * 						   is missing, an error message if something when wrong.
+ * 
+ * @package ConfettiBits\Transactions
+ * @since 3.0.0
+ */
+function cb_transactions_new_contests_transaction( $args = [] ) {
+	
+	if ( empty( $args['contest_id'] ) ) {
+		return "Missing contest ID.";
+	}
+	
+	if ( empty( $args['recipient_id'] ) ) {
+		return "Missing recipient ID.";
+	}
+	
+	$contest_id = intval($args['contest_id']);
+	$recipient_id = intval($args['recipient_id']);
+	
+	$contest = new CB_Events_Contest($contest_id);
+	$event = new CB_Events_Event($contest->event_id);
+	$transaction = new CB_Transactions_Transaction();
+	$placement = cb_core_ordinal_suffix($contest->placement);
+	
+	if ( empty( $event->event_title ) ) {
+		return "Event title not found.";
+	}
+	
+	$transaction->item_id = $contest->event_id;
+	$transaction->secondary_item_id = $recipient_id;
+	$transaction->recipient_id = $recipient_id;
+	$transaction->sender_id = $recipient_id;
+	$transaction->component_name = "events";
+	$transaction->component_action = "cb_events_contest_new_transactions";
+	$transaction->date_sent = cb_core_current_date();
+	$transaction->amount = intval($contest->amount);
+	$transaction->log_entry = "{$placement} Place - {$event->event_title}";
+	$transaction->event_id = $event_id;
+	
+	$save = $transaction->send_bits();
+	
+	return $save;
+	
 }

@@ -1,9 +1,9 @@
 <?php
+// Exit if accessed directly.
 defined('ABSPATH') || exit;
+
 /**
- * CB Transactions Get Total Sent Today Notice
- * 
- * This function gets the total number of Confetti Bits
+ * Gets the total number of Confetti Bits
  * that have been sent for the current day and returns
  * a notice to the user.
  * 
@@ -153,14 +153,14 @@ function cb_transactions_get_balances_notice($user_id = 0) {
 
 
 	$notice = sprintf( 
-		"<div style='margin:10px;border:1px solid #dbb778;border-radius:10px;padding:.75rem;'>
-			<h4 style='padding:0;margin:0;'>Confetti Bits Balances</h4>
-			<div style='display:flex;'>
-				<div style='flex: 0 1 200px;padding:0;'>
+		"<div class='my-3 rounded p-3' style='border:1px solid #dbb778;'>
+			<h4 style='margin:0;'>Confetti Bits Balances</h4>
+			<div class='d-flex gap-3'>
+				<div class=''>
 					<p style='margin:0;'>Confetti Bits Requests: %s</p>
 					<p style='color:#d1cbc1;font-size:.75rem;margin:0;'>Until %s</p>
 				</div>
-				<div style='flex: 0 1 200px;padding:0;'>
+				<div >
 					<p style='margin:0;'>Confetti Bits Transfers: %s</p>
 					<p style='color:#d1cbc1;font-size:.75rem;margin:0;'>Until %s</p>
 				</div>
@@ -394,7 +394,7 @@ function cb_transactions_get_send_bits_module() {
 		]),
 		cb_templates_container([
 			'container' => 'ul',
-			'id' => 'cb_transactions_member_search_results',
+			'name' => 'cb_transactions_member_search_results',
 		]),
 		cb_templates_get_text_input([
 			'label' => "Log Entry",
@@ -533,7 +533,7 @@ function cb_transactions_leaderboard() {
  * @subpackage Templates
  * @since 2.3.0
  */
-function cb_get_import_bda_module() {
+function cb_transactions_get_import_bda_module() {
 	$heading = cb_templates_get_heading("Import Birthdays and Anniversaries");
 	$file_input = cb_templates_get_file_input(['name' => 'cb_transactions_bda_import', 'label' => 'Please choose a .csv file from your computer', 'accepts' => ['.csv'] ]);
 	$submit = cb_templates_get_submit_input(['value' => "Import"]);
@@ -555,5 +555,155 @@ function cb_get_import_bda_module() {
  * @since 2.3.0
  */
 function cb_import_bda_module() {
-	echo cb_get_import_bda_module();
+	echo cb_transactions_get_import_bda_module();
 }
+
+function cb_transactions_get_spot_bonus_module() {
+	
+	$today = new DateTime();
+
+	return cb_templates_get_form_module([
+		'component' => 'transactions_spot_bonus',
+		'method' => 'POST',
+		'container_classes' => ['modal'],
+		'classes' => ['modal-dialog', 'd-flex', 'flex-column'],
+		'output' => [
+			'modal' => true,
+			'component' => 'transactions_spot_bonus',
+			'heading' => "Schedule a Spot Bonus",
+			'inputs' => [
+				['type' => 'text', 'args' => ['name' => 'user', 'label' => 'Search for a user', 'classes' => ['cb-form-line', 'form-control']]],
+				['type' => 'container', 'args' => ['name' => 'search_results', 'container' => 'ul', 'classes' => ['list-group', 'ml-0']]],
+				['type' => 'date', 'args' => [
+					'component' => 'transactions_spot_bonus', 
+					'label' => 'Schedule a date to send out the spot bonus', 
+					'placeholder' => $today->format('m/d/Y')
+				]],
+				['type' => 'hidden', 'args' => ['name' => 'user_id']],
+				['type' => 'container', 'args' => [
+					'name' => 'action_buttons',
+					'classes' => ['gap-3', 'modal-footer'],
+					'output' => cb_templates_get_submit_input([
+						'name' => 'transactions_spot_bonus_submit', 
+						'value' => 'Schedule', 
+						'classes' => ['btn', 'btn-outline-primary', 'rounded'],
+						'custom_attrs' => ['data-bs-dismiss' => 'modal'],
+					])
+					. cb_templates_get_form_button([
+						'name' => 'cb_transactions_spot_bonus_cancel', 
+						'value' => 'Cancel', 
+						'custom_attrs' => ['data-bs-dismiss' => 'modal'],
+						'classes' => ['btn', 'btn-outline-secondary'],
+					])
+				]]
+			]
+		]
+	]);
+	/*
+	 * 
+	 *  
+	 * 
+	 * 
+			add this to the inputs call
+	 * add this back to the last container call
+	 * 
+	 * 
+					*/
+
+	/*
+	return cb_templates_recursive_helper([
+		'node_content' => [
+			'type' => 'container',
+			'args' => [
+				'type' => 'container',
+				'args' => ['name' => 'search_results', 'container' => 'ul']
+			]
+		]
+	]);
+	*/
+
+}
+
+function cb_transactions_get_volunteers_module() {
+	
+	$component = 'transactions_volunteers';
+
+	return cb_templates_get_form_module([
+		'component' => $component,
+		'method' => 'POST',
+		'container_classes' => ['modal'],
+		'classes' => ['modal-dialog', 'd-flex', 'flex-column'],
+		'output' => [
+			'modal' => true,
+			'component' => $component,
+			'heading' => "Log Volunteer Hours",
+			'inputs' => [
+				['type' => 'text', 'args' => ['name' => 'user', 'label' => 'Search for a user', 'classes' => ['cb-form-line', 'form-control']]],
+				['type' => 'container', 'args' => ['name' => 'search_results', 'container' => 'ul', 'classes' => ['list-group', 'm-0']]],
+				['type' => 'hidden', 'args' => ['name' => 'user_id']],
+				['type' => 'text', 'args' => ['name' => 'event', 'label' => 'Search for an event', 'classes' => ['cb-form-line', 'form-control']]],
+				['type' => 'container', 'args' => ['name' => 'event_search_results', 'container' => 'ul', 'classes' => ['list-group', 'm-0']]],
+				['type' => 'hidden', 'args' => ['name' => 'event_id']],
+				['type' => 'number', 'args' => ['name' => 'hours', 'label' => 'Number of Volunteer Hours', 'classes' => ['cb-form-line', 'form-control']]],
+				['type' => 'container', 'args' => [
+					'name' => 'action_buttons',
+					'classes' => ['gap-3', 'modal-footer'],
+					'output' => cb_templates_get_submit_input([
+						'name' => "{$component}_submit", 
+						'value' => 'Log Hours', 
+						'classes' => ['btn', 'btn-outline-primary', 'rounded'],
+						'custom_attrs' => ['data-bs-dismiss' => 'modal'],
+					])
+					. cb_templates_get_form_button([
+						'name' => "cb_{$component}_cancel", 
+						'value' => 'Cancel', 
+						'custom_attrs' => ['data-bs-dismiss' => 'modal'],
+						'classes' => ['btn', 'btn-outline-secondary'],
+					])
+				]]
+			]
+		]
+	]);
+
+}
+
+/**
+ * Adds a table for spot bonuses to the transactions tab.
+ * 
+ * @package ConfettiBits\Transactions
+ * @subpackage Templates
+ * @since 3.0.0
+ */
+function cb_transactions_spot_bonus_table_module() {
+	if ( cb_is_user_admin() ) {
+		echo cb_templates_get_table('transactions_spot_bonuses', 'Spot Bonuses');
+	}
+}
+add_action('cb_transactions_template', 'cb_transactions_spot_bonus_table_module', 2);
+
+/**
+ * Adds the spot bonus form to the transactions tab.
+ * 
+ * @package ConfettiBits\Transactions
+ * @subpackage Templates
+ * @since 3.0.0
+ */
+function cb_transactions_spot_bonus_module() {
+	if ( cb_is_user_admin() ) {
+		echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cb_transactions_spot_bonus_form_container">
+  Schedule Spot Bonus
+</button>';
+		echo cb_transactions_get_spot_bonus_module();
+	}
+}
+add_action('cb_transactions_template', 'cb_transactions_spot_bonus_module', 1);
+
+function cb_transactions_volunteer_hours_module() {
+	if ( cb_is_user_admin() ) {
+		echo '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cb_transactions_volunteers_form_container">
+  Log Volunteer Hours
+</button>';
+		echo cb_transactions_get_volunteers_module();	
+	}
+}
+add_action('cb_transactions_template', 'cb_transactions_volunteer_hours_module', 1);

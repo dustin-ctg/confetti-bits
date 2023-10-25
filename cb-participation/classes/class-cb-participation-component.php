@@ -41,6 +41,7 @@ class CB_Participation_Component extends CB_Component {
 		$includes = array(
 			'functions',
 			'template',
+			'notifications',
 		);
 
 		parent::includes($includes);
