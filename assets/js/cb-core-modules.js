@@ -574,7 +574,7 @@ export const DataTable = async (userConfig = {}) => {
 		try {
 			let entries = await jQuery.ajax(config.fetchList);
 
-			populateTable(entries);	
+			populateTable(entries);
 
 		} catch (error) {
 			console.error("Error in regenerateTable:", error);

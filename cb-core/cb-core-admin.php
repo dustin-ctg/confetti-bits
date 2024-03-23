@@ -276,6 +276,14 @@ function cb_core_set_role_globals() {
 			'caps' => [
 				'read' => true,
 				'cb_participation_admin' => true,
+				'cb_staffing_admin' => true,
+				'create_users' => true,
+				'add_users' => true,
+				'list_users' => true,
+				'edit_users' => true,
+				'edit_courses' => true,
+				'edit_groups' => true,
+				'edit_assignments' => true,
 				'cb_requests_admin' => true,
 				'cb_events_admin' => true,
 				'cb_admin' => true,
@@ -481,6 +489,8 @@ function cb_core_admin_is_user_site_admin( $user_id = 0 ) {
  */
 function cb_core_admin_is_user_admin( $user_id = 0 ) {
 
+	$user_id = intval($user_id);
+	
 	if ( $user_id === 0 ) {
 		return current_user_can('cb_admin');
 	}

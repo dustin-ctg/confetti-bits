@@ -179,7 +179,7 @@ function cb_core_set_reset_date_globals() {
 	}
 
 	$cb->earn_start = $date->modify('-1 year')->format('Y-m-d H:i:s');
-	$cb->earn_end = $reset_date;
+	$cb->earn_end = $date->format('Y-m-d H:i:s');
 	$cb->spend_start = $date->modify('-1 year + 1 month')->format('Y-m-d H:i:s');
 	$cb->spend_end = $date->modify('+ 1 month')->format('Y-m-d H:i:s');
 	$cb->prev_earn_start = $date->modify('-2 years')->format('Y-m-d H:i:s');
@@ -536,7 +536,7 @@ function cb_core_get_doomsday_clock() {
 
 	$cb = Confetti_Bits();
 	$current_date = new DateTimeImmutable();
-	$reset_date = DateTimeImmutable::createFromFormat('Y-m-d', $cb->earn_end);
+	$reset_date = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $cb->earn_end);
 	$interval = $current_date->diff($reset_date);
 
 	return $interval->days;
@@ -758,7 +758,7 @@ function cb_core_admin_settings_section_callback() {
 function cb_core_admin_reset_date_setting() {
 
 	$option = get_option('cb_reset_date');
-	$value = isset($option) ? date('m/d/Y', strtotime($option) ) : '';
+	$value = isset($option) ? date('Y-m-d', strtotime($option) ) : '';
 	echo '<input type="date" name="cb_core_reset_date" value="' . esc_attr($value) . '" />';
 
 }

@@ -174,7 +174,7 @@ jQuery(document).ready(function($) {
 			if ( anniversaryEvents ) {
 
 				let filteredBdaEvents = Object.values(anniversaryEvents).filter((anniversaryEvent) => {
-					let bdaEventDate = new Date(anniversaryEvent.value.replace(' ', 'T') + 'Z');
+					let bdaEventDate = new Date(anniversaryEvent.value.replace(' ', 'T'));
 					return bdaEventDate.getDate() === day;
 				});
 				

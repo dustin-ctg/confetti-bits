@@ -192,7 +192,7 @@ function cb_transactions_get_transfer_balance($user_id = 0)
 	$date = new DateTimeImmutable($cb->earn_end);
 	$today = new DateTimeImmutable();
 	
-	if ( $today->format('Y-m-d') >= $date->modify('-1 week')->format('Y-m-d') ) {
+	if ( $today->format('U') >= $date->modify('-1 week')->format('U') ) {
 		return 0;
 	}
 	
@@ -736,7 +736,6 @@ function cb_transactions_new_transaction($args = []) {
 		'secondary_item_id' => 0,
 		'sender_id'         => 0,
 		'recipient_id'		=> 0,
-		'date_sent'			=> '',
 		'log_entry'			=> '',
 		'component_name'    => '',
 		'component_action'  => '',
@@ -759,11 +758,10 @@ function cb_transactions_new_transaction($args = []) {
 	if ( empty( $r['recipient_id'] ) ) {
 		$feedback["text"] = "Transaction failed. Invalid recipient.";
 		return $feedback;
-
 	}
 
 	if ( empty( $r['amount'] ) ) {
-		$feedback = "Transaction failed. Please enter a valid amount.";
+		$feedback["text"] = "Transaction failed. Please enter a valid amount.";
 		return $feedback;
 	}
 
@@ -783,7 +781,7 @@ function cb_transactions_new_transaction($args = []) {
 	$transaction->component_action		= $r['component_action'];
 	$transaction->amount				= $r['amount'];
 
-	$send = $transaction->send_bits();
+	$send = $transaction->save();
 
 	if ( false === is_int( $send ) ) {
 		$feedback["text"] = "Transaction failed to process. Contact system administrator.";

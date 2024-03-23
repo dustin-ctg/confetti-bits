@@ -173,7 +173,6 @@ function cb_transactions_get_balances_notice($user_id = 0) {
 
 }
 
-
 /**
  * CB Transactions Balances Notice
  * 

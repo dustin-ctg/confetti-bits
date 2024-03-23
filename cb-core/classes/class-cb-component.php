@@ -511,7 +511,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 
 
 
-			$cache_bust = 'v2.0';
+			$cache_bust = 'v2.0.1';
 			$user_id = intval(get_current_user_id());
 			$api_key_safe_name = get_option( 'cb_core_api_key_safe_name' );
 

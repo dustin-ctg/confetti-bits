@@ -109,11 +109,11 @@ function cb_ajax_new_transactions() {
 		echo json_encode($feedback);
 		die();
 	}
-	
+
 	$recipient_id = intval($_POST['recipient_id']);
-	
+
 	if ( !empty( $_POST['event_id'] ) ) {
-		
+
 		$event_id = intval($_POST['event_id']);
 		$event_transaction = cb_transactions_new_events_transaction([
 			'event_id' => $event_id,
@@ -130,16 +130,16 @@ function cb_ajax_new_transactions() {
 		echo json_encode($feedback);
 		die();
 	}
-	
+
 	if ( !empty( $_POST['contest_id'] ) ) {
-		
+
 		$contest_id = intval($_POST['contest_id']);
-		
+
 		$contest_transction = cb_transactions_new_contests_transaction([
 			'contest_id' => $contest_id,
 			'recipient_id' => $recipient_id
 		]);
-		
+
 		if ( $contest_transction == false ) {
 			$feedback['text'] = "Failed to process contest transaction: {$contest_transaction}";
 		} else {
@@ -148,7 +148,7 @@ function cb_ajax_new_transactions() {
 		}
 		echo json_encode($feedback);
 		die();
-		
+
 	}
 
 	if ( empty( $_POST['sender_id'] ) || empty( $_POST['amount'] ) ) {
@@ -235,8 +235,9 @@ function cb_ajax_new_transactions() {
 		echo json_encode($feedback);
 		die();
 	}
-
+	
 	$action = $is_admin ? "send" : "transfer";
+	$transaction_type = $is_admin ? " leadership " : "";
 
 	$send = cb_transactions_new_transaction([
 		'item_id'			=> $recipient_id,
@@ -254,7 +255,7 @@ function cb_ajax_new_transactions() {
 		$sender_link = bp_core_get_userlink( $sender_id );
 		$recipient_link = bp_core_get_userlink( $recipient_id );
 		$activity_args = array(
-			"action"	=> "<p>{$sender_link} just sent leadership bits to {$recipient_link} for:</p>",
+			"action"	=> "<p>{$sender_link} just sent{$transaction_type}bits to {$recipient_link} for:</p>",
 			"content"	=> "<p style='margin:1.25rem;'>\"{$log_entry}\"</p>",
 			"type"		=> "activity_update",
 			"component"	=> "confetti_bits",
