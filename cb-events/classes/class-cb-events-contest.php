@@ -568,7 +568,11 @@ class CB_Events_Contest
 		}
 
 		if (!empty($where_conditions)) {
-			$where = $args['or'] ? 'WHERE ' . implode(' OR ', $where_conditions) : 'WHERE ' . implode(' AND ', $where_conditions);
+			$conditions = '';
+			if ( isset( $args['or'] ) ) {
+				$conditions = $args['or'] ? implode(' OR ', $where_conditions ) : implode( ' AND ', $where_conditions ); 
+			}
+			$where = "WHERE {$conditions}";
 		}
 
 		return $where;

@@ -21,34 +21,35 @@ function cb_transactions_get_total_sent_today_notice()
 	}
 
 	$amount = cb_transactions_get_total_sent_today();
+	$limit = get_option('cb_transactions_transfer_limit', 20);
 
 	if (empty($amount) || $amount == 0) {
-		$notice = "You've sent 0 Confetti Bits so far today. You can send up to 20.";
+		$notice = "You've sent 0 Confetti Bits so far this month. You can send up to {$limit}.";
 	} else {
 
-		if ($amount > 1 && $amount < 20) {
+		if ($amount > 1 && $amount < $limit) {
 			$notice = sprintf(
-				"You've sent %s Confetti Bits so far today. You can send up to %s more.",
-				$amount, 20 - $amount
+				"You've sent %s Confetti Bits so far this month. You can send up to %s more.",
+				$amount, $limit - $amount
 			);
 		}
 
 		if ($amount === 1) {
 			$notice = sprintf(
-				"You've sent %s Confetti Bit so far today. You can send up to 19 more.",
-				$amount
+				"You've sent %s Confetti Bit so far today. You can send up to %s more.",
+				$amount, $limit - 1
 			);
 		}
 
-		if ($amount >= 20) {
+		if ($amount >= $limit) {
 			$notice = sprintf(
-				"You've already sent %s Confetti Bits today. Your counter should reset tomorrow!",
+				"You've already sent %s Confetti Bits this month. Your counter should reset next month!",
 				$amount
 			);
 		}
 	}
 
-	return $notice;
+	return "<p style='margin-top:1rem;'>{$notice}</p>";
 }
 
 /**
@@ -380,6 +381,27 @@ add_action('cb_dashboard', 'cb_transactions_leaderboard_module', 1 );
  */
 function cb_transactions_get_send_bits_module() {
 
+	$limit = get_option('cb_transactions_transfer_limit');
+	$user_id = get_current_user_id();
+	$is_admin = cb_is_user_site_admin($user_id);
+	$amount = cb_transactions_get_total_sent_today();
+	$limit = get_option('cb_transactions_transfer_limit', 20);
+
+	if ( !cb_is_user_admin($user_id) ) {
+		if ( cb_settings_get_blackout_status() ) {
+			return cb_templates_container([
+				'classes' => ['cb-module'],
+				'output' => "<div style='width:full;display:flex;flex-flow:row wrap;justify-content:center;align-items:center;'>Confetti Bits transfers are unavailable right now.</div>"
+			]);
+		}
+		if ( $amount >= $limit ) {
+			return cb_templates_container([
+				'classes' => ['cb-module'],
+				'output' => "<div style='width:full;display:flex;flex-flow:row wrap;justify-content:center;align-items:center;'>You have reached the Confetti Bits transfer limit this month.</div>"
+			]);
+		}
+	}
+
 	$content = [
 		cb_templates_get_heading('Send Bits to Team Members'),
 		cb_templates_get_text_input([
@@ -404,8 +426,8 @@ function cb_transactions_get_send_bits_module() {
 		cb_templates_get_number_input([
 			'name' => 'cb_transactions_amount',
 			'label' => 'Amount to Send',
-			'min' => 1,
-			'max' => 20,
+			'min' => $is_admin ? -999 : 1,
+			'max' => $is_admin ? 999 : $limit,
 			'required' => true,
 		]),
 		cb_templates_get_hidden_input(['name' => 'cb_transactions_recipient_id']),
@@ -418,7 +440,7 @@ function cb_transactions_get_send_bits_module() {
 		cb_transactions_get_total_sent_today_notice(),
 	];
 
-	if ( !cb_is_user_admin() || cb_is_user_site_admin() ) {
+	if ( !cb_is_user_admin() ) {
 		array_unshift($content, cb_transactions_get_transfer_balance_notice());
 	}
 
@@ -558,7 +580,7 @@ function cb_import_bda_module() {
 }
 
 function cb_transactions_get_spot_bonus_module() {
-	
+
 	$today = new DateTime();
 
 	return cb_templates_get_form_module([
@@ -624,7 +646,7 @@ function cb_transactions_get_spot_bonus_module() {
 }
 
 function cb_transactions_get_volunteers_module() {
-	
+
 	$component = 'transactions_volunteers';
 
 	return cb_templates_get_form_module([

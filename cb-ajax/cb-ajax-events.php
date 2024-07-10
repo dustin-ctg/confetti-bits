@@ -5,7 +5,7 @@
  * These are going to be all of our CRUD functions for
  * the events component.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 // Exit if accessed directly.
@@ -154,7 +154,7 @@ function cb_ajax_new_events()
 /**
  * Updates an existing event object and saves it to the database.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_update_events() {
@@ -232,7 +232,7 @@ function cb_ajax_update_events() {
 /**
  * Deletes an existing event object from the database.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_delete_events()
@@ -288,7 +288,7 @@ function cb_ajax_delete_events()
 /**
  * Retrieves event objects from the database.
  *
- * @package ConfettiBits\Events
+ * @package Events
  * @since 3.0.0
  */
 function cb_ajax_get_events() {
@@ -499,6 +499,9 @@ function cb_ajax_get_bda() {
 
 }
 
+/**
+ * Need to implement these at some point.
+ */
 function cb_ajax_new_bda() {}
 function cb_ajax_update_bda() {}
 function cb_ajax_delete_bda() {}

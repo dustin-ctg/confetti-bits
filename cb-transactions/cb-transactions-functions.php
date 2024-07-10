@@ -85,19 +85,21 @@ function cb_activity_bits($content, $user_id, $activity_id)
  * @package ConfettiBits\Transactions
  * @since 1.0.0
  */
-function cb_transactions_get_total_sent_today() {
+function cb_transactions_get_total_sent_today($user_id = 0) {
 
 	$transaction = new CB_Transactions_Transaction();
 	$date = new DateTimeImmutable("now");
-	$user_id = get_current_user_id();
-	$action = ( cb_is_user_admin() && !cb_is_user_site_admin() ) ? 'cb_send_bits' : 'cb_transfer_bits';
+	if ( empty($user_id) ) {
+		$user_id = get_current_user_id();	
+	}
+	
+	$action = cb_is_user_admin($user_id) ? 'cb_send_bits' : 'cb_transfer_bits';
 	$args = [
 		'select' => "SUM(CASE WHEN amount > 0 AND sender_id = {$user_id} THEN amount ELSE 0 END) as amount",
 		'where' => [
 			'date_query' => [
 				'year' => $date->format('Y'),
-				'month' => $date->format('m'),
-				'day' => $date->format('d'),
+				'month' => $date->format('m')
 			],
 			'component_action' => $action,
 		]

@@ -34,8 +34,8 @@ export const toMySQLUTCDate = (component, input) => {
 	let formattedDate = `${dateParts[2]}-${dateParts[0].padStart(2, '0')}-${dateParts[1].padStart(2, '0')}`;
 	let meridiem = jQuery(timeSelectorPrefix('meridiem')).val();
 	let hour = parseInt(jQuery(timeSelectorPrefix('hour')).val());
-	let minute = jQuery(timeSelectorPrefix('minute')).val();
-
+	let minute = parseInt(jQuery(timeSelectorPrefix('minute')).val());
+	
 	if (meridiem === "PM" && hour !== 12) {
 		hour += 12;
 	} else if (meridiem === "AM" && hour === 12) {

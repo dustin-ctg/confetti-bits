@@ -1412,7 +1412,7 @@ function cb_templates_get_date_input( $args = [] ) {
 	$readonly = $r['readonly'] ? 'readonly' : ''; 
 	$disabled = $r['disabled'] ? 'disabled' : ''; 
 	$required = $r['required'] ? 'required' : ''; 
-	$value = !empty($r['value']) ? 'value="' . cb_core_sanitize_string($r['value']) . '"' : ''; 
+	$value = !empty($r['value']) ? cb_core_sanitize_string($r['value']) : ''; 
 	$label = !empty($r['label']) ? cb_core_sanitize_string($r['label']) : '';
 
 	$input = cb_templates_get_text_input([
@@ -1467,7 +1467,17 @@ function cb_templates_get_date_input( $args = [] ) {
 /**
  * Outputs markup for a pretty date input.
  * 
- * @package ConfettiBits\Templates
+ * @param array $args An optional array of arguments. 
+ * {
+ * 		@type string $component Used for HTML naming conventions.
+ * 		@type array $container_classes An array of classes that will be added to the element's styling.
+ * 		@type int $minute_step Allows the option for time blocks, instead of 60 different options in the select markup. Default 1.
+ * 		@type array $value A two-value array of integers that represent the hour and minute, so you can provide defaults on render.
+ * }
+ * 
+ * @return string The formatted markup.
+ * 
+ * @package Templates
  * @since 3.0.0
  */
 function cb_date_input($args = []) {
@@ -1478,18 +1488,21 @@ function cb_templates_get_time_selector_input( $args = [] ) {
 
 	$r = wp_parse_args( $args, [
 		'component' => '',
-		'container_classes' => []
+		'container_classes' => [],
+		'minute_step' => 1,
+		'value' => [1,0]
 	]);
 
 	$hours_options = '';
 	$minutes_options = '';
+	$values = array_map('intval', $r['value']);
 
 	for ( $i = 1; $i <= 12; $i++ ) {
-		$hours_options .= '<option value="' . $i . '" ' . ($i === 9 ? "selected" : "") . '>' . $i . '</option>';
+		$hours_options .= '<option value="' . $i . '" ' . ($i === $values[0] ? "selected" : "") . '>' . $i . '</option>';
 	}
 
-	for ( $j = 0; $j <= 60; $j++ ) {
-		$minutes_options .= '<option value="' . ($j < 10 ? 0 : "") . $j . '"' . ($j === 0 ? " selected" : "") . '>' . ($j < 10 ? 0 : '') . $j . '</option>';
+	for ( $j = 0; $j <= 60; $j+= $r['minute_step'] ) {
+		$minutes_options .= '<option value="' . ($j < 10 ? 0 : "") . $j . '"' . ($j === $values[1] ? " selected" : "") . '>' . ($j < 10 ? 0 : '') . $j . '</option>';
 	}
 	
 	$classes = ' class="' . implode(' ', array_merge( ['d-flex', 'my-2'], $r['container_classes'] ) ) . '"';

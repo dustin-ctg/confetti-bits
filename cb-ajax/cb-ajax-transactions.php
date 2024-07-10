@@ -183,8 +183,18 @@ function cb_ajax_new_transactions() {
 	$amount = 0;
 	$add_activity = isset( $_POST['add_activity'] );
 	$is_admin = cb_core_admin_is_user_admin($sender_id);
+	$blackout_active = cb_settings_get_blackout_status();
 
-	$total_today = cb_transactions_get_total_sent_today();
+	// !$is_admin &&
+	if (  $blackout_active ) {
+		$feedback['text'] = "Confetti Bits transfers are currently in an active blackout period. Contact your administrator for more information.";
+		$feedback['type'] = 'error';
+		echo json_encode($feedback);
+		die();	
+	}
+	
+	$total_today = cb_transactions_get_total_sent_today($sender_id);
+	$limit = get_option('cb_transactions_transfer_limit');
 
 	if ( empty( $_POST['log_entry'] ) ) {
 		$feedback["text"] = "Confetti Bits transactions must include a log entry.";
@@ -214,8 +224,8 @@ function cb_ajax_new_transactions() {
 		die();
 	}
 
-	if ( ( $amount + $total_today ) > 20 ) { 
-		$feedback["text"] = "Transaction not sent. This would put you over the 20 Confetti Bits per diem limit. Your counter will reset tomorrow!";
+	if ( ( $amount + $total_today ) >= $limit ) { 
+		$feedback["text"] = "Transaction not sent. This would put you over the Confetti Bits transfer limit. Your counter will reset next month!";
 		$feedback["type"] = "warning";
 		echo json_encode($feedback);
 		die();
@@ -235,7 +245,7 @@ function cb_ajax_new_transactions() {
 		echo json_encode($feedback);
 		die();
 	}
-	
+
 	$action = $is_admin ? "send" : "transfer";
 	$transaction_type = $is_admin ? " leadership " : "";
 

@@ -174,7 +174,7 @@ function cb_core_set_reset_date_globals() {
 	$date = new DateTimeImmutable($reset_date);
 	$today = new DateTimeImmutable();
 
-	if ( $today > $date->modify('+1 month') ) {
+	if ( $today > $date ) {
 		$date = cb_core_auto_reset();
 	}
 
@@ -751,15 +751,14 @@ function cb_core_admin_settings_section_callback() {
 /**
  * Outputs the setting field for the reset date.
  * 
- * @package ConfettiBits\Core
- * @subpackage Templates
+ * @package Core
  * @since 3.0.0
  */
 function cb_core_admin_reset_date_setting() {
 
 	$option = get_option('cb_reset_date');
-	$value = isset($option) ? date('Y-m-d', strtotime($option) ) : '';
-	echo '<input type="date" name="cb_core_reset_date" value="' . esc_attr($value) . '" />';
+	$value = !empty($option) ? date('Y-m-d', strtotime($option) ) : '';
+	echo '<input type="date" name="cb_reset_date" value="' . esc_attr($value) . '" />';
 
 }
 
@@ -795,7 +794,7 @@ function cb_core_admin_spot_bonus_setting() {
  */
 function cb_core_convert_scripts_to_modules($tag, $handle, $src) {
 
-	$modules = ['cb_core', 'cb_staffing_admin', 'cb_events_admin', 'cb_events', 'cb_core_modules', 'cb_volunteers'];
+	$modules = ['cb_core', 'cb_staffing_admin', 'cb_events_admin', 'cb_events', 'cb_core_modules', 'cb_volunteers', 'cb_settings'];
 
 	if ( in_array( $handle, $modules ) ) {
 		$src = esc_url($src);

@@ -25,8 +25,8 @@ class CB_Core extends CB_Component {
 
 		$cb = Confetti_Bits();
 
-		$cb->required_components = [ 'transactions', 'participation', 'ajax', 'requests', 'events' ];
-		$cb->active_components = [ 'transactions', 'participation', 'ajax', 'requests', 'events' ];
+		$cb->required_components = [ 'transactions', 'participation', 'ajax', 'requests', 'events', 'settings' ];
+		$cb->active_components = [ 'transactions', 'participation', 'ajax', 'requests', 'events', 'settings' ];
 
 		// Loop through required components.
 		foreach ( $cb->required_components as $component ) {

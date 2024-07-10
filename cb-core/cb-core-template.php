@@ -83,7 +83,7 @@ function cb_member_get_template_part( $template = '' ) {
  * 
  * @return An array of the active templates.
  * 
- * @package ConfettiBits\Core
+ * @package Core
  * @subpackage Templates
  * @since 1.0.0
  */
@@ -115,9 +115,9 @@ function cb_get_active_templates() {
 		$templates['Debug'] = 'debug';
 	}
 
-	//if ( cb_is_user_site_admin() ) {
-	//	$templates['Events Admin'] = 'events-admin';
-	//}
+	if ( cb_is_user_site_admin() ) {
+		$templates['Settings'] = 'settings';
+	}
 
 	return $templates;
 

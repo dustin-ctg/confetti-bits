@@ -189,8 +189,10 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			// Path for includes.
 			$this->path = $path;
 
+			/*
 			// Miscellaneous component parameters that need to be set early on.
 			if ( ! empty( $params ) ) {
+			
 				// Sets the position for our menu under the WP Toolbar's "My Account" menu.
 				if ( ! empty( $params['adminbar_myaccount_order'] ) ) {
 					$this->adminbar_myaccount_order = (int) $params['adminbar_myaccount_order'];
@@ -210,6 +212,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 				// New component menus are added before the settings menu if not set.
 				$this->adminbar_myaccount_order = 90;
 			}
+			*/
 
 			// Move on to the next step.
 			$this->setup_actions();
@@ -333,9 +336,11 @@ if ( ! class_exists( 'CB_Component' ) ) {
 				$this->register_meta_tables( $r['meta_tables'] );
 			}
 
+			/*
 			if ( !empty( $r['api_endpoints'] ) ) {
 				$this->api_endpoints = $r['api_endpoints'];
 			}
+			*/
 
 			/** Confetti_Bits ********************************************************/
 
@@ -443,11 +448,11 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		 * cb_ajax_register_api_endpoints() to register
 		 * endpoints based on the component.
 		 * 
-		 * @package ConfettiBits\Core
+		 * @package Core
 		 * @since 2.3.1
 		 */
 		public function register_api_endpoints( $components = [] ) {
-
+			
 			if ( !empty( $components ) ) {
 				foreach ( $components as $component ) {
 					cb_ajax_register_rest_route($component);
@@ -511,7 +516,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 
 
 
-			$cache_bust = 'v2.0.1';
+			$cache_bust = 'v2.0.2';
 			$user_id = intval(get_current_user_id());
 			$api_key_safe_name = get_option( 'cb_core_api_key_safe_name' );
 
@@ -590,7 +595,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 		public function setup_actions() {
 
 			// Setup globals.
-			add_action( 'cb_setup_globals', array( $this, 'setup_globals' ), 10 );
+			add_action( 'cb_setup_globals', array( $this, 'setup_globals' ), 1 );
 
 			// Set up canonical stack.
 			add_action( 'cb_setup_canonical_stack', array( $this, 'setup_canonical_stack' ), 10 );
@@ -600,10 +605,10 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			// to cb_include with the default priority of 10. This is for backwards
 			// compatibility; henceforth, plugins should register themselves by
 			// extending this base class.
-			add_action( 'cb_include', [ $this, 'includes' ], 8 );
+			add_action( 'cb_include', [ $this, 'includes' ], 2 );
 
 			// Enqueue component scripts.
-			add_action( 'cb_enqueue_scripts', [ $this, 'enqueue_scripts' ], 9 );
+			add_action( 'cb_enqueue_scripts', [ $this, 'enqueue_scripts' ], 10 );
 
 			// Set up REST API endpoints.
 			add_action( 'cb_rest_api_init', [ $this, 'register_api_endpoints'], 10 );
@@ -615,7 +620,7 @@ if ( ! class_exists( 'CB_Component' ) ) {
 			add_action( 'cb_setup_nav', array( $this, 'setup_nav' ), 10 );
 
 			// Setup WP Toolbar menus.
-			add_action( 'cb_setup_admin_bar', array( $this, 'setup_admin_bar' ), $this->adminbar_myaccount_order );
+			// add_action( 'cb_setup_admin_bar', array( $this, 'setup_admin_bar' ), $this->adminbar_myaccount_order );
 
 			// Setup component title.
 			add_action( 'cb_setup_title', array( $this, 'setup_title' ), 10 );
