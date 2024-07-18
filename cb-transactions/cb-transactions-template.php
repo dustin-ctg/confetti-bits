@@ -13,8 +13,7 @@ defined('ABSPATH') || exit;
  * @subpackage Templates
  * @since 2.2.0
  */
-function cb_transactions_get_total_sent_today_notice()
-{
+function cb_transactions_get_total_sent_today_notice() {
 
 	if (!cb_is_confetti_bits_component() ) {
 		return;
@@ -22,34 +21,46 @@ function cb_transactions_get_total_sent_today_notice()
 
 	$amount = cb_transactions_get_total_sent_today();
 	$limit = get_option('cb_transactions_transfer_limit', 20);
+	$notice = "";
+	$notice_markup = "<p style='margin-top:1rem;'>%s</p>";
+	$user_id = get_current_user_id();
+	$is_admin = cb_is_user_site_admin($user_id);
+
+	if ( $is_admin ) {
+		return;
+	}
 
 	if (empty($amount) || $amount == 0) {
 		$notice = "You've sent 0 Confetti Bits so far this month. You can send up to {$limit}.";
-	} else {
-
-		if ($amount > 1 && $amount < $limit) {
-			$notice = sprintf(
-				"You've sent %s Confetti Bits so far this month. You can send up to %s more.",
-				$amount, $limit - $amount
-			);
-		}
-
-		if ($amount === 1) {
-			$notice = sprintf(
-				"You've sent %s Confetti Bit so far today. You can send up to %s more.",
-				$amount, $limit - 1
-			);
-		}
-
-		if ($amount >= $limit) {
-			$notice = sprintf(
-				"You've already sent %s Confetti Bits this month. Your counter should reset next month!",
-				$amount
-			);
-		}
+		return sprintf($notice_markup, $notice);
 	}
 
-	return "<p style='margin-top:1rem;'>{$notice}</p>";
+	if ($amount > 1 && $amount < $limit) {
+		$notice = sprintf(
+			"You've sent %s Confetti Bits so far this month. You can send up to %s more.",
+			$amount, $limit - $amount
+		);
+		return sprintf($notice_markup, $notice);
+	}
+
+	if ($amount === 1) {
+		$notice = sprintf(
+			"You've sent %s Confetti Bit so far today. You can send up to %s more.",
+			$amount, $limit - 1
+		);
+		return sprintf($notice_markup, $notice);
+	}
+
+	if ($amount >= $limit) {
+		$notice = sprintf(
+			"You've already sent %s Confetti Bits this month. Your counter should reset next month!",
+			$amount
+		);
+		return sprintf($notice_markup, $notice);
+	}
+	
+	return;
+
 }
 
 /**

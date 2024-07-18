@@ -906,7 +906,10 @@ No events found.
 				page: 1,
 				api_key: cb_events_admin.api_key
 			},
-			success: e => e,
+			success: e => {
+				// console.log(e);
+				return e;
+			},
 			error: err => console.error(err)
 		},
 		deleteItemCallback: async function (itemID) {

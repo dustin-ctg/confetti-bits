@@ -163,8 +163,6 @@ function cb_ajax_new_transactions() {
 		http_response_code(401);
 		echo json_encode($feedback);
 		die();
-	} else {
-		$sender_id = intval( $_POST['sender_id'] );
 	}
 
 	if ( empty( $_POST['recipient_id'] ) || !is_numeric( $_POST['recipient_id'] ) ) {
@@ -173,10 +171,25 @@ function cb_ajax_new_transactions() {
 		$feedback["type"] = "error";
 		echo json_encode($feedback);
 		die();
-	} else {
-		$recipient_id = intval( $_POST['recipient_id'] );
 	}
-
+	
+	if ( empty( $_POST['log_entry'] ) ) {
+		$feedback["text"] = "Confetti Bits transactions must include a log entry.";
+		$feedback["type"] = "error";
+		echo json_encode($feedback);
+		die();
+	}
+	
+	if ( empty( $_POST['amount'] ) || !is_numeric( $_POST['amount'] ) ) {
+		$feedback["text"] = "Confetti Bits transactions must include an amount to send.";
+		http_response_code(400);
+		$feedback["type"] = "error";
+		echo json_encode($feedback);
+		die();
+	}
+	
+	$sender_id = intval( $_POST['sender_id'] );
+	$recipient_id = intval( $_POST['recipient_id'] );
 	$sender_name = cb_core_get_user_display_name( $sender_id );
 	$recipient_name = cb_core_get_user_display_name( $recipient_id );
 	$log_entry = "";
@@ -184,62 +197,42 @@ function cb_ajax_new_transactions() {
 	$add_activity = isset( $_POST['add_activity'] );
 	$is_admin = cb_core_admin_is_user_admin($sender_id);
 	$blackout_active = cb_settings_get_blackout_status();
+	$total_today = cb_transactions_get_total_sent_today($sender_id);
+	$limit = get_option('cb_transactions_transfer_limit');
+	$log_entry = sanitize_text_field( $_POST['log_entry'] );
+	$amount = intval( $_POST['amount'] );
+	$recipient_transfer_balance = cb_transactions_get_transfer_balance( $recipient_id );
+	$sender_transfer_balance = cb_transactions_get_transfer_balance( $sender_id );
 
-	// !$is_admin &&
-	if (  $blackout_active ) {
+	if ( !$is_admin && $blackout_active ) {
 		$feedback['text'] = "Confetti Bits transfers are currently in an active blackout period. Contact your administrator for more information.";
 		$feedback['type'] = 'error';
 		echo json_encode($feedback);
 		die();	
 	}
+
+	if ( ( $amount > $sender_transfer_balance ) && !$is_admin ) {
+		$feedback["text"] = "Sorry, it looks like you don't have enough bits to send.";
+		$feedback["type"] = "warning";
+		echo json_encode($feedback);
+		die();
+	}
 	
-	$total_today = cb_transactions_get_total_sent_today($sender_id);
-	$limit = get_option('cb_transactions_transfer_limit');
-
-	if ( empty( $_POST['log_entry'] ) ) {
-		$feedback["text"] = "Confetti Bits transactions must include a log entry.";
-		$feedback["type"] = "error";
-		echo json_encode($feedback);
-		die();
-	} else {
-		$log_entry = sanitize_text_field( $_POST['log_entry'] );
-	}
-
-	if ( empty( $_POST['amount'] ) || !is_numeric( $_POST['amount'] ) ) {
-		$feedback["text"] = "Confetti Bits transactions must include an amount to send.";
-		http_response_code(400);
-		$feedback["type"] = "error";
-		echo json_encode($feedback);
-		die();
-	} else {
-		$amount = intval( $_POST['amount'] );
-	}
-
-	if ( ( abs( $amount ) > cb_transactions_get_transfer_balance( $recipient_id ) ) && 
-		( $amount < 0 ) 
-	   ) {
+	if ( ( abs( $amount ) > $recipient_transfer_balance ) && ( $amount < 0 ) ) {
 		$feedback["text"] = "{$recipient_name} doesn't have enough Confetti Bits for that.";
 		$feedback["type"] = "warning";
 		echo json_encode($feedback);
 		die();
 	}
 
-	if ( ( $amount + $total_today ) >= $limit ) { 
+	if ( ( $amount + $total_today ) >= $limit && !cb_is_user_site_admin($sender_id) ) { 
 		$feedback["text"] = "Transaction not sent. This would put you over the Confetti Bits transfer limit. Your counter will reset next month!";
 		$feedback["type"] = "warning";
 		echo json_encode($feedback);
 		die();
 	}
 
-	if ( ( $amount > cb_transactions_get_transfer_balance( $sender_id ) ) && ( !cb_is_user_admin($sender_id) ) ) {
-		$feedback["text"] = "Sorry, it looks like you don't have enough bits to send.";
-		$feedback["type"] = "warning";
-		echo json_encode($feedback);
-		die();
-	}
-
-	if ( (cb_core_get_doomsday_clock() <= 7 && !cb_is_user_admin($sender_id))
-	   ) {
+	if ( (cb_core_get_doomsday_clock() <= 7 && !$is_admin ) ) {
 		$feedback["text"] = "Transaction not sent. Cannot transfer Confetti Bits within 7 days prior to, or one month beyond, the cycle reset date.";
 		$feedback["type"] = "warning";
 		echo json_encode($feedback);
@@ -261,62 +254,53 @@ function cb_ajax_new_transactions() {
 		'amount'    		=> $amount
 	]);
 
+	$sent = is_int($send);
+
 	if ( $add_activity ) {
 		$sender_link = bp_core_get_userlink( $sender_id );
 		$recipient_link = bp_core_get_userlink( $recipient_id );
-		$activity_args = array(
+		$activity_args = [
 			"action"	=> "<p>{$sender_link} just sent{$transaction_type}bits to {$recipient_link} for:</p>",
 			"content"	=> "<p style='margin:1.25rem;'>\"{$log_entry}\"</p>",
 			"type"		=> "activity_update",
 			"component"	=> "confetti_bits",
 			"user_id"	=> $sender_id
-		);
+		];
 		bp_activity_add($activity_args);
 	}
 
-	if ( true === is_int( $send ) ) {
-
-		if ( $is_admin ) {
-			http_response_code(200);
-			$feedback['text'] = "Successfully sent bits to {$recipient_name}!";
-			$feedback['type'] = "success";
-			echo json_encode($feedback);
-			die();
-		} else {
-			$subtract = cb_transactions_new_transaction([
-				'item_id'			=> $sender_id,
-				'secondary_item_id'	=> $sender_id,
-				'sender_id'			=> $sender_id,
-				'recipient_id' 		=> $sender_id,
-				'date_sent'			=> cb_core_current_date(),
-				'log_entry'    		=> "Sent Bits to {$recipient_name}",
-				'component_name'    => 'confetti_bits',
-				'component_action'  => "cb_{$action}_bits",
-				'amount'    		=> -$amount
-			]);
-
-			if ( true === is_int($subtract) ) {
-				http_response_code(200);
-				$feedback["text"] = "Successfully sent bits to {$recipient_name}";
-				$feedback["type"] = "success";
-				echo json_encode($feedback);
-				die();
-			} else {
-				http_response_code(500);
-				$feedback["text"] = "Something's broken, call Dustin.";
-				$feedback["type"] = "error";
-				echo json_encode($feedback);
-				die();
-			}
-		}
-
-	} else {
-		http_response_code(500);
-		$feedback["text"] = "Something's broken, call Dustin.";
-		$feedback["type"] = "error";
+	if ( $is_admin && $sent ) {
+		http_response_code(200);
+		$feedback['text'] = "Successfully sent bits to {$recipient_name}!";
+		$feedback['type'] = "success";
 		echo json_encode($feedback);
 		die();
 	}
 
-}
+	$subtract = cb_transactions_new_transaction([
+		'item_id'			=> $sender_id,
+		'secondary_item_id'	=> $sender_id,
+		'sender_id'			=> $sender_id,
+		'recipient_id' 		=> $sender_id,
+		'date_sent'			=> cb_core_current_date(),
+		'log_entry'    		=> "Sent Bits to {$recipient_name}",
+		'component_name'    => 'confetti_bits',
+		'component_action'  => "cb_{$action}_bits",
+		'amount'    		=> -$amount
+	]);
 
+	if ( true === is_int($subtract) ) {
+		http_response_code(200);
+		$feedback["text"] = "Successfully sent bits to {$recipient_name}";
+		$feedback["type"] = "success";
+		echo json_encode($feedback);
+		die();
+	}
+
+	http_response_code(500);
+	$feedback["text"] = "Something's broken, call Dustin.";
+	$feedback["type"] = "error";
+	echo json_encode($feedback);
+	die();
+
+}
