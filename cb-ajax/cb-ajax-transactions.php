@@ -195,7 +195,7 @@ function cb_ajax_new_transactions() {
 	$log_entry = "";
 	$amount = 0;
 	$add_activity = isset( $_POST['add_activity'] );
-	$is_admin = cb_core_admin_is_user_admin($sender_id);
+	$is_admin = cb_is_user_transactions_admin($sender_id);
 	$blackout_active = cb_settings_get_blackout_status();
 	$total_today = cb_transactions_get_total_sent_today($sender_id);
 	$limit = get_option('cb_transactions_transfer_limit');
@@ -225,7 +225,7 @@ function cb_ajax_new_transactions() {
 		die();
 	}
 
-	if ( ( $amount + $total_today ) >= $limit && !cb_is_user_site_admin($sender_id) ) { 
+	if ( ( $amount + $total_today ) >= $limit && !$is_admin ) { 
 		$feedback["text"] = "Transaction not sent. This would put you over the Confetti Bits transfer limit. Your counter will reset next month!";
 		$feedback["type"] = "warning";
 		echo json_encode($feedback);

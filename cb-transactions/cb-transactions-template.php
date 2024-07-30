@@ -25,8 +25,13 @@ function cb_transactions_get_total_sent_today_notice() {
 	$notice_markup = "<p style='margin-top:1rem;'>%s</p>";
 	$user_id = get_current_user_id();
 	$is_admin = cb_is_user_site_admin($user_id);
+	$is_leadership = cb_is_user_transactions_admin();
 
 	if ( $is_admin ) {
+		return;
+	}
+	
+	if ( $is_leadership ) {
 		return;
 	}
 
@@ -451,7 +456,7 @@ function cb_transactions_get_send_bits_module() {
 		cb_transactions_get_total_sent_today_notice(),
 	];
 
-	if ( !cb_is_user_admin() ) {
+	if ( !cb_is_user_transactions_admin() ) {
 		array_unshift($content, cb_transactions_get_transfer_balance_notice());
 	}
 

@@ -187,6 +187,7 @@ function cb_core_set_role_globals() {
 				'cb_events_admin' => true,
 				'cb_staffing_admin' => true,
 				'cb_admin' => true,
+				'cb_transactions_admin' => true,
 			]
 		],
 		'leadership' => [
@@ -205,6 +206,7 @@ function cb_core_set_role_globals() {
 				'cb_requests_admin' => true,
 				'cb_events_admin' => true,
 				'cb_admin' => true,
+				'cb_transactions_admin' => true,
 			]
 		],
 		'requests_admin' => [
@@ -271,6 +273,7 @@ function cb_core_add_admin_caps() {
 		'participation_admin',
 		'events_admin',
 		'staffing_admin',
+		'transactions_admin',
 	];
 
 	foreach ( $roles as $role ) {
@@ -482,6 +485,35 @@ function cb_is_user_staffing_admin() {
 function cb_is_user_events_admin() {
 	return cb_core_is_component_admin('events');
 }
+
+/**
+ * Checks to see if the user is a transactions admin.
+ * 
+ * Checks whether a user has administrative privileges to 
+ * send bits to other users.
+ * 
+ * @param int $user_id User ID.
+ * @return bool Whether a user is a transactions admin.
+ * 
+ * @package Core
+ * @since 3.1.1
+ */
+function cb_is_user_transactions_admin( $user_id = 0 ) {
+	
+	$user_id = intval($user_id);
+	
+	if ( $user_id === 0 ) {
+		return current_user_can('cb_transactions_admin');
+	}
+
+	$user = new WP_User($user_id);
+
+	return $user->has_cap('cb_transactions_admin');
+	
+}
+
+
+
 
 /** 
  * Let Editors manage users, and run this only once.
